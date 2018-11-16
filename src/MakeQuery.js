@@ -96,7 +96,7 @@ class MakeQuery extends Component {
 
   handleSubmit(e){
     e.preventDefault();
-    const query = squel.select({ separator: '\n'})
+    const query = squel.select()
       .from(this.state.from)
       .fields(this.state.fields).toString()
     console.log(query);
