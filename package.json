@@ -3,15 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "concurrently": "^4.0.1",
+    "electron": "^3.0.9",
+    "electron-builder": "^20.34.0",
+    "electron-is-dev": "^1.0.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-scripts": "2.1.1"
+    "react-scripts": "2.1.1",
+    "wait-on": "^3.2.0"
   },
+  "main": "public/main.js",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "electron-dev": "concurrently \"BROWSER=none npm run start\" \"wait-on http://localhost:3000 && electron .\""
   },
   "eslintConfig": {
     "extends": "react-app"
