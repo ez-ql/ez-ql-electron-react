@@ -2,12 +2,12 @@ const electron = require("electron");
 const { Pool, Client } = require("pg");
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
-const { ipcMain } = require('electron')
+const { ipcMain } = require("electron");
 const path = require("path");
 const url = require("url");
 const isDev = require("electron-is-dev");
 
-const connectionString = 'postgresql://localhost:5432/BikeStores'
+const connectionString = "postgresql://localhost:5432/BikeStores";
 
 let mainWindow;
 
@@ -28,19 +28,20 @@ function createWindow() {
 //   pool.end()
 // })
 
-ipcMain.on('async-new-query', (event, arg) => {
-  console.log('******* arg *********', arg);
-  const client =  new Client({ connectionString })
-  client.connect()
+ipcMain.on("async-new-query", async (event, arg) => {
+  console.log("******* arg *********", arg);
+  const client = new Client({ connectionString });
+  client.connect();
 
-  client.query('SELECT * from stores', (err, res) => {
-    console.log(err, res)
-    client.end()
-  })
-
-  // event.sender.send('async-query-reply', data)
-})
-
+  client
+    .query(arg)
+    .then(res => {
+      console.log(res.rows[0]);
+      event.sender.send("async-query-reply", res.rows);
+      client.end();
+    })
+    .catch(err => console.error(err.stack));
+});
 
 app.on("ready", createWindow);
 
