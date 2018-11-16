@@ -37,25 +37,6 @@ client.query('SELECT * from gardeners', (err, res) => {
   client.end()
 })
 
-const db = {
-  client: "pg",
-  connection: `postgres://localhost:5432/plantr`,
-  pool: {
-    afterCreate: function(cnxn, done) {
-      cnxn.query('SET timezone="UTC";', function(err) {
-        if (err) {
-          done(err, cnxn);
-        } else {
-          const results = cnxn.query("SELECT * from gardners;", function(err) {
-            console.log(results)
-            done(err, cnxn);
-          });
-        }
-      });
-    }
-  }
-};
-
 app.on("ready", createWindow);
 
 app.on("window-all-closed", () => {
