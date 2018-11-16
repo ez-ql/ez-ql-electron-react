@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import squel from 'squel'
+const electron = window.require('electron')
+const ipcRenderer = electron.ipcRenderer
 
 const database = {
   id: 1,
@@ -13,49 +15,26 @@ const database = {
       fields: [
         {
           id: 1,
-          name: "orderId",
+          name: "order_id",
           modelId: 1
         },
         {
           id: 2,
-          name: "orderDate",
+          name: "customer_id",
           modelId: 1
         },
         {
           id: 3,
-          name: "orderAmount",
+          name: "order_status",
           modelId: 1
         },
         {
           id: 4,
-          name: "userId",
+          name: "order_date",
           modelId: 1
         }
       ]
     }
-    // ,
-    // {
-    //   id: 2,
-    //   name: "customers",
-    //   databaseId: 1,
-    //   fields: [
-    //     {
-    //       id: 1,
-    //       name: "customerId",
-    //       modelId: 1
-    //     },
-    //     {
-    //       id: 2,
-    //       name: "firstName",
-    //       modelId: 1
-    //     },
-    //     {
-    //       id: 3,
-    //       name: "lastName",
-    //       modelId: 1
-    //     }
-    //   ]
-    // }
   ]
 };
 
@@ -100,6 +79,8 @@ class MakeQuery extends Component {
       .from(this.state.from)
       .fields(this.state.fields).toString()
     console.log(query);
+    ipcRenderer.send('async-new-query', query)
+
   }
 
   render() {
