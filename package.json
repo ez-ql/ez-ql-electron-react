@@ -7,6 +7,8 @@
     "electron": "^3.0.9",
     "electron-builder": "^20.34.0",
     "electron-is-dev": "^1.0.1",
+    "knex": "^0.15.2",
+    "pg": "^7.6.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-scripts": "2.1.1",
@@ -28,5 +30,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "electron-rebuild": "^1.8.2"
+  }
 }
