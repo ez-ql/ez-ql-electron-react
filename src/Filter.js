@@ -5,6 +5,9 @@ import squel from "squel";
 const electron = window.require("electron");
 const ipcRenderer = electron.ipcRenderer;
 
+//this is a component for handling the Filter step of the query-builder process
+//only handles basic filters right now
+//the local state here is attrocious - we can likely cut this down
 class Filter extends React.Component {
   constructor(props) {
     super(props);
@@ -13,11 +16,12 @@ class Filter extends React.Component {
       tableFields: [],
       fieldToFilter: "",
       query: this.props.query,
-      selected: this.props.selected,
+      selectedTablesAndFields: this.props.selectedTablesAndFields,
       operator: "",
       userEntered: "",
       selectedData: {},
       submitted: false,
+      //we should be able to add a few more options here
       fieldFilterOptions: {
         equals: "=",
         "does not equal": "<>",
@@ -30,28 +34,28 @@ class Filter extends React.Component {
     this.handleSelectedTable = this.handleSelectedTable.bind(this);
     this.handleSelectedField = this.handleSelectedField.bind(this);
     this.handleFieldFiltering = this.handleFieldFiltering.bind(this);
-    this.handleSubmitQuery = this.handleSubmitQuery.bind(this);
     this.handleUserEntry = this.handleUserEntry.bind(this);
+    this.handleSubmitQuery = this.handleSubmitQuery.bind(this);
   }
 
   componentDidMount() {
-    //was able to see the reply in the console after a delay
+    //was able to see the correct filtered reply in the console...after a delay
     ipcRenderer.on("async-query-reply", (event, arg) => {
       this.setState({ selectedData: arg });
       console.log("***********", this.state.selectedData);
     });
   }
 
-  handleSelectedTable(selected) {
-    let selectedTable = selected;
+  handleSelectedTable(table) {
+    let selectedTable = table;
     this.setState({
       tableToFilter: selectedTable,
-      tableFields: this.state.selected[selectedTable]
+      tableFields: this.state.selectedTablesAndFields[selectedTable]
     });
   }
 
-  handleSelectedField(selected) {
-    let selectedField = selected;
+  handleSelectedField(field) {
+    let selectedField = field;
     let existingQuery = this.state.query;
     this.setState({
       fieldToFilter: selectedField,
@@ -67,6 +71,9 @@ class Filter extends React.Component {
     });
   }
 
+  //it is not ideal that we would have a user entry field, but I wasn't sure how to handle this right now
+  //hopefully we can get rid of this eventually (or replace with predictive searching!)
+  //a few choices (show all distinct values, for example), but dependent on data type - does not appear that it's possible to identify data type of column using squel.js
   handleUserEntry(event) {
     let userEntered = event.target.value;
     this.setState({
@@ -93,33 +100,41 @@ class Filter extends React.Component {
       userEntered: "",
       submitted: !this.state.submitted
     });
-    console.log("WE ARE HERE");
   }
 
   render() {
     console.log("CURRENT QUERY", this.state.query);
-    const selected = this.props.selected;
-    const allTables = Object.keys(selected);
+    const selectedTablesAndFields = this.props.selectedTablesAndFields;
+    const allTables = Object.keys(selectedTablesAndFields);
 
     return (
       <div>
         <div>
+          {
+            //step #1 - select table from tables previously selected - right now, this is only one b/c join feature is not written
+          }
           <h3>Select table to filter</h3>
           <ScrollMenu
             items={allTables}
             handleChange={this.handleSelectedTable}
           />
+          {
+            //step #2 - once table has been selected, render all previously selected fields from that table for selection
+          }
           {this.state.tableToFilter ? (
             <div>
               <h3>Select field from that table to filter</h3>
               <ScrollMenu
-                items={selected[this.state.tableToFilter]}
+                items={selectedTablesAndFields[this.state.tableToFilter]}
                 handleChange={this.handleSelectedField}
               />
             </div>
           ) : null}
         </div>
         <div>
+          {
+            //step #3 - once field has been selected, select field filtering operator
+          }
           {this.state.fieldToFilter ? (
             <div>
               <ScrollMenu
@@ -130,6 +145,9 @@ class Filter extends React.Component {
           ) : null}
         </div>
         <div>
+          {
+            //step #4 - once operator has been selected, enter and submit user input
+          }
           {this.state.operator ? (
             <div>
               <form onSubmit={this.handleSubmitQuery}>

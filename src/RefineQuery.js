@@ -6,16 +6,21 @@ import Joins from "./Joins";
 const electron = window.require("electron");
 const ipcRenderer = electron.ipcRenderer;
 
-//this will be a re-usable component for beginning the aggregates and filtering process
+//this can be a component for beginning the aggregates and filtering process
+//we can likely split this up for use in the `carousel`
+//very helpful for development
 //vision:
 //with each refinement, the selected object will hold all tables selected and its respective fields
 //assumptions:
 //data and/or query passed to component from previous components as props
+
 class RefineQuery extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected: {},
+      //structure of selectedTablesAndFields:
+      //object - keys are Tables - values are arrays of Fields from each table
+      selectedTablesAndFields: {},
       tables: [],
       fields: [],
       agg: false,
@@ -31,13 +36,13 @@ class RefineQuery extends Component {
       .split("FROM")[0]
       .slice(7, -1)
       .split(", ");
-    const updatedSelected = { ...this.state.selected };
+    const updatedSelected = { ...this.state.selectedTablesAndFields };
     updatedSelected[selectedTable] = selectedFields;
     this.setState({
-      //may not need the tables and fields keys - we can just use selected I think
+      //may not need the tables and fields keys - we can just use selectedTablesAndFields I think
       tables: [...this.state.tables, selectedTable],
       fields: [...this.state.fields].concat(selectedFields),
-      selected: updatedSelected
+      selectedTablesAndFields: updatedSelected
     });
   }
 
@@ -47,21 +52,21 @@ class RefineQuery extends Component {
         tables={this.state.tables}
         fields={this.state.fields}
         query={this.props.query}
-        selected={this.state.selected}
+        selectedTablesAndFields={this.state.selectedTablesAndFields}
       />
     ) : this.state.filter ? (
       <Filter
         tables={this.state.tables}
         fields={this.state.fields}
         query={this.props.query}
-        selected={this.state.selected}
+        selectedTablesAndFields={this.state.selectedTablesAndFields}
       />
     ) : this.state.anotherTable ? (
       <Joins
         tables={this.state.tables}
         fields={this.state.fields}
         query={this.props.query}
-        selected={this.state.selected}
+        selectedTablesAndFields={this.state.selectedTablesAndFields}
       />
     ) : (
       <div>
@@ -80,7 +85,7 @@ class RefineQuery extends Component {
           Filter
         </button>
         {
-          //we should be careful with the button below - we need to gray out or remove the buttons for the tables they've already selected...unless we want to enable self-referencing joins//
+          //we should be careful with the button below - we need to gray out or remove the buttons for the tables they've already selected...unless we want to enable self-referencing joins
         }
         <button
           type="button"

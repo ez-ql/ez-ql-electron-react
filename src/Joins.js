@@ -1,45 +1,26 @@
 import React, { Component } from "react";
 import squel from "squel";
-import MakeQuery from './MakeQuery';
-import ReactScrollableList from 'react-scrollable-list';
 const electron = window.require("electron");
 const ipcRenderer = electron.ipcRenderer;
 
-
-
-//this will be a re-usable component for aggregates and filtering
+//this can be a component joining additional tables to existing data set
 //vision:
-//show all selected fields (some sort of static scrolling menu)
-//some sort of ad-lib form for further selection refinement
+//show all tables that are not included in data set thus far
+//user selects initial table, somehow selects which fields to join on, and selects type of join (we will need to figure out how to phrase this)
+//can include ScrollMenu component
 //assumptions:
 //data passed to component from previous components as props
 
-// const Joins = props => {
-//     // let currentTables = 
-// }
-
-const Joins = props => {
-    return (
-        <h1>PLACEHOLDER</h1>
-        // <MakeQuery anotherTable={true}/>
-    )
+class Joins extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      on: ""
+    };
+  }
+  render() {
+    return <h1>PLACEHOLDER</h1>;
+  }
 }
-
-// class Joins extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//         on: ''
-//     };
-//   }
-
-//   render() {
-//     return (
-//       <div>
-//         <MakeQuery anotherTable={true}/>
-//       </div>
-//     );
-//   }
-// }
 
 export default Joins;

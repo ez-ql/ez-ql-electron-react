@@ -1,6 +1,9 @@
 import React from "react";
 import Select from "react-select";
 
+//re-usable component for scrollable menus - implements Select from npm's react-select library
+//right now the menu items are super weirdly lightly colored - need to change this
+//there are a lot of display options we can look into
 class ScrollMenu extends React.Component {
   constructor(props) {
     super(props);
@@ -25,6 +28,7 @@ class ScrollMenu extends React.Component {
     if (items) {
       items.map((elem, i) => {
         let newItem = {};
+        //react-select requires that the items be passed in as an array of objects with the following keys
         newItem["value"] = elem;
         newItem["label"] = elem;
         listItems.push(newItem);
@@ -37,7 +41,7 @@ class ScrollMenu extends React.Component {
         />
       );
     } else {
-        return null;
+      return null;
     }
   }
 }

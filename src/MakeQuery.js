@@ -3,7 +3,7 @@ import squel from "squel";
 import RefineQuery from "./RefineQuery";
 import Joins from "./Joins";
 const electron = window.require("electron");
-const Store = window.require('electron-store');
+const Store = window.require("electron-store");
 const store = new Store();
 const ipcRenderer = electron.ipcRenderer;
 
@@ -123,7 +123,7 @@ class MakeQuery extends Component {
       .toString();
     ipcRenderer.send("async-new-query", query);
     this.setState({ query });
-    store.set('query', query)
+    store.set("query", query);
   }
 
   render() {
@@ -131,7 +131,10 @@ class MakeQuery extends Component {
     return (
       <div>
         {this.state.nextView ? (
-          <RefineQuery data={this.state.selectedData} query={this.state.query} />
+          <RefineQuery
+            data={this.state.selectedData}
+            query={this.state.query}
+          />
         ) : this.state.anotherTable ? (
           <Joins data={this.state.selectedData} query={this.state.query} />
         ) : (
@@ -179,6 +182,9 @@ class MakeQuery extends Component {
               <button type="submit" onClick={this.handleSubmit}>
                 Submit
               </button>
+              {
+                //assuming this button is temporary - just added it to feign the flow for development
+              }
               <button
                 type="button"
                 onClick={() =>
