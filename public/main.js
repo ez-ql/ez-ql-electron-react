@@ -36,7 +36,8 @@ ipcMain.on("async-new-query", async (event, arg) => {
   client
     .query(arg)
     .then(res => {
-      console.log(res.rows[0]);
+      console.log("first row of results", res.rows[0]);
+      console.log("all results", res.rows);
       event.sender.send("async-query-reply", res.rows);
       client.end();
     })

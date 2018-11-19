@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import './MakeQuery'
-import MakeQuery from './MakeQuery';
+import React, { Component } from "react";
+import logo from "./logo.svg";
+import "./App.css"; //what is this line about?
+import "./MakeQuery"; //what is this line about?
+import MakeQuery from "./MakeQuery";
 
 class App extends Component {
   render() {

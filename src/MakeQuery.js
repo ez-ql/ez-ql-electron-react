@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import squel from "squel";
 import RefineQuery from "./RefineQuery";
 import Joins from "./Joins";
+import PreviewPanel from "./PreviewPanel";
 const electron = window.require("electron");
 const Store = window.require("electron-store");
 const store = new Store();
@@ -96,7 +97,6 @@ class MakeQuery extends Component {
     this.setState({ database: data });
     ipcRenderer.on("async-query-reply", (event, arg) => {
       this.setState({ selectedData: arg });
-      console.log("***********", this.state.selectedData);
     });
   }
 
@@ -130,72 +130,77 @@ class MakeQuery extends Component {
     //one issue: right now, in order to pass selectedData and query as props to RefineQuery and Joins, you need to click Submit - we should change that
     return (
       <div>
-        {this.state.nextView ? (
-          <RefineQuery
-            data={this.state.selectedData}
-            query={this.state.query}
-          />
-        ) : this.state.anotherTable ? (
-          <Joins data={this.state.selectedData} query={this.state.query} />
-        ) : (
-          <div>
-            <h1>Select Table</h1>
+        <div>
+          {this.state.nextView ? (
+            <RefineQuery
+              data={this.state.selectedData}
+              query={this.state.query}
+            />
+          ) : this.state.anotherTable ? (
+            <Joins data={this.state.selectedData} query={this.state.query} />
+          ) : (
             <div>
-              {this.state.database.models &&
-                this.state.database.models.map(model => {
-                  return (
-                    <div>
-                      <button
-                        type="submit"
-                        name="selectedModel"
-                        value={model.name}
-                        onClick={this.handleChange}
-                      >
-                        {model.name}
-                      </button>
-                    </div>
-                  );
-                })}
-            </div>
-            <h1>Select Fields</h1>
-            <div>
-              {this.state.selectedModel.fields &&
-                this.state.selectedModel.fields.map(field => {
-                  return (
-                    <div>
-                      <button
-                        type="submit"
-                        name="fields"
-                        value={field.name}
-                        onClick={this.handleChange}
-                      >
-                        {field.name}
-                      </button>
-                    </div>
-                  );
-                })}
-            </div>
-            <div>
-              {
-                //current bug: sometimes you need to click Submit twice in order to log query results to console
-              }
-              <button type="submit" onClick={this.handleSubmit}>
-                Submit
-              </button>
-              {
-                //assuming this button is temporary - just added it to feign the flow for development
-              }
-              <button
-                type="button"
-                onClick={() =>
-                  this.setState({ nextView: !this.state.nextView })
+              <h1>Select Table</h1>
+              <div>
+                {this.state.database.models &&
+                  this.state.database.models.map(model => {
+                    return (
+                      <div>
+                        <button
+                          type="submit"
+                          name="selectedModel"
+                          value={model.name}
+                          onClick={this.handleChange}
+                        >
+                          {model.name}
+                        </button>
+                      </div>
+                    );
+                  })}
+              </div>
+              <h1>Select Fields</h1>
+              <div>
+                {this.state.selectedModel.fields &&
+                  this.state.selectedModel.fields.map(field => {
+                    return (
+                      <div>
+                        <button
+                          type="submit"
+                          name="fields"
+                          value={field.name}
+                          onClick={this.handleChange}
+                        >
+                          {field.name}
+                        </button>
+                      </div>
+                    );
+                  })}
+              </div>
+              <div>
+                {
+                  //current bug: sometimes you need to click Submit twice in order to log query results to console
                 }
-              >
-                Refine Selection
-              </button>
+                <button type="submit" onClick={this.handleSubmit}>
+                  Submit
+                </button>
+                {
+                  //assuming this button is temporary - just added it to feign the flow for development
+                }
+                <button
+                  type="button"
+                  onClick={() =>
+                    this.setState({ nextView: !this.state.nextView })
+                  }
+                >
+                  Refine Selection
+                </button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
+        <div>
+          <PreviewPanel query={this.state.query} />
+        </div>
       </div>
     );
   }

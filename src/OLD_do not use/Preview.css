@@ -1,0 +1,27 @@
+.header {
+  font-size: 0.7em;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  flex-basis: 70vw;
+  color: white;
+}
+
+.volume {
+  flex-grow: 3;
+}
+
+.togglePreview {
+  flex-grow: 1;
+}
+
+.expanded {
+  background-color: #7f7f7f;
+}
+
+.expandIconOpen {
+  transform: rotate(180deg);
+  transition: transform 1s;
+}
