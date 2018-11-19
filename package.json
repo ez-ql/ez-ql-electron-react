@@ -8,10 +8,12 @@
     "electron-builder": "^20.34.0",
     "electron-is-dev": "^1.0.1",
     "electron-store": "^2.0.0",
+    "flickity": "^2.1.2",
     "knex": "^0.15.2",
     "pg": "^7.6.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "react-materialize": "^2.4.8",
     "react-scripts": "2.1.1",
     "react-scrollable-list": "^1.2.0",
     "react-select": "^2.1.1",
@@ -36,6 +38,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "electron-react-devtools": "^0.5.3",
     "electron-rebuild": "^1.8.2"
   }
 }

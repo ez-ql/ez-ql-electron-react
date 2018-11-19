@@ -11,8 +11,8 @@
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  align-items: space-around;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
@@ -20,6 +20,47 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.Flex-Container {
+  display: flex;
+  width: 100%;
+  background-color: lightcoral;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.Title {
+  display: flex;
+  width:50vw;
+  flex-direction: column;
+  background-color: darkgray;
+  font-size: 15px;
+}
+
+.Row {
+  flex-direction: row;
+  display: flex;
+  height: 20%;
+}
+
+.Column {
+  flex-direction: column;
+}
+
+.Row-buttons {
+  display: flex;
+  flex-direction: row;
+  background-color: lightgrey
+}
+
+.Table-box {
+  height: 50vh;
+  background-color: lightgreen;
+}
+
+.item {
+
 }
 
 @keyframes App-logo-spin {

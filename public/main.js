@@ -19,7 +19,10 @@ function createWindow() {
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
   mainWindow.on("closed", () => (mainWindow = null));
+  
 }
+
+
 
 // const pool = new Pool({ connectionString })
 
