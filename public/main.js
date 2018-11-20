@@ -28,6 +28,12 @@ function createWindow() {
 //   pool.end()
 // })
 
+// const ezqlClient = new Client({
+//   host: "localhost",
+//   database: "ez-ql",
+//   port: 5432
+// });
+
 ipcMain.on("async-new-query", async (event, arg) => {
   console.log("******* arg *********", arg);
   const client = new Client({ connectionString });
@@ -38,6 +44,32 @@ ipcMain.on("async-new-query", async (event, arg) => {
     .then(res => {
       console.log("first row of results", res.rows[0]);
       console.log("all results", res.rows);
+      event.sender.send("async-query-reply", res.rows);
+      client.end();
+    })
+    .catch(err => console.error(err.stack));
+});
+
+ipcMain.on("async-new-table-preview-query", async (event, arg) => {
+  const client = new Client({ connectionString });
+  client.connect();
+
+  client
+    .query(arg)
+    .then(res => {
+      event.sender.send("async-query-reply", res.rows);
+      client.end();
+    })
+    .catch(err => console.error(err.stack));
+});
+
+ipcMain.on("async-new-scope-preview-query", async (event, arg) => {
+  const client = new Client({ connectionString });
+  client.connect();
+
+  client
+    .query(arg)
+    .then(res => {
       event.sender.send("async-query-reply", res.rows);
       client.end();
     })

@@ -7,7 +7,6 @@ const electron = window.require("electron");
 const Store = window.require("electron-store");
 const store = new Store();
 const ipcRenderer = electron.ipcRenderer;
-
 const database = {
   id: 1,
   name: "BikeStores",
@@ -90,6 +89,8 @@ class MakeQuery extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleTablePreview = this.handleTablePreview.bind(this);
+    this.handleScopePreview = this.handleScopePreview.bind(this);
   }
 
   componentDidMount() {
@@ -124,6 +125,27 @@ class MakeQuery extends Component {
     ipcRenderer.send("async-new-query", query);
     this.setState({ query });
     store.set("query", query);
+  }
+
+  handleScopePreview() {
+    let query = squel
+      .select()
+      .from(this.state.from)
+      .fields(this.state.fields)
+      .toString();
+    ipcRenderer.send("async-new-scope-preview-query", query);
+    return query;
+  }
+
+  handleTablePreview(limit) {
+    let query = squel
+      .select()
+      .from(this.state.from)
+      .fields(this.state.fields)
+      .limit(limit)
+      .toString();
+    ipcRenderer.send("async-new-table-preview-query", query);
+    return query;
   }
 
   render() {
@@ -199,7 +221,11 @@ class MakeQuery extends Component {
           )}
         </div>
         <div>
-          <PreviewPanel query={this.state.query} />
+          <PreviewPanel
+            handleTablePreview={this.handleTablePreview}
+            handleScopePreview={this.handleScopePreview}
+            query={this.state.query}
+          />
         </div>
       </div>
     );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
@@ -11,7 +11,7 @@ import PreviewTabs from "./PreviewTabs";
 
 const styles = theme => ({
   root: {
-    width: "150%"
+    width: "100%"
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
@@ -19,20 +19,34 @@ const styles = theme => ({
   }
 });
 
-function PreviewPanel(props) {
-  const { classes, query } = props;
-  return (
-    <div className={classes.root}>
-      <ExpansionPanel>
-        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-          <Button className={classes.heading}>Preview</Button>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <PreviewTabs squelQuery={query} />
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-    </div>
-  );
+class PreviewPanel extends Component {
+  render() {
+    const {
+      classes,
+      query,
+      handleTablePreview,
+      handleScopePreview
+    } = this.props;
+    return (
+      <div className={classes.root}>
+        <ExpansionPanel>
+          <ExpansionPanelSummary
+            onClick={handleScopePreview}
+            expandIcon={<ExpandMoreIcon />}
+          >
+            <Button className={classes.heading}>Preview</Button>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <PreviewTabs
+              handleTablePreview={handleTablePreview}
+              handleScopePreview={handleScopePreview}
+              squelQuery={query}
+            />
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+      </div>
+    );
+  }
 }
 
 PreviewPanel.propTypes = {
