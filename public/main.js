@@ -20,6 +20,7 @@ function createWindow() {
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
   mainWindow.on("closed", () => (mainWindow = null));
+
 }
 
 // const pool = new Pool({ connectionString })
@@ -76,23 +77,7 @@ ipcMain.on("async-new-scope-preview-query", async (event, arg) => {
     .catch(err => console.error(err.stack));
 });
 
-global.sharedObj = {
-  models: [],
-  currQuery: {
-    from: "orders",
-    fields: [
-      "order_id",
-      "order_status",
-      "order_date",
-      "customer_id",
-      "first_name",
-      "last_name"
-    ],
-    addedTables: ["customers"],
-    group: "",
-    where: ""
-  }
-};
+global.sharedObj = { models: [], currQuery: {selectedModelsAndFields: [], from: '', fields: []} };
 
 const relatedTables = modelsArr => {
   modelsArr.forEach(model => {
@@ -172,7 +157,7 @@ ipcMain.on("async-selected-db-schema", async (event, arg) => {
   console.log("***db schema arg main***", arg);
   const client = new Client({
     host: "localhost",
-    database: "ez-ql",
+    database: "ez*ql",
     port: 5432
   });
   client.connect();
