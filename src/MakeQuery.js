@@ -3,6 +3,7 @@ import squel from "squel";
 import Selector from './Selector/Selector'
 import SelectTable from './SelectTable'
 import SelectFields from './SelectFields'
+import { Link } from "react-router-dom";
 
 const electron = window.require("electron");
 const Store = window.require("electron-store");
@@ -133,15 +134,15 @@ class MakeQuery extends Component {
   }
 
   componentDidMount() {
-    const data = getData();
-    this.setState({ database: data });
+    // const data = getData();
+    // this.setState({ database: data });
     ipcRenderer.on("async-query-reply", (event, arg) => {
       this.setState({ selectedData: arg });
       console.log("***********", this.state.selectedData);
     });
     ipcRenderer.send("async-selected-db-schema", 'SELECT models.model_id, models.model_name, foreignKeys.relatedModel_id, foreignKeys.model_foreign_field , foreignKeys.relatedModel_primary_field FROM models LEFT JOIN foreignKeys on models.model_id = foreignKeys.model_id');
     ipcRenderer.on("async-db-schema-reply", (event, arg) => {
-      this.setState({ clientDatabase: arg });
+      this.setState({ clientDatabase: arg, selectedModel: this.props.model });
       console.log("***rendered db schema***", arg);
     });
   }
@@ -213,10 +214,10 @@ class MakeQuery extends Component {
     return (
       <div className='Flex-Container'>
         <div className='Column Center'>
-          {
+          { this.state.selectedModel && (
             !this.state.nextView ?
               <SelectTable handleChange={this.handleChange} model={this.state.selectedModel}  />
-              : <SelectFields handleChange={this.handleChange} fields={this.state.selectedModel.fields} />
+              : <SelectFields handleChange={this.handleChange} fields={this.state.selectedModel.fields} />)
           }
           <div className='Container'>
             {
@@ -234,6 +235,17 @@ class MakeQuery extends Component {
                 connect another table
               </button>
             </div>
+          }
+        </div>
+        <div>
+        {
+          <div>
+            <Link
+            to="/startQuery"
+          >
+            <button className="Button">start over</button>
+          </Link>
+        </div>
           }
         </div>
       </div>

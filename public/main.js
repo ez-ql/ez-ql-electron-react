@@ -20,7 +20,7 @@ function createWindow() {
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
   mainWindow.on("closed", () => (mainWindow = null));
-  
+
 }
 
 
@@ -120,7 +120,7 @@ ipcMain.on("async-selected-db-schema", async (event, arg) => {
   console.log("***db schema arg main***", arg);
   const client = new Client({
     host: "localhost",
-    database: "ez-ql",
+    database: "ez*ql",
     port: 5432
   });
   client.connect();
