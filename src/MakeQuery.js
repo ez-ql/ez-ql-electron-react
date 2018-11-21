@@ -99,6 +99,11 @@ class MakeQuery extends Component {
     ipcRenderer.on("async-query-reply", (event, arg) => {
       this.setState({ selectedData: arg });
     });
+    ipcRenderer.send("async-selected-db-schema", 'SELECT models.model_id, models.model_name, foreignKeys.relatedModel_id, foreignKeys.model_foreign_field , foreignKeys.relatedModel_primary_field FROM models LEFT JOIN foreignKeys on models.model_id = foreignKeys.model_id');
+    ipcRenderer.on("async-db-schema-reply", (event, arg) => {
+      this.setState({ clientDatabase: arg });
+      console.log("***rendered db schema***", arg);
+    });
   }
 
   handleChange(e) {
