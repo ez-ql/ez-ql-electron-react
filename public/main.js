@@ -20,6 +20,7 @@ function createWindow() {
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
   mainWindow.on("closed", () => (mainWindow = null));
+
 }
 
 // const pool = new Pool({ connectionString })
@@ -51,7 +52,8 @@ global.sharedObj = {
     addedTables: ["customers"],
     group: '',
     where: '',
-    qualifiedFields: ["orders.order_id"]
+    qualifiedFields: ["orders.order_id"],
+    selectedModelsAndFields: []
   }
 };
 
