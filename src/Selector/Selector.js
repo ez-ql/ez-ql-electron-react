@@ -1,29 +1,34 @@
 import React, { Component } from 'react';
 import Flickity from 'flickity';
-import SubSelector from './SubSelector';
 
 const itemStyle = {
-  width: '75%',
-  height: '160px',
+  width: '30%',
+  height: '260px',
   background: 'lightgrey',
   borderRadius: '5px',
   margin: '10px'
 };
 
 export default class Selector extends Component {
-  state = {
-    selectedIndex: 0,
-    subSelector: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedIndex: 0,
+      subSelector: false,
+    }
+    this.appendChange=this.appendChange.bind(this)
+  }
 
-  flkty = null;
+  // flkty = null;
   scrollAt = null;
 
   componentDidMount() {
     const { subSelector, items } = this.props;
     this.scrollAt = items.length;
+
     if (subSelector) {
       this.setState({
+        selectedIndex: items.length,
         subSelector: true,
       });
     }
@@ -39,16 +44,20 @@ export default class Selector extends Component {
     }
   };
 
-  // componentWillReceiveProps(nextProps) {
-  //   // this.flkty.selectCell(nextProps.selectedIndex);
-  //   this.flkty.append(this.props)
-  // };
+  componentDidUpdate(prevProps, prevState){
+    console.log('flkty changed', this.state.selectedIndex)
+    console.log('prev', prevState, 'currState', this.state)
+    console.log('prevProps', prevProps, 'currProps', this.props)
+    if(prevProps.items !== this.props.items){
+      this.appendChange();
+    }
+  }
 
   initFlickity = () => {
     const options = {
-      // cellSelector: '.item',
+      cellSelector: '.item',
       contain: false,
-      initialIndex: 0,
+      initialIndex: this.scrollAt,
       accessibility: false,
       pageDots: false,
       wrapAround: false,
@@ -56,8 +65,6 @@ export default class Selector extends Component {
     }
 
     this.flkty = new Flickity(this.wrapper, options);
-    // this.flkty.append()
-    console.log('flkty1', this.flkty)
     this.flkty.on('dragStart', this.dragStart);
     this.flkty.on('dragEnd', this.dragEnd);
     this.flkty.on('scroll', this.onScroll);
@@ -66,18 +73,23 @@ export default class Selector extends Component {
   };
 
   onSettle = () => {
+    console.log('onSettle', this.flkty.selectedIndex)
     const selectedIndex = this.flkty.selectedIndex;
     if (this.state.selectedIndex !== selectedIndex) {
+      console.log('here')
       this.setState({
         selectedIndex: selectedIndex,
       });
     }
+    const modelName = this.flkty.selectedSlide.cells[0].element.innerText.split(' ')[0]
+      console.log('modelNAME', modelName)
+    this.props.selectedSlide(modelName)
   };
 
   prevScroll = false;
 
   onScroll = (scroll, sub = false) => {
-
+    console.log('onScroll')
     if (this.dragStarted === false) {
       return;
     }
@@ -95,6 +107,7 @@ export default class Selector extends Component {
 
     // When you move the slider to the left
     if (scroll > boundaries.right && direction === 'left') {
+      console.log('onScroll1')
       const next = this.state.selectedIndex += 1;
       this.setState({
         selectedIndex: next,
@@ -108,6 +121,7 @@ export default class Selector extends Component {
     // When you move the slider to the right
     if (scroll < boundaries.left && direction === 'right' && this.state.selectedIndex !== 0) {
       const prev = this.state.selectedIndex -= 1;
+      console.log('onScroll2', this.state.selectedIndex, prev)
       this.setState({
         selectedIndex: prev,
       });
@@ -124,6 +138,7 @@ export default class Selector extends Component {
     this.flkty.selectCell(index);
 
     if (updateState) {
+      console.log('onScroll3')
       this.setState({
         selectedIndex: index,
       });
@@ -131,6 +146,7 @@ export default class Selector extends Component {
   };
 
   onSubSettle = index => {
+    console.log('onSubsettle')
     if (this.flkty.selectedIndex !== index) {
       this.slideTo(index, false);
     }
@@ -143,31 +159,34 @@ export default class Selector extends Component {
   };
 
   dragEnd = e => {
+    console.log('ondragEnd')
     this.dragStarted = false;
+    const modelName = this.flkty.selectedSlide.cells[0].element.innerText.split(' ')[0]
+      console.log('modelNAME', modelName)
+    this.props.selectedSlide(modelName)
   };
+
+  appendChange(){
+    if (this.flkty) {
+      this.flkty.destroy();
+      this.initFlickity();
+    }
+  }
 
   render() {
     const { items } = this.props;
-    // this.scrollAt = items.length
-    // const items = this.state.items
-    console.log('ITEMS', items)
-    console.log('scroll', this.scrollAt)
-    // this.flkty && this.flkty.append(this.props.add)
-    console.log('flkty', this.flkty)
     return (
       <div>
-        <div ref={c => this.wrapper = c} >
+        <div ref={ch => this.wrapper = ch} >
           {items.map(item =>
-            <div key={item.key} style={itemStyle} className="item">
-              <div className="inner">{item.model}</div>
-              {/* {
-                item.categories.map(category => <div className="inner">{category}</div>)
-              } */}
-              {/* <div className="inner">{item.categories}</div> */}
+            <div  style={itemStyle} className="item">
+              <div className="inner Color">{`${item.model} table`}</div>
+              {
+                item.fields.map(category => <div className="inner">{category}</div>)
+              }
             </div>
           )}
         </div>
-        {this.state.subSelector && <SubSelector onSettle={this.onSubSettle} slideTo={this.slideTo}  selectedIndex={this.state.selectedIndex} items={items} />}
       </div>
     )
   }

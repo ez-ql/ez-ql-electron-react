@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import squel from "squel";
-import RefineQuery from "./RefineQuery";
-import Joins from "./Joins";
 import Selector from './Selector/Selector'
+import SelectTable from './SelectTable'
+import SelectFields from './SelectFields'
 
 const electron = window.require("electron");
 const Store = window.require("electron-store");
@@ -14,6 +14,7 @@ const database = {
   id: 1,
   name: "BikeStores",
   organizationId: 1,
+  related_models: [2],
   models: [
     {
       id: 1,
@@ -46,6 +47,7 @@ const database = {
       id: 2,
       name: "stores",
       databaseId: 1,
+      related_models: [1],
       fields: [
         {
           id: 1,
@@ -81,19 +83,53 @@ class MakeQuery extends Component {
     super(props);
     this.state = {
       from: "",
-      query: "",
+      // query: "",
       fields: [],
       database: {},
-      selectedModel: {},
+      selectedModel: {
+        id: 1,
+        name: "BikeStores",
+        organizationId: 1,
+        related_models: [2],
+        models: [
+          {
+            id: 1,
+            name: "orders",
+            databaseId: 1,
+            fields: [
+              {
+                id: 1,
+                name: "order_id",
+                modelId: 1
+              },
+              {
+                id: 2,
+                name: "customer_id",
+                modelId: 1
+              },
+              {
+                id: 3,
+                name: "order_status",
+                modelId: 1
+              },
+              {
+                id: 4,
+                name: "order_date",
+                modelId: 1
+              }
+            ]
+          }]},
       selectedData: {},
       anotherTable: false,
       nextView: false,
       tables: [],
-      selectedTablesAndFields: [{model:'stt', category: []}, {model: 'st', category: []}, {model: 'st', category: [] }],
-
+      selectedModelsAndFields: [],
+      selectedSlide: 0
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.toggleView = this.toggleView.bind(this);
+    this.selectedSlide = this.selectedSlide.bind(this);
   }
 
   componentDidMount() {
@@ -111,19 +147,34 @@ class MakeQuery extends Component {
       const selectedModel = this.state.database.models.find(
         model => model.name === modelName
       );
-      const selectedTablesAndFields = [...this.state.selectedTablesAndFields];
-      selectedTablesAndFields.push({ model: modelName, categories: [] })
-      this.setState({ from: modelName, selectedModel, selectedTablesAndFields });
+      const selectedModelsAndFields = [...this.state.selectedModelsAndFields];
+      const includesSelectedModel = selectedModelsAndFields.filter(model => model.model === modelName)
+      if (!includesSelectedModel[0]) {
+        selectedModelsAndFields.unshift({ model: modelName, fields: [] })
+        this.setState({ from: modelName, nextView: true, selectedModel, selectedModelsAndFields });
+      }
     } else {
+      let newField = e.target.value;
       let fields = [...this.state.fields];
-      fields.push(e.target.value);
-      this.setState({ fields });
+      const includes = fields.filter(field => field === newField)
+      if(!includes[0]){
+        fields.push(newField);
+        let selectedModelsAndFields = this.state.selectedModelsAndFields
+          .map(table => {
+            if (this.state.selectedModel.name === table.model) {
+              table.fields.push(newField);
+              return table
+            }
+            return table
+          })
+          this.setState({ fields, selectedModelsAndFields });
+      }
     }
   }
 
-  // createTable(e){
-  //   const
-  // }
+  toggleView() {
+    this.setState({ nextView: false })
+  }
 
   handleSubmit(e) {
     e.preventDefault();
@@ -141,109 +192,45 @@ class MakeQuery extends Component {
     // })
   }
 
+  selectedSlide (modelName) {
+    console.log('here')
+    const selectedModel = this.state.database.models.find(
+      model => model.name === modelName
+    );
+    this.setState({ selectedModel })
+  }
+
   render() {
     //one issue: right now, in order to pass selectedData and query as props to RefineQuery and Joins, you need to click Submit - we should change that
-    console.log('selected', this.state.selectedTablesAndFields)
-    const items = this.state.selectedTablesAndFields
+    console.log('selected', this.state.selectedModelsAndFields);
+    console.log('selectedModel', this.state.selectedModel)
+    console.log('next', this.state.nextView)
     return (
       <div className='Flex-Container'>
-        {this.state.nextView ? (
-          <RefineQuery
-            data={this.state.selectedData}
-            query={this.state.query}
-          />
-        ) : this.state.anotherTable ? (
-          <Joins data={this.state.selectedData} query={this.state.query} />
-        ) : (
-          <div className='Column'>
-          <div className='Row'>
-              <div className='Title'>
-              <div >
-            <h1>Select Table</h1>
-              </div>
-            <div className='Row-buttons'>
-                    {this.state.database.models &&
-                      this.state.database.models.map(model => {
-                        return (
-                          <div>
-                            <button
-                              type="submit"
-                              name="selectedModel"
-                              value={model.name}
-                              onClick={this.handleChange}
-                            >
-                              {model.name}
-                            </button>
-                          </div>
-                        );
-                      })}
-                  </div>
-                  <div>
-                    {this.state.tables[0] && this.state.tables.map(table => {
-                      return (
-                        <div className='Table-box'>
-                        <h6>{table}</h6>
-                        </div>
-                      )
-                    })}
-                  </div>
-            {/* <div> */}
-            {/* <div> */}
-
-
-                </div>
-
-                <div className='Title'>
-                <div  >
-                <h1>Select Fields</h1>
-                </div>
-
-                <div className='Row-buttons'>
-              {this.state.selectedModel.fields &&
-                this.state.selectedModel.fields.map(field => {
-                  return (
-                    <div>
-                      <button
-                        type="submit"
-                        name="fields"
-                        value={field.name}
-                        onClick={this.handleChange}
-                      >
-                        {field.name}
-                      </button>
-                    </div>
-
-                  );
-                })}
-            </div>
-            </div>
-            {/* <div>
-              {
-                //current bug: sometimes you need to click Submit twice in order to log query results to console
-              }
-              <button type="submit" onClick={this.handleSubmit}>
-                Submit
-              </button>
-              {
-                //assuming this button is temporary - just added it to feign the flow for development
-              }
-              <button
-                type="button"
-                onClick={() =>
-                  this.setState({ nextView: !this.state.nextView })
-                }
-              >
-                Refine Selection
-              </button> */}
-            {/* </div> */}
-          </div>
+        <div className='Column Center'>
+          {
+            !this.state.nextView ?
+              <SelectTable handleChange={this.handleChange} model={this.state.selectedModel}  />
+              : <SelectFields handleChange={this.handleChange} fields={this.state.selectedModel.fields} />
+          }
           <div className='Container'>
-          <Selector subSelector items={this.state.selectedTablesAndFields} add={{model: 'ab'}}/>
+            {
+              this.state.selectedModelsAndFields[0] &&
+              <Selector subSelector items={this.state.selectedModelsAndFields} selectedModel={this.state.selectedModel} selectedSlide={this.selectedSlide}/>
+            }
           </div>
-          </div>
-
-        )}
-
+          {
+            this.state.nextView &&
+            <div>
+              <button
+                type='submit'
+                className='Button'
+                onClick={this.toggleView}>
+                connect another table
+              </button>
+            </div>
+          }
+        </div>
       </div>
     );
   }

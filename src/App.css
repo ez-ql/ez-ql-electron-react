@@ -26,16 +26,21 @@
   display: flex;
   width: 100%;
   background-color: lightcoral;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
 }
+
+
 
 .Title {
   display: flex;
   width:50vw;
+  height: 80%;
   flex-direction: column;
-  background-color: darkgray;
+  /* background-color: darkgray; */
   font-size: 15px;
+  align-self: center;
+  margin-bottom: 3%
 }
 
 .Row {
@@ -45,13 +50,31 @@
 }
 
 .Column {
+  display: flex;
   flex-direction: column;
+}
+
+.Center {
+  flex-direction: center;
 }
 
 .Row-buttons {
   display: flex;
   flex-direction: row;
-  background-color: lightgrey
+  justify-content: center;
+  /* background-color: lightgrey; */
+  height: 20%;
+}
+
+.Height-80 {
+  display: flex;
+  height: 60%;
+  margin-top: 15%;
+}
+
+.Height-50 {
+  display: flex;
+  height: 100%;
 }
 
 .Table-box {
@@ -59,9 +82,29 @@
   background-color: lightgreen;
 }
 
-.item {
-
+.Flex-End {
+  justify-content: flex-end;
+  display: flex;
 }
+
+h1 {
+  justify-content: center;
+}
+
+.Button {
+  height: 40px;
+  font-size: 15px;
+  opacity: 0.5;
+  border-radius: 15%;
+  margin: 3px;
+}
+
+
+.Color {
+  color:coral;
+  font-size: 25px;
+}
+
 
 @keyframes App-logo-spin {
   from {
