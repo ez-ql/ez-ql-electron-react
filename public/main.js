@@ -20,6 +20,7 @@ function createWindow() {
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
   mainWindow.on("closed", () => (mainWindow = null));
+
 }
 
 // const pool = new Pool({ connectionString })
@@ -43,7 +44,7 @@ ipcMain.on("async-new-query", async (event, arg) => {
     .catch(err => console.error(err.stack));
 });
 
-global.sharedObj = { models: [] };
+global.sharedObj = { models: [], currQuery: {selectedModelsAndFields: [], from: '', fields: []} };
 
 const relatedTables = modelsArr => {
   modelsArr.forEach(model => {
@@ -117,7 +118,7 @@ ipcMain.on("async-selected-db-schema", async (event, arg) => {
   console.log("***db schema arg main***", arg);
   const client = new Client({
     host: "localhost",
-    database: "ez-ql",
+    database: "ez*ql",
     port: 5432
   });
   client.connect();
