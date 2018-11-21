@@ -9,7 +9,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
+        <header className="App-header Flex-Container">
           <Router>
             <Switch>
               <Route path="/makeQuery" component={MakeQuery} />

@@ -10,6 +10,7 @@ class StartQuery extends Component {
   };
 
   componentDidMount() {
+
     ipcRenderer.send(
       "async-selected-db-schema",
       "SELECT models.model_id, models.model_name, foreignKeys.relatedModel_id, foreignKeys.model_foreign_field , foreignKeys.relatedModel_primary_field FROM models LEFT JOIN foreignKeys on models.model_id = foreignKeys.model_id"
@@ -19,33 +20,30 @@ class StartQuery extends Component {
     });
   }
 
-  handleChange = evt => {
-    evt.preventDefault();
-    this.setState({ from: evt.target.value });
-  };
+  componentWillUnmount(){
+    ipcRenderer.removeAllListeners("async-db-schema-reply")
+  }
 
   render() {
     const models = this.state.models;
-    const handleChange = this.handleChange;
-    console.log('state', this.state.models)
 
     return (
-      <div className="Title Height-80">
+      <div className="Height-80 Title Column">
         <div className="Column Center Height-50">
-          <div className="Flex-End Column">
-            Select a table to start your request
+          <div className="Flex-End Column ">
+            <h1>Select a table</h1>
           </div>
         </div>
-        <div className="Row-buttons">
+        <div className="Row-buttons Flex-Wrap">
           {models.length > 0
             ? models.map(model => {
                 return (
                   <div>
                     <Link
-                      to="/makeQuery"
-                      render={routeProps => (
-                        <MakeQuery {...routeProps} model={model.model_name} />
-                      )}
+                      to={{
+                        pathname: "/makeQuery",
+                        state: { model: model.model_name }
+                      }}
                     >
                       <button className="Button">{model.model_name}</button>
                     </Link>

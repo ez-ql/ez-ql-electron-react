@@ -1,15 +1,15 @@
 import React from 'react'
 
 const SelectFields = props => {
-  const { handleChange, fields } = props
-
+  const handleChange = props.handleChange;
+  const fields = props.fields || []
   return (
     <div className='Title Height-80'>
       <div className='Column Center Height-50' >
-        <h1 className='Flex-End Column'>Select Fields</h1>
+        <h1 className='Flex-End Column '>Select Fields</h1>
       </div>
-      <div className='Row-buttons'>
-        {fields &&
+      <div className='Row-buttons Flex-Wrap'>
+        {fields[0] &&
           fields.map(field => {
             return (
               <div>
@@ -17,15 +17,15 @@ const SelectFields = props => {
                   className='Button'
                   type="submit"
                   name="fields"
-                  value={field.name}
+                  value={field.field_name}
                   onClick={handleChange}
                 >
-                  {field.name}
+                  {field.field_name}
                 </button>
               </div>
             )
           })
-          }
+        }
       </div>
     </div>
   )

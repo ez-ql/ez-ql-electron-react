@@ -30,6 +30,9 @@
   justify-content: space-between;
 }
 
+.Flex-Wrap {
+  flex-wrap: wrap
+}
 
 
 .Title {

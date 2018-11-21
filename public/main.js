@@ -23,8 +23,6 @@ function createWindow() {
 
 }
 
-
-
 // const pool = new Pool({ connectionString })
 
 // pool.query('SELECT NOW()', (err, res) => {
@@ -46,7 +44,7 @@ ipcMain.on("async-new-query", async (event, arg) => {
     .catch(err => console.error(err.stack));
 });
 
-global.sharedObj = { models: [] };
+global.sharedObj = { models: [], currQuery: {selectedModelsAndFields: [], from: '', fields: []} };
 
 const relatedTables = modelsArr => {
   modelsArr.forEach(model => {

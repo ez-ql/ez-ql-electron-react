@@ -45,9 +45,6 @@ export default class Selector extends Component {
   };
 
   componentDidUpdate(prevProps, prevState){
-    console.log('flkty changed', this.state.selectedIndex)
-    console.log('prev', prevState, 'currState', this.state)
-    console.log('prevProps', prevProps, 'currProps', this.props)
     if(prevProps.items !== this.props.items){
       this.appendChange();
     }
@@ -73,23 +70,19 @@ export default class Selector extends Component {
   };
 
   onSettle = () => {
-    console.log('onSettle', this.flkty.selectedIndex)
     const selectedIndex = this.flkty.selectedIndex;
     if (this.state.selectedIndex !== selectedIndex) {
-      console.log('here')
       this.setState({
         selectedIndex: selectedIndex,
       });
     }
     const modelName = this.flkty.selectedSlide.cells[0].element.innerText.split(' ')[0]
-      console.log('modelNAME', modelName)
     this.props.selectedSlide(modelName)
   };
 
   prevScroll = false;
 
   onScroll = (scroll, sub = false) => {
-    console.log('onScroll')
     if (this.dragStarted === false) {
       return;
     }
@@ -107,7 +100,6 @@ export default class Selector extends Component {
 
     // When you move the slider to the left
     if (scroll > boundaries.right && direction === 'left') {
-      console.log('onScroll1')
       const next = this.state.selectedIndex += 1;
       this.setState({
         selectedIndex: next,
@@ -121,7 +113,6 @@ export default class Selector extends Component {
     // When you move the slider to the right
     if (scroll < boundaries.left && direction === 'right' && this.state.selectedIndex !== 0) {
       const prev = this.state.selectedIndex -= 1;
-      console.log('onScroll2', this.state.selectedIndex, prev)
       this.setState({
         selectedIndex: prev,
       });
@@ -138,7 +129,6 @@ export default class Selector extends Component {
     this.flkty.selectCell(index);
 
     if (updateState) {
-      console.log('onScroll3')
       this.setState({
         selectedIndex: index,
       });
@@ -146,7 +136,6 @@ export default class Selector extends Component {
   };
 
   onSubSettle = index => {
-    console.log('onSubsettle')
     if (this.flkty.selectedIndex !== index) {
       this.slideTo(index, false);
     }
@@ -159,10 +148,8 @@ export default class Selector extends Component {
   };
 
   dragEnd = e => {
-    console.log('ondragEnd')
     this.dragStarted = false;
     const modelName = this.flkty.selectedSlide.cells[0].element.innerText.split(' ')[0]
-      console.log('modelNAME', modelName)
     this.props.selectedSlide(modelName)
   };
 
@@ -180,7 +167,7 @@ export default class Selector extends Component {
         <div ref={ch => this.wrapper = ch} >
           {items.map(item =>
             <div  style={itemStyle} className="item">
-              <div className="inner Color">{`${item.model} table`}</div>
+              <div className="inner Color">{`${item.model_name} table`}</div>
               {
                 item.fields.map(category => <div className="inner">{category}</div>)
               }
