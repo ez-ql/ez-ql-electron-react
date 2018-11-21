@@ -69,7 +69,7 @@ class Filter extends React.Component {
     console.log("available filters", availableFilters);
     this.setState({
       availableFilters,
-      fieldToFilter: `${this.state.tableToFilter}.${field}`
+      fieldToFilter: field
     });
   }
 
@@ -93,7 +93,7 @@ class Filter extends React.Component {
 
   handleSubmitQuery(event) {
     event.preventDefault();
-    const fieldToFilter = `${this.state.fieldToFilter} ${
+    const fieldToFilter = `${this.state.tableToFilter}.${this.state.fieldToFilter} ${
       this.state.userEntered
     }`;
     const filteredFields = [...this.state.filteredFields];

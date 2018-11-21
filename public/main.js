@@ -50,7 +50,8 @@ global.sharedObj = {
     fields: ["order_id", "order_status", "order_date", "customer_id", "first_name", "last_name"],
     addedTables: ["customers"],
     group: '',
-    where: ''
+    where: '',
+    qualifiedFields: ["orders.order_id"]
   }
 };
 
