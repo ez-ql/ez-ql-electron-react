@@ -76,7 +76,23 @@ ipcMain.on("async-new-scope-preview-query", async (event, arg) => {
     .catch(err => console.error(err.stack));
 });
 
-global.sharedObj = { models: [] };
+global.sharedObj = {
+  models: [],
+  currQuery: {
+    from: "orders",
+    fields: [
+      "order_id",
+      "order_status",
+      "order_date",
+      "customer_id",
+      "first_name",
+      "last_name"
+    ],
+    addedTables: ["customers"],
+    group: "",
+    where: ""
+  }
+};
 
 const relatedTables = modelsArr => {
   modelsArr.forEach(model => {
@@ -102,11 +118,13 @@ const relatedTables = modelsArr => {
       global.sharedObj.models.push({
         model_id: model.model_id,
         model_name: model.model_name,
-        related_models: [{
-          relatedmodel_id: model.relatedmodel_id,
-          model_foreign_field: model.model_foreign_field,
-          relatedmodel_primary_field: model.relatedmodel_primary_field
-        }]
+        related_models: [
+          {
+            relatedmodel_id: model.relatedmodel_id,
+            model_foreign_field: model.model_foreign_field,
+            relatedmodel_primary_field: model.relatedmodel_primary_field
+          }
+        ]
       });
     }
   });
@@ -114,19 +132,23 @@ const relatedTables = modelsArr => {
 
 const relatedFields = fieldsArr => {
   fieldsArr.forEach(field => {
-    if (global.sharedObj.models.filter(globalModel => field.model_id === globalModel.model_id)[0].fields) {
+    if (
+      global.sharedObj.models.filter(
+        globalModel => field.model_id === globalModel.model_id
+      )[0].fields
+    ) {
       global.sharedObj.models.map(globalModel => {
-        if(globalModel.model_id === field.model_id) {
+        if (globalModel.model_id === field.model_id) {
           globalModel.fields.push({
             field_name: field.field_name,
             field_id: field.field_id,
             field_type: field.field_type
-          })
-          return globalModel
+          });
+          return globalModel;
         } else {
-          return globalModel
+          return globalModel;
         }
-      })
+      });
     } else {
       global.sharedObj.models.map(globalModel => {
         if (globalModel.model_id === field.model_id) {
@@ -157,7 +179,7 @@ ipcMain.on("async-selected-db-schema", async (event, arg) => {
   client
     .query(arg)
     .then(res => {
-      console.log('res', res.rows)
+      console.log("res", res.rows);
       relatedTables(res.rows);
     })
     .catch(err => console.error(err.stack));
@@ -168,7 +190,7 @@ ipcMain.on("async-selected-db-schema", async (event, arg) => {
     )
     .then(res => {
       relatedFields(res.rows);
-      console.log("global shared", global.sharedObj)
+      console.log("global shared", global.sharedObj);
       event.sender.send("async-db-schema-reply", global.sharedObj.models);
       client.end();
     });

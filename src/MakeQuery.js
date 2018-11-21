@@ -4,8 +4,7 @@ import RefineQuery from "./RefineQuery";
 import Joins from "./Joins";
 import PreviewPanel from "./PreviewPanel";
 const electron = window.require("electron");
-const Store = window.require("electron-store");
-const store = new Store();
+const sharedObj = electron.remote.getGlobal("sharedObj");
 const ipcRenderer = electron.ipcRenderer;
 const database = {
   id: 1,
@@ -86,11 +85,14 @@ class MakeQuery extends Component {
       anotherTable: false,
       nextView: false,
       tables: []
+      // expanded: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    // this.getPreview = this.getPreview.bind(this);
     this.handleTablePreview = this.handleTablePreview.bind(this);
     this.handleScopePreview = this.handleScopePreview.bind(this);
+    // this.sendLocalToGlobal = this.sendLocalToGlobal.bind(this);
   }
 
   componentDidMount() {
@@ -99,7 +101,10 @@ class MakeQuery extends Component {
     ipcRenderer.on("async-query-reply", (event, arg) => {
       this.setState({ selectedData: arg });
     });
-    ipcRenderer.send("async-selected-db-schema", 'SELECT models.model_id, models.model_name, foreignKeys.relatedModel_id, foreignKeys.model_foreign_field , foreignKeys.relatedModel_primary_field FROM models LEFT JOIN foreignKeys on models.model_id = foreignKeys.model_id');
+    ipcRenderer.send(
+      "async-selected-db-schema",
+      "SELECT models.model_id, models.model_name, foreignKeys.relatedModel_id, foreignKeys.model_foreign_field , foreignKeys.relatedModel_primary_field FROM models LEFT JOIN foreignKeys on models.model_id = foreignKeys.model_id"
+    );
     ipcRenderer.on("async-db-schema-reply", (event, arg) => {
       this.setState({ clientDatabase: arg });
       console.log("***rendered db schema***", arg);
@@ -107,6 +112,7 @@ class MakeQuery extends Component {
   }
 
   handleChange(e) {
+    // if (this.state.expanded) this.setState({ expanded: false });
     if (e.target.name === "selectedModel") {
       const modelName = e.target.value;
       const selectedModel = this.state.database.models.find(
@@ -129,29 +135,13 @@ class MakeQuery extends Component {
       .toString();
     ipcRenderer.send("async-new-query", query);
     this.setState({ query });
-    store.set("query", query);
+    // store.set("query", query);
   }
 
-  handleScopePreview() {
-    let query = squel
-      .select()
-      .from(this.state.from)
-      .fields(this.state.fields)
-      .toString();
-    ipcRenderer.send("async-new-scope-preview-query", query);
-    return query;
-  }
-
-  handleTablePreview(limit) {
-    let query = squel
-      .select()
-      .from(this.state.from)
-      .fields(this.state.fields)
-      .limit(limit)
-      .toString();
-    ipcRenderer.send("async-new-table-preview-query", query);
-    return query;
-  }
+  // getPreview() {
+  //   //TODO send local to global
+  //   //this.setState({ expanded: true });
+  // }
 
   render() {
     //one issue: right now, in order to pass selectedData and query as props to RefineQuery and Joins, you need to click Submit - we should change that
@@ -228,7 +218,10 @@ class MakeQuery extends Component {
         <div>
           <PreviewPanel
             handleTablePreview={this.handleTablePreview}
-            handleScopePreview={this.handleScopePreview}
+            onClick={() => {
+              sharedObj.currQuery.from = this.state.from;
+              sharedObj.currQuery.fields = this.state.fields;
+            }}
             query={this.state.query}
           />
         </div>
