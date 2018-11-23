@@ -44,28 +44,23 @@ class PreviewTabs extends React.Component {
         rows: arg.length
       });
     });
-    ipcRenderer.on("async-new-scope-preview-query", (event, arg) => {
+    ipcRenderer.on("async-new-table-preview-query", (event, arg) => {
       this.setState({
         previewData: arg.slice(0, 10),
         fields: Object.keys(arg[0]).length,
         rows: arg.length
       });
     });
-    ipcRenderer.on("async-new-table-preview-query", (event, arg) => {
-      this.setState({
-        previewData: arg,
-        fields: Object.keys(arg[0]).length
-      });
-    });
   }
 
-  handleChange = (event, selectedTab) => {
-    console.log("***props***", this.props);
-    this.setState({ selectedTab });
-    selectedTab === 0
-      ? this.props.handleTablePreview(10)
-      : this.props.handleScopePreview();
-  };
+  //
+  //  handleChange = (event, selectedTab) => {
+  //   console.log("***props***", this.props);
+  //   this.setState({ selectedTab });
+  //   selectedTab === 0
+  //     ? this.props.handleTablePreview(10)
+  //     : this.props.handleScopePreview();
+  // };
 
   render() {
     const { classes, squelQuery, rows, fields } = this.props;

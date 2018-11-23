@@ -20,7 +20,6 @@ function createWindow() {
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
   mainWindow.on("closed", () => (mainWindow = null));
-
 }
 
 // const pool = new Pool({ connectionString })
@@ -58,26 +57,16 @@ ipcMain.on("async-new-table-preview-query", async (event, arg) => {
   client
     .query(arg)
     .then(res => {
-      event.sender.send("async-query-reply", res.rows);
+      event.sender.send("async-new-table-preview-query", res.rows);
       client.end();
     })
     .catch(err => console.error(err.stack));
 });
 
-ipcMain.on("async-new-scope-preview-query", async (event, arg) => {
-  const client = new Client({ connectionString });
-  client.connect();
-
-  client
-    .query(arg)
-    .then(res => {
-      event.sender.send("async-query-reply", res.rows);
-      client.end();
-    })
-    .catch(err => console.error(err.stack));
-});
-
-global.sharedObj = { models: [], currQuery: {selectedModelsAndFields: [], from: '', fields: []} };
+global.sharedObj = {
+  models: [],
+  currQuery: { selectedModelsAndFields: [], from: "", fields: [] }
+};
 
 const relatedTables = modelsArr => {
   modelsArr.forEach(model => {
@@ -157,7 +146,7 @@ ipcMain.on("async-selected-db-schema", async (event, arg) => {
   console.log("***db schema arg main***", arg);
   const client = new Client({
     host: "localhost",
-    database: "ez*ql",
+    database: "ez-ql",
     port: 5432
   });
   client.connect();
