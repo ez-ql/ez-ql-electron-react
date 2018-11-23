@@ -36,7 +36,8 @@ class Aggregate extends Component {
               field =>
                 field.field_type === "integer" ||
                 field.field_type === "decimal" ||
-                field.field_type === "date"
+                field.field_type === "date" ||
+                field.field_type === "year"
             )
             .map(field => field.field_name);
     this.setState({
@@ -134,6 +135,7 @@ class Aggregate extends Component {
     const globalObj = electron.remote.getGlobal("sharedObj");
     const models = globalObj.models;
     const currQuery = globalObj.currQuery;
+    console.log('currQuery', currQuery)
     const selectedModels = [...currQuery.addedTables];
     selectedModels.push(currQuery.from);
     let selectedFields = [];

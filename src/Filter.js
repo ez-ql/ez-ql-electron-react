@@ -63,7 +63,8 @@ class Filter extends React.Component {
     const availableFilters =
       fieldToFilter.field_type === "integer" ||
       fieldToFilter.field_type === "decimal" ||
-      fieldToFilter.field_type === "date"
+      fieldToFilter.field_type === "date" ||
+      fieldToFilter.field_type === "year"
         ? Object.keys(this.state.fieldFilterOptions)
         : ["equals", "does not equal"];
     console.log("available filters", availableFilters);

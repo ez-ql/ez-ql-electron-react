@@ -47,12 +47,12 @@ ipcMain.on("async-new-query", async (event, arg) => {
 global.sharedObj = {
   models: [],
   currQuery: {
-    from: "orders",
-    fields: ["order_id", "order_status", "order_date", "customer_id", "first_name", "last_name"],
-    addedTables: ["customers"],
+    from: '',
+    fields: [],
+    addedTables: [],
     group: '',
     where: '',
-    qualifiedFields: ["orders.order_id"],
+    qualifiedFields: [],
     selectedModelsAndFields: []
   }
 };
@@ -105,7 +105,8 @@ const relatedFields = fieldsArr => {
           globalModel.fields.push({
             field_name: field.field_name,
             field_id: field.field_id,
-            field_type: field.field_type
+            field_type: field.field_type,
+            field_example: field.field_example
           });
           return globalModel;
         } else {
@@ -119,7 +120,8 @@ const relatedFields = fieldsArr => {
             {
               field_name: field.field_name,
               field_id: field.field_id,
-              field_type: field.field_type
+              field_type: field.field_type,
+              field_example: field.field_example
             }
           ];
           return globalModel;
@@ -149,7 +151,7 @@ ipcMain.on("async-selected-db-schema", async (event, arg) => {
 
   client
     .query(
-      "SELECT models.model_id, models.model_name, fields.field_name, fields.field_id, fields.field_type FROM models LEFT JOIN fields on models.model_id = fields.model_id WHERE models.database_id = 1"
+      "SELECT models.model_id, models.model_name, fields.field_name, fields.field_id, fields.field_type, fields.field_example FROM models LEFT JOIN fields on models.model_id = fields.model_id WHERE models.database_id = 1"
     )
     .then(res => {
       relatedFields(res.rows);
