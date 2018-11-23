@@ -141,6 +141,8 @@ class MakeQuery extends Component {
   // }
 
   render() {
+    const globalObj = electron.remote.getGlobal('sharedObj')
+    console.log('global models', globalObj.models)
     //one issue: right now, in order to pass selectedData and query as props to RefineQuery and Joins, you need to click Submit - we should change that
     console.log("next", this.state.nextView);
     return (
