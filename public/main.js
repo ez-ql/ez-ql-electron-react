@@ -5,6 +5,7 @@ const BrowserWindow = electron.BrowserWindow;
 const { ipcMain } = require("electron");
 const path = require("path");
 const url = require("url");
+const squel = require("squel");
 const isDev = require("electron-is-dev");
 
 const connectionString = "postgresql://localhost:5432/BikeStores";
@@ -20,7 +21,6 @@ function createWindow() {
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
   mainWindow.on("closed", () => (mainWindow = null));
-
 }
 
 // const pool = new Pool({ connectionString })
@@ -30,32 +30,134 @@ function createWindow() {
 //   pool.end()
 // })
 
-ipcMain.on("async-new-query", async (event, arg) => {
-  console.log("******* arg *********", arg);
-  const client = new Client({ connectionString });
-  client.connect();
-  client
-    .query(arg)
-    .then(res => {
-      console.log(res.rows[0]);
-      event.sender.send("async-query-reply", res.rows);
-      client.end();
-    })
-    .catch(err => console.error(err.stack));
-});
+// const ezqlClient = new Client({
+//   host: "localhost",
+//   database: "ez-ql",
+//   port: 5432
+// });
 
 global.sharedObj = {
   models: [],
   currQuery: {
-    from: '',
-    fields: [],
-    addedTables: [],
-    group: '',
-    where: '',
-    qualifiedFields: [],
-    selectedModelsAndFields: []
+    from: "", // e.g. 'orders'
+    fields: [], // e.g. ['order_id', 'order_date', 'customer_id']
+    where: "", // e.g. 'order_date > '2015-12-31''
+    qualifiedFields: [], // e.g. ['orders.order_id', 'orders.order_date', 'customers.customer_id']
+    joinType: "", // e.g. 'left_join' 4 options e.g. 'join', 'outer_join', 'left_join', 'right_join'
+    leftRef: "", // e.g. 'orders.customer_id'  qualified field name (foreign key)
+    rightRef: "", // e.g. 'customers.customer_id' qualified field name (primary key)
+    group: "", // e.g. 'customers.customer_id, orders.order_date'
+    addedModel: [], // array of objects e.g. {model_id: 3 , model_name: '', ...}
+    addedModelFields: [],
+    selectedModelsAndFields: [] // array of objects
+  },
+  sqlQuery: "" //sql query string for preview reference
+};
+
+// -----DUMMY DATA FOR TESTING------
+// global.sharedObj = {
+//   models: [],
+//   currQuery: {
+//     from: "orders",
+//     fields: ["order_id", "order_date", "customer_id"],
+//     where: "order_date > '2015-12-31'",
+//     qualifiedFields: [
+//       "COUNT(orders.order_id)",
+//       "orders.order_date",
+//       "customers.customer_id"
+//     ],
+//     joinType: "left_join",
+//     leftRef: "orders.customer_id",
+//     rightRef: "customers.customer_id",
+//     group: "customers.customer_id, orders.order_date",
+//     addedModel: [],
+//     addedModelFields: [],
+//     selectedModelsAndFields: [{ model_name: "customers" }]
+//   },
+//   sqlQuery: ""
+// };
+
+const buildSquelQuery = () => {
+  const {
+    from,
+    qualifiedFields,
+    joinType,
+    leftRef,
+    rightRef,
+    group,
+    where,
+    selectedModelsAndFields
+  } = global.sharedObj.currQuery;
+
+  //start with basic query
+  let query = squel
+    .select()
+    .from(from)
+    .fields(qualifiedFields);
+
+  //add join method in case joinType exists
+  switch (joinType) {
+    case "join":
+      query = query.join(
+        selectedModelsAndFields[0].model_name,
+        null,
+        `${leftRef} = ${rightRef}`
+      );
+      break;
+    case "right_join":
+      query = query.right_join(
+        selectedModelsAndFields[0].model_name,
+        null,
+        `${leftRef} = ${rightRef}`
+      );
+      break;
+    case "left_join":
+      query = query.left_join(
+        selectedModelsAndFields[0].model_name,
+        null,
+        `${leftRef} = ${rightRef}`
+      );
+      break;
+    case "outer_join":
+      query = query.outer_join(
+        selectedModelsAndFields[0].model_name,
+        null,
+        `${leftRef} = ${rightRef}`
+      );
+      break;
+    default:
+      break;
+  }
+
+  group && (query = query.group(group));
+  where && (query = query.where(where));
+
+  global.sharedObj.sqlQuery = query.toString();
+  return query.toString();
+};
+
+const queryGuard = query => {
+  if (query.slice(0, 6) === "SELECT") {
+    return query;
+  } else {
+    throw new Error("Error: Invalid Query");
   }
 };
+
+ipcMain.on("async-new-query", async (event, arg) => {
+  const query = queryGuard(buildSquelQuery());
+  const client = new Client({ connectionString });
+  client.connect();
+  client
+    .query(query)
+    .then(res => {
+      console.log("first row of results", res.rows[0]);
+      console.log("all results", res.rows);
+      event.sender.send("async-query-reply", res.rows);
+      client.end();
+    })
+    .catch(err => console.error(err.stack || err));
+});
 
 const relatedTables = modelsArr => {
   modelsArr.forEach(model => {

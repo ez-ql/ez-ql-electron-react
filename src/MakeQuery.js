@@ -1,23 +1,40 @@
 import React, { Component } from "react";
-import squel from "squel";
 import Selector from "./Selector/Selector";
 import SelectTable from "./SelectTable";
 import SelectFields from "./SelectFields";
 import { Link } from "react-router-dom";
 import FormDialog from "./FormDialog";
+import PreviewPanel from "./PreviewPanel";
 
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
-const Store = window.require("electron-store");
-const store = new Store();
 const ipcRenderer = electron.ipcRenderer;
+
+//func to convert table and field labels to human-readable format
+//takes an array
+//no regex necessary (for our sample data set)
+export const formatNames = arr => {
+  let nameDict = {};
+  let mod;
+  arr.forEach(elem => {
+    if (elem.includes("_")) {
+      let [first, second] = elem.split("_");
+      mod = `${first.charAt(0).toUpperCase()}${first.slice(1)} ${second
+        .charAt(0)
+        .toUpperCase()}${second.slice(1)}`;
+    } else {
+      mod = `${elem.charAt(0).toUpperCase()}${elem.slice(1)}`;
+    }
+    nameDict[elem] = mod;
+  });
+  return nameDict;
+};
 
 class MakeQuery extends Component {
   constructor(props) {
     super(props);
     this.state = {
       from: "",
-      // query: "",
       fields: [],
       selectedModel: {},
       selectedData: {},
@@ -26,7 +43,8 @@ class MakeQuery extends Component {
       tables: [],
       selectedModelsAndFields: [],
       selectedSlide: 0,
-      schema: []
+      schema: [],
+      previewExpanded: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -36,7 +54,10 @@ class MakeQuery extends Component {
   }
 
   componentDidMount() {
+    //UNCOMMENT BELOW AFTER MERGE DUE TO BETTER CHANGE - THIS IS FOR TESTING THE PREVIEW ONLY
     const modelName = this.props.location.state.model;
+    //DELETE BELOW AFTER MERGE DUE TO BETTER CHANGE - THIS IS FOR TESTING THE PREVIEW ONLY
+    //const modelName = sharedObject.currQuery.from;
     const selectedModel = sharedObject.models.find(
       model => model.model_name === modelName
     );
@@ -63,7 +84,7 @@ class MakeQuery extends Component {
         selectedModelsAndFields.unshift(copy);
         this.toggleView();
         this.setState({
-          from: modelName,
+          //from: modelName,
           nextView: false,
           selectedModel,
           selectedModelsAndFields
@@ -97,17 +118,16 @@ class MakeQuery extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const query = squel
-      .select()
-      .from(this.state.from)
-      .fields(this.state.fields)
-      .toString();
-    ipcRenderer.send("async-new-query", query);
-    this.setState({ query });
-    store.set("query", query);
+    ipcRenderer.send("async-new-query");
+
+    // this.setState({
+    //   from: "",
+    //   fields: []
+    // })
   }
 
   selectedSlide(modelName) {
+    console.log("here");
     const selectedModel = this.state.schema.find(
       model => model.model_name === modelName
     );
@@ -122,29 +142,9 @@ class MakeQuery extends Component {
     electron.remote.getGlobal("sharedObj").currQuery.fields = this.state.fields;
   }
 
-  //func to convert table and field labels to human-readable format
-  //takes an array
-  //no regex necessary (for our sample data set)
-  formatNames(arr) {
-    let nameDict = {};
-    let mod;
-    arr.forEach(elem => {
-      if (elem.includes("_")) {
-        let [first, second] = elem.split("_");
-        mod = `${first.charAt(0).toUpperCase()}${first.slice(
-          1
-        )} ${second.charAt(0).toUpperCase()}${second.slice(1)}`;
-      } else {
-        mod = `${elem.charAt(0).toUpperCase()}${elem.slice(1)}`;
-      }
-      nameDict[elem] = mod;
-    });
-    return nameDict;
-  }
-
   render() {
-    const globalObj = electron.remote.getGlobal("sharedObj");
-    console.log("global models", globalObj.models);
+    const sharedObject = electron.remote.getGlobal("sharedObj");
+    console.log("global models", sharedObject.models);
     console.log("next", this.state.nextView);
     return (
       <div className="Flex-Container">
@@ -154,14 +154,14 @@ class MakeQuery extends Component {
               handleChange={this.handleChange}
               model={this.state.selectedModel}
               schema={this.state.schema}
-              formatTableNames={this.formatNames}
+              formatTableNames={formatNames}
             />
           ) : (
             <SelectFields
               handleChange={this.handleChange}
               fields={this.state.selectedModel.fields}
               schema={this.state.schema}
-              formatFieldNames={this.formatNames}
+              formatFieldNames={formatNames}
             />
           )}
           <div className="Container">
@@ -200,6 +200,30 @@ class MakeQuery extends Component {
               </Link>
             </div>
           }
+        </div>
+        <div
+          onClick={event => {
+            //only do this if panel is about to expand
+            if (!this.state.previewExpanded) {
+              //
+              //TODO
+              // add qualifiedFields to global Object
+              // --> first fields need to be added correctly to local state
+              //
+              // the below should work once fields are on the selectedModelsAndFields array.
+              //
+              // sharedObject.currQuery.qualifiedFields = this.state.selectedModelsAndFields.map(
+              //   modelAndFields => modelAndFields.fields.map(field => `${modelsAndFields.model_name}.${field})
+              // );
+
+              ipcRenderer.send("async-new-query");
+            }
+            this.setState(state => ({
+              previewExpanded: !state.previewExpanded
+            }));
+          }}
+        >
+          <PreviewPanel />
         </div>
       </div>
     );
