@@ -1,4 +1,5 @@
 import React from "react";
+import FieldButtons from "./FieldButtons";
 
 const SelectFields = props => {
   const handleChange = props.handleChange;
@@ -10,24 +11,11 @@ const SelectFields = props => {
       <div className="Column Center Height-50">
         <h1 className="Flex-End Column ">Select Fields</h1>
       </div>
-      <div className="Row-buttons Flex-Wrap">
-        {fields[0] &&
-          Object.keys(modFields).map(field => {
-            return (
-              <div>
-                <button
-                  className="Button"
-                  type="submit"
-                  name="fields"
-                  value={field}
-                  onClick={handleChange}
-                >
-                  {modFields[field]}
-                </button>
-              </div>
-            );
-          })}
-      </div>
+      <FieldButtons
+        fields={fields}
+        modFields={modFields}
+        handleChange={handleChange}
+      />
     </div>
   );
 };
