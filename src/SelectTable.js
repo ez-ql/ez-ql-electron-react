@@ -8,11 +8,12 @@ const SelectTable = props => {
     });
     return found;
   });
+  //what purpose does the below line have?
   relatedModels.filter(x => x);
 
-  const modRelatedModels = formatTableNames(
-    relatedModels.map(elem => elem.model_name)
-  );
+  const modRelatedModels = relatedModels[0]
+    ? formatTableNames(relatedModels.map(elem => elem.model_name))
+    : "No related models";
 
   return Object.keys(modRelatedModels).length ? (
     <div className="Title Height-80">
@@ -20,22 +21,23 @@ const SelectTable = props => {
         <h1 className="Flex-End Column">Select Related Table</h1>
       </div>
       <div className="Row-buttons">
-        {relatedModels[0] &&
-          Object.keys(modRelatedModels).map(model => {
-            return (
-              <div>
-                <button
-                  className="Button"
-                  type="submit"
-                  name="selectedModel"
-                  value={model}
-                  onClick={handleChange}
-                >
-                  {modRelatedModels[model]}
-                </button>
-              </div>
-            );
-          })}
+        {relatedModels[0]
+          ? Object.keys(modRelatedModels).map(model => {
+              return (
+                <div>
+                  <button
+                    className="Button"
+                    type="submit"
+                    name="selectedModel"
+                    value={model}
+                    onClick={handleChange}
+                  >
+                    {modRelatedModels[model]}
+                  </button>
+                </div>
+              );
+            })
+          : "There are no related tables available."}
       </div>
     </div>
   ) : null;
