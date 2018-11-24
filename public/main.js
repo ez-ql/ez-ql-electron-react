@@ -11,8 +11,10 @@ const connectionString = "postgresql://localhost:5432/BikeStores";
 // const ezqlConnectionString = "postgresql://localhost:5432/ez-ql";
 
 let mainWindow;
+// let global = { sharedObj: { models: [], currQuery: {selectedModelsAndFields: [], from: '', fields: []} } };
 
-function createWindow() {
+
+async function createWindow() {
   mainWindow = new BrowserWindow({ width: 900, height: 680 });
   mainWindow.loadURL(
     isDev
@@ -21,6 +23,40 @@ function createWindow() {
   );
   mainWindow.on("closed", () => (mainWindow = null));
 
+  console.log("***db schema arg main***", );
+  const client = new Client({
+    host: "localhost",
+    database: "ez-ql",
+    port: 5432
+  });
+  client.connect();
+  await Promise.all([
+    client
+      .query(
+        "SELECT models.model_id, models.model_name, foreignKeys.relatedModel_id, foreignKeys.model_foreign_field , foreignKeys.relatedModel_primary_field FROM models LEFT JOIN foreignKeys on models.model_id = foreignKeys.model_id"
+        )
+      .then(res => {
+        console.log('res', res.rows)
+        relatedTables(res.rows);
+        console.log('GLOBAL', global.sharedObj.models)
+      })
+      .catch(err => console.error(err.stack)),
+
+    client
+      .query(
+        "SELECT models.model_id, models.model_name, fields.field_name, fields.field_id, fields.field_type FROM models LEFT JOIN fields on models.model_id = fields.model_id WHERE models.database_id = 1"
+      )
+      .then(res => {
+        'HERE!!!!!!!!!!!!!!!!!'
+        relatedFields(res.rows);
+
+        // console.log("global shared", global.sharedObj)
+        // event.sender.send("async-db-schema-reply", global.sharedObj.models);
+        global.sharedObj = global.sharedObj
+        client.end();
+      })
+      .catch(err => console.error(err.stack))
+  ]);
 }
 
 // const pool = new Pool({ connectionString })
@@ -54,6 +90,7 @@ const relatedTables = modelsArr => {
         globalModel => model.model_id === globalModel.model_id
       ).length
     ) {
+      console.log('here!!!!!!!', global.sharedObj.models)
       global.sharedObj.models = global.sharedObj.models.map(globalModel => {
         if (globalModel.model_id === model.model_id) {
           globalModel.related_models.push({
@@ -61,6 +98,7 @@ const relatedTables = modelsArr => {
             model_foreign_field: model.model_foreign_field,
             relatedmodel_primary_field: model.relatedmodel_primary_field
           });
+
           return globalModel;
         } else {
           return globalModel;
@@ -81,6 +119,7 @@ const relatedTables = modelsArr => {
 };
 
 const relatedFields = fieldsArr => {
+  console.log('******RELATEDFIELDS*********')
   fieldsArr.forEach(field => {
     if (global.sharedObj.models.filter(globalModel => field.model_id === globalModel.model_id)[0].fields) {
       global.sharedObj.models.map(globalModel => {
@@ -90,8 +129,10 @@ const relatedFields = fieldsArr => {
             field_id: field.field_id,
             field_type: field.field_type
           })
+          console.log('globalModel', globalModel)
           return globalModel
         } else {
+          console.log('globalModel', globalModel)
           return globalModel
         }
       })
@@ -105,42 +146,45 @@ const relatedFields = fieldsArr => {
               field_type: field.field_type
             }
           ];
+          console.log('globalModel', globalModel)
           return globalModel;
         } else {
+          console.log('globalModel', globalModel)
           return globalModel;
         }
       });
     }
+    console.log('GGLOBAL!!!!!!!', global.sharedObj.models)
   });
 };
 
-ipcMain.on("async-selected-db-schema", async (event, arg) => {
-  console.log("***db schema arg main***", arg);
-  const client = new Client({
-    host: "localhost",
-    database: "ez*ql",
-    port: 5432
-  });
-  client.connect();
-  client
-    .query(arg)
-    .then(res => {
-      console.log('res', res.rows)
-      relatedTables(res.rows);
-    })
-    .catch(err => console.error(err.stack));
+// ipcMain.on("async-selected-db-schema", async (event, arg) => {
+//   console.log("***db schema arg main***", arg);
+//   const client = new Client({
+//     host: "localhost",
+//     database: "ez-ql",
+//     port: 5432
+//   });
+//   client.connect();
+//   client
+//     .query(arg)
+//     .then(res => {
+//       console.log('res', res.rows)
+//       relatedTables(res.rows);
+//     })
+//     .catch(err => console.error(err.stack));
 
-  client
-    .query(
-      "SELECT models.model_id, models.model_name, fields.field_name, fields.field_id, fields.field_type FROM models LEFT JOIN fields on models.model_id = fields.model_id WHERE models.database_id = 1"
-    )
-    .then(res => {
-      relatedFields(res.rows);
-      console.log("global shared", global.sharedObj)
-      event.sender.send("async-db-schema-reply", global.sharedObj.models);
-      client.end();
-    });
-});
+//   client
+//     .query(
+//       "SELECT models.model_id, models.model_name, fields.field_name, fields.field_id, fields.field_type FROM models LEFT JOIN fields on models.model_id = fields.model_id WHERE models.database_id = 1"
+//     )
+//     .then(res => {
+//       relatedFields(res.rows);
+//       console.log("global shared", global.sharedObj)
+//       event.sender.send("async-db-schema-reply", global.sharedObj.models);
+//       client.end();
+//     });
+// });
 
 app.on("ready", createWindow);
 
