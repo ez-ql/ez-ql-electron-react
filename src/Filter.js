@@ -1,6 +1,7 @@
 import React from "react";
 import ScrollMenu from "./ScrollMenu";
-import squel from "squel";
+// the below should no longer be needed - please confirm
+// import squel from "squel";
 
 const electron = window.require("electron");
 
@@ -12,7 +13,8 @@ class Filter extends React.Component {
       tableFields: [],
       fieldToFilter: "",
       filteredFields: [],
-      query: this.props.query,
+      // the below should no longer be needed - please confirm
+      //query: this.props.query,
       operator: "",
       userEntered: "",
       selectedFields: [],
@@ -94,24 +96,26 @@ class Filter extends React.Component {
 
   handleSubmitQuery(event) {
     event.preventDefault();
-    const fieldToFilter = `${this.state.tableToFilter}.${this.state.fieldToFilter} ${
-      this.state.userEntered
-    }`;
+    const fieldToFilter = `${this.state.tableToFilter}.${
+      this.state.fieldToFilter
+    } ${this.state.userEntered}`;
     const filteredFields = [...this.state.filteredFields];
     filteredFields.push(fieldToFilter);
     const mainModel = electron.remote.getGlobal("sharedObj").currQuery.from;
     const where = filteredFields.join(" AND ");
     console.log("where", where);
-    const newQuery = squel
-      .select()
-      .from(mainModel)
-      .fields(this.state.tableFields)
-      .where(where)
-      .toString();
-    console.log(newQuery);
+    // the below should no longer be needed - please confirm
+    // const newQuery = squel
+    //   .select()
+    //   .from(mainModel)
+    //   .fields(this.state.tableFields)
+    //   .where(where)
+    //   .toString();
+    // console.log(newQuery);
     electron.remote.getGlobal("sharedObj").currQuery.where = where;
     this.setState({
-      query: newQuery,
+      // the below should no longer be needed - please confirm
+      //query: newQuery,
       userEntered: "",
       fieldToFilter: "",
       filteredFields

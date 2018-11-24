@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import MakeQuery from "./MakeQuery";
 import { Link } from "react-router-dom";
 const electron = window.require("electron");
 const ipcRenderer = electron.ipcRenderer;
@@ -10,7 +9,6 @@ class StartQuery extends Component {
   };
 
   componentDidMount() {
-
     ipcRenderer.send(
       "async-selected-db-schema",
       "SELECT models.model_id, models.model_name, foreignKeys.relatedModel_id, foreignKeys.model_foreign_field , foreignKeys.relatedModel_primary_field FROM models LEFT JOIN foreignKeys on models.model_id = foreignKeys.model_id"
@@ -20,8 +18,8 @@ class StartQuery extends Component {
     });
   }
 
-  componentWillUnmount(){
-    ipcRenderer.removeAllListeners("async-db-schema-reply")
+  componentWillUnmount() {
+    ipcRenderer.removeAllListeners("async-db-schema-reply");
   }
 
   render() {
@@ -38,7 +36,15 @@ class StartQuery extends Component {
           {models.length > 0
             ? models.map(model => {
                 return (
-                  <div>
+                  <div
+                    key={model.model_id}
+                    onClick={() => {
+                      window
+                        .require("electron")
+                        .remote.getGlobal("sharedObj").currQuery.from =
+                        model.model_name;
+                    }}
+                  >
                     <Link
                       to={{
                         pathname: "/makeQuery",

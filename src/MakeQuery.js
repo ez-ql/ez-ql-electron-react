@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import squel from "squel";
 import Selector from "./Selector/Selector";
 import SelectTable from "./SelectTable";
 import SelectFields from "./SelectFields";
@@ -9,8 +8,6 @@ import PreviewPanel from "./PreviewPanel";
 
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
-const Store = window.require("electron-store");
-const store = new Store();
 const ipcRenderer = electron.ipcRenderer;
 
 class MakeQuery extends Component {
@@ -18,7 +15,6 @@ class MakeQuery extends Component {
     super(props);
     this.state = {
       from: "",
-      // query: "",
       fields: [],
       selectedModel: {},
       selectedData: {},
@@ -27,7 +23,8 @@ class MakeQuery extends Component {
       tables: [],
       selectedModelsAndFields: [],
       selectedSlide: 0,
-      schema: []
+      schema: [],
+      previewExpanded: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -37,7 +34,7 @@ class MakeQuery extends Component {
   }
 
   componentDidMount() {
-    const modelName = this.props.location.state.model;
+    const modelName = sharedObject.currQuery.from;
     const selectedModel = sharedObject.models.find(
       model => model.model_name === modelName
     );
@@ -54,7 +51,7 @@ class MakeQuery extends Component {
   }
 
   handleChange(e) {
-    // if (this.state.expanded) this.setState({ expanded: false });
+    // if (this.state.expanded) this.setState({ previewExpanded: false });  ///TODO collapse preview panel when one of the fields are clicked
     if (e.target.name === "selectedModel") {
       const modelName = e.target.value;
       const selectedModel = this.state.schema.find(
@@ -71,7 +68,7 @@ class MakeQuery extends Component {
         selectedModelsAndFields.unshift(copy);
         this.toggleView();
         this.setState({
-          from: modelName,
+          //from: modelName,
           nextView: false,
           selectedModel,
           selectedModelsAndFields
@@ -105,14 +102,8 @@ class MakeQuery extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const query = squel
-      .select()
-      .from(this.state.from)
-      .fields(this.state.fields)
-      .toString();
-    ipcRenderer.send("async-new-query", query);
-    this.setState({ query });
-    store.set("query", query);
+    ipcRenderer.send("async-new-query");
+
     // this.setState({
     //   from: "",
     //   fields: []
@@ -135,14 +126,9 @@ class MakeQuery extends Component {
     electron.remote.getGlobal("sharedObj").currQuery.fields = this.state.fields;
   }
 
-  // getPreview() {
-  //   //TODO send local to global
-  //   //this.setState({ expanded: true });
-  // }
-
   render() {
-    const globalObj = electron.remote.getGlobal('sharedObj')
-    console.log('global models', globalObj.models)
+    const sharedObject = electron.remote.getGlobal("sharedObj");
+    console.log("global models", sharedObject.models);
     //one issue: right now, in order to pass selectedData and query as props to RefineQuery and Joins, you need to click Submit - we should change that
     console.log("next", this.state.nextView);
     return (
@@ -199,11 +185,25 @@ class MakeQuery extends Component {
           }
         </div>
         <div
-          onClick={() => {
-            sharedObject.currQuery.from = this.state.from;
-            console.log("*****sharedObject****", sharedObject);
-            console.log("****this state", this.state);
-            sharedObject.currQuery.fields = this.state.fields;
+          onClick={event => {
+            //only do this if panel is about to expand
+            if (!this.state.previewExpanded) {
+              //
+              //TODO
+              // add qualifiedFields to global Object
+              // --> first fields need to be added correctly to local state
+              //
+              // the below should work once fields are on the selectedModelsAndFields array.
+              //
+              // sharedObject.currQuery.qualifiedFields = this.state.selectedModelsAndFields.map(
+              //   modelAndFields => modelAndFields.fields.map(field => `${modelsAndFields.model_name}.${field})
+              // );
+
+              ipcRenderer.send("async-new-query");
+            }
+            this.setState(state => ({
+              previewExpanded: !state.previewExpanded
+            }));
           }}
         >
           <PreviewPanel />

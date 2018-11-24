@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import squel from "squel";
+// the below should no longer be needed
+//import squel from "squel";
 import ScrollMenu from "./ScrollMenu";
 const electron = window.require("electron");
-const ipcRenderer = electron.ipcRenderer;
+// the below should no longer be needed
+//const ipcRenderer = electron.ipcRenderer;
 
 class Joins extends Component {
   constructor(props) {
@@ -35,7 +37,10 @@ class Joins extends Component {
       currQuery: {},
       relatedModels: []
     };
+
+    //please review if we still need function handleSelectedTable below
     this.handleSelectedTable = this.handleSelectedTable.bind(this);
+
     this.handleFieldSelection = this.handleFieldSelection.bind(this);
     this.handleSelectedJoinType = this.handleSelectedJoinType.bind(this);
     this.handleSelectedJoinRefLeft = this.handleSelectedJoinRefLeft.bind(this);
@@ -51,6 +56,7 @@ class Joins extends Component {
     );
   }
 
+  //please review if we still need the function below
   handleSelectedTable(table) {
     let tableToAdd = table;
     let addedModel = [...this.state.addedModel, tableToAdd];
@@ -123,20 +129,20 @@ class Joins extends Component {
       elem => elem.relatedmodel_id === rightTableId
     )[0];
 
-    let leftRef = `${relation.model_foreign_field}`;
-    let rightRef = `${relation.relatedmodel_primary_field}`;
+    let leftRef = `${leftTableName}.${relation.model_foreign_field}`;
+    let rightRef = `${rightTableName}.${relation.relatedmodel_primary_field}`;
 
     const qualifiedFields = this.state.addedModelFields
-    .map(elem => `${rightTableName}.${elem}`)
-    .concat(
-      this.state.baseModelFields.map(
-        elem => `${leftTableName}.${elem}`
-      )
-    )
+      .map(elem => `${rightTableName}.${elem}`)
+      .concat(
+        this.state.baseModelFields.map(elem => `${leftTableName}.${elem}`)
+      );
 
-    electron.remote.getGlobal('sharedObj').currQuery.qualifiedFields = qualifiedFields;
-    electron.remote.getGlobal('sharedObj').currQuery.leftRef = leftRef
-    electron.remote.getGlobal('sharedObj').currQuery.rightRef = rightRef
+    electron.remote.getGlobal(
+      "sharedObj"
+    ).currQuery.qualifiedFields = qualifiedFields;
+    electron.remote.getGlobal("sharedObj").currQuery.leftRef = leftRef;
+    electron.remote.getGlobal("sharedObj").currQuery.rightRef = rightRef;
     // let newQuery;
     // this.state.joinType === "join"
     //   ? (newQuery = squel
@@ -224,10 +230,10 @@ class Joins extends Component {
     let models = electron.remote.getGlobal("sharedObj").models;
     let currQuery = electron.remote.getGlobal("sharedObj").currQuery;
     // let fields = electron.remote.getGlobal("sharedObj").currQuery.fields;
-    let selectedModelsAndFields = currQuery.selectedModelsAndFields.reverse()
-    let baseModel = selectedModelsAndFields[0]
+    let selectedModelsAndFields = currQuery.selectedModelsAndFields.reverse();
+    let baseModel = selectedModelsAndFields[0];
     let baseModelFields = selectedModelsAndFields[0].fields;
-    let addedModel = selectedModelsAndFields[1]
+    let addedModel = selectedModelsAndFields[1];
     let addedModelFields = selectedModelsAndFields[1].fields;
 
     this.setState({
@@ -260,7 +266,7 @@ class Joins extends Component {
                 Submit
               </button>
             </div>
-           }
+          }
         </div>
       );
     } else {

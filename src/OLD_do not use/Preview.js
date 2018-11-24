@@ -12,7 +12,6 @@ class Preview extends Component {
     super(props);
     this.state = {
       selectedData: [],
-      queryString: this.props.squelQuery || "", //unclear where exactly this will be passed down
       sqlPreview: false,
       tablePreview: false
     };
