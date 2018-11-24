@@ -8,12 +8,8 @@ const SelectTable = props => {
     });
     return found;
   });
-  console.log("related models BEFORE filter", relatedModels);
-
   //what purpose does the below line have?
   relatedModels.filter(x => x);
-
-  console.log("related models AFTER filter", relatedModels);
 
   const modRelatedModels = relatedModels[0]
     ? formatTableNames(relatedModels.map(elem => elem.model_name))
