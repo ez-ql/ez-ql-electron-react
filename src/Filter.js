@@ -1,8 +1,5 @@
 import React from "react";
 import ScrollMenu from "./ScrollMenu";
-// the below should no longer be needed - please confirm
-// import squel from "squel";
-
 const electron = window.require("electron");
 
 class Filter extends React.Component {
@@ -13,8 +10,6 @@ class Filter extends React.Component {
       tableFields: [],
       fieldToFilter: "",
       filteredFields: [],
-      // the below should no longer be needed - please confirm
-      //query: this.props.query,
       operator: "",
       userEntered: "",
       selectedFields: [],
@@ -46,11 +41,9 @@ class Filter extends React.Component {
     const selectedFields = this.state.selectedFields.map(
       field => field.field_name
     );
-    console.log("selectedFields", selectedFields);
     const filteredFields = fields.filter(field =>
       selectedFields.includes(field)
     );
-    console.log("filteredFields", filteredFields);
     this.setState({
       tableToFilter: selectedTable,
       tableFields: filteredFields
@@ -61,7 +54,6 @@ class Filter extends React.Component {
     const fieldToFilter = this.state.selectedFields.filter(
       globalField => globalField.field_name === field
     )[0];
-    console.log("fieldToFilter", fieldToFilter);
     const availableFilters =
       fieldToFilter.field_type === "integer" ||
       fieldToFilter.field_type === "decimal" ||
@@ -69,7 +61,6 @@ class Filter extends React.Component {
       fieldToFilter.field_type === "year"
         ? Object.keys(this.state.fieldFilterOptions)
         : ["equals", "does not equal"];
-    console.log("available filters", availableFilters);
     this.setState({
       availableFilters,
       fieldToFilter: field
@@ -103,19 +94,8 @@ class Filter extends React.Component {
     filteredFields.push(fieldToFilter);
     const mainModel = electron.remote.getGlobal("sharedObj").currQuery.from;
     const where = filteredFields.join(" AND ");
-    console.log("where", where);
-    // the below should no longer be needed - please confirm
-    // const newQuery = squel
-    //   .select()
-    //   .from(mainModel)
-    //   .fields(this.state.tableFields)
-    //   .where(where)
-    //   .toString();
-    // console.log(newQuery);
     electron.remote.getGlobal("sharedObj").currQuery.where = where;
     this.setState({
-      // the below should no longer be needed - please confirm
-      //query: newQuery,
       userEntered: "",
       fieldToFilter: "",
       filteredFields
@@ -150,7 +130,6 @@ class Filter extends React.Component {
   }
 
   render() {
-    console.log("state", this.state);
     return (
       <div>
         <div>
