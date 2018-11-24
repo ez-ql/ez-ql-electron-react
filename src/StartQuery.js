@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
 
 const electron = window.require("electron");
-const sharedObject = electron.remote.getGlobal('sharedObj')
+const sharedObject = electron.remote.getGlobal("sharedObj");
 
 class StartQuery extends Component {
   state = {
@@ -11,18 +11,18 @@ class StartQuery extends Component {
   };
 
   componentDidMount() {
-    const models = sharedObject.models
-    console.log('**********HERE*******')
-    console.log('MODELS', models)
-    this.setState({ models })
+    const models = sharedObject.models;
+    console.log("**********HERE*******");
+    console.log("MODELS", models);
+    this.setState({ models });
   }
 
   addModel(modelName) {
     const selectedModel = sharedObject.models.find(
       model => model.model_name === modelName
     );
-    electron.remote.getGlobal('sharedObj').currQuery.selectedModel = selectedModel;
-    electron.remote.getGlobal('sharedObj').currQuery.from = modelName;
+    sharedObject.currQuery.selectedModel = selectedModel;
+    if (!sharedObject.currQuery.from) sharedObject.currQuery.from = modelName;
   }
 
   //func to format field and table names @start of query builder
@@ -46,7 +46,7 @@ class StartQuery extends Component {
   };
 
   render() {
-    console.log('shared', sharedObject)
+    console.log("shared", sharedObject);
     const models = this.state.models;
     let modModels;
     models.length
@@ -59,25 +59,25 @@ class StartQuery extends Component {
       <div className="Height-40 Title Column Center Width-50">
         <div className="Column Center Height-20">
           <div className="Flex-End Column ">
-            <h1 className='Grey'>SELECT A TABLE</h1>
+            <h1 className="Grey">SELECT A TABLE</h1>
           </div>
         </div>
         <div className="Row-buttons Flex-Wrap">
           {models.length > 0
             ? models.map(model => {
-              return (
-                <div>
-                  <Button
-                    onClick={() => this.addModel(model.model_name)}
-                    className="Row-buttons Button"
-                    component={Link}
-                    to="/makeQuery"
-                  >
-                    {model.model_name}
-                  </Button>
-                </div>
-              );
-            })
+                return (
+                  <div>
+                    <Button
+                      onClick={() => this.addModel(model.model_name)}
+                      className="Row-buttons Button"
+                      component={Link}
+                      to="/makeQuery"
+                    >
+                      {model.model_name}
+                    </Button>
+                  </div>
+                );
+              })
             : "Loading..."}
         </div>
       </div>
