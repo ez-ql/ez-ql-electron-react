@@ -3,7 +3,7 @@ import Selector from "./Selector/Selector";
 import SelectTable from "./SelectTable";
 import SelectFields from "./SelectFields";
 import { Link } from "react-router-dom";
-import FormDialog from './FormDialog'
+import FormDialog from "./FormDialog";
 import Button from "@material-ui/core/Button";
 import PreviewPanel from "./PreviewPanel";
 
