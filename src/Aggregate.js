@@ -83,7 +83,6 @@ class Aggregate extends Component {
         const filteredFields = model.fields.filter(
           globalField => globalField.field_name === field
         );
-        console.log("selected models", this.state.selectedModels);
         if (
           filteredFields.length &&
           this.state.selectedModels.includes(model.model_name)
@@ -135,7 +134,6 @@ class Aggregate extends Component {
     const globalObj = electron.remote.getGlobal("sharedObj");
     const models = globalObj.models;
     const currQuery = globalObj.currQuery;
-    console.log("currQuery", currQuery);
     const selectedModels = [currQuery.addedModel[0].model_name];
     selectedModels.push(currQuery.from);
     let selectedFields = [];
