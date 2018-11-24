@@ -61,7 +61,6 @@ class StartQuery extends Component {
         <div className="Row-buttons Flex-Wrap">
           {models.length > 0
             ? Object.keys(modModels).map((model, idx) => {
-                console.log("***MODEL", model);
                 return (
                   // DELETE AFTER MERGE DUE TO BETTER SOLUTION - TESTING ONLY
                   //replace with <div> or incoming solution
