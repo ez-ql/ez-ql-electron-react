@@ -1,9 +1,14 @@
-import React, { Component } from "react";
+import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
+import { formatNames } from "./MakeQuery.js";
 
 const getColumns = fieldsArray => {
-  return fieldsArray.map(field => ({ dataField: field, text: field })); //plug in regex logic here!!
+  const formatedNames = formatNames(fieldsArray);
+  return fieldsArray.map(field => ({
+    dataField: field,
+    text: formatedNames[field]
+  }));
 };
 const Table = props => {
   const { data } = props;

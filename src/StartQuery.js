@@ -60,17 +60,17 @@ class StartQuery extends Component {
         </div>
         <div className="Row-buttons Flex-Wrap">
           {models.length > 0
-            ? Object.keys(modModels).map(model => {
+            ? Object.keys(modModels).map((model, idx) => {
+                console.log("***MODEL", model);
                 return (
                   // DELETE AFTER MERGE DUE TO BETTER SOLUTION - TESTING ONLY
                   //replace with <div> or incoming solution
                   <div
-                    key={model.model_id}
+                    key={idx}
                     onClick={() => {
                       window
                         .require("electron")
-                        .remote.getGlobal("sharedObj").currQuery.from =
-                        model.model_name;
+                        .remote.getGlobal("sharedObj").currQuery.from = model;
                     }}
                   >
                     <Link

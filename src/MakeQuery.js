@@ -10,6 +10,26 @@ const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
 const ipcRenderer = electron.ipcRenderer;
 
+//func to convert table and field labels to human-readable format
+//takes an array
+//no regex necessary (for our sample data set)
+export const formatNames = arr => {
+  let nameDict = {};
+  let mod;
+  arr.forEach(elem => {
+    if (elem.includes("_")) {
+      let [first, second] = elem.split("_");
+      mod = `${first.charAt(0).toUpperCase()}${first.slice(1)} ${second
+        .charAt(0)
+        .toUpperCase()}${second.slice(1)}`;
+    } else {
+      mod = `${elem.charAt(0).toUpperCase()}${elem.slice(1)}`;
+    }
+    nameDict[elem] = mod;
+  });
+  return nameDict;
+};
+
 class MakeQuery extends Component {
   constructor(props) {
     super(props);
@@ -34,8 +54,9 @@ class MakeQuery extends Component {
   }
 
   componentDidMount() {
+    //UNCOMMENT BELOW AFTER MERGE DUE TO BETTER CHANGE - THIS IS FOR TESTING THE PREVIEW ONLY
     const modelName = this.props.location.state.model;
-    //DELETE BELOW AFTER MERGE DUE TO BETTER CHANGE - THIS IS FOR TESTING ONLY
+    //DELETE BELOW AFTER MERGE DUE TO BETTER CHANGE - THIS IS FOR TESTING THE PREVIEW ONLY
     //const modelName = sharedObject.currQuery.from;
     const selectedModel = sharedObject.models.find(
       model => model.model_name === modelName
@@ -122,26 +143,6 @@ class MakeQuery extends Component {
     electron.remote.getGlobal("sharedObj").currQuery.fields = this.state.fields;
   }
 
-  //func to convert table and field labels to human-readable format
-  //takes an array
-  //no regex necessary (for our sample data set)
-  formatNames(arr) {
-    let nameDict = {};
-    let mod;
-    arr.forEach(elem => {
-      if (elem.includes("_")) {
-        let [first, second] = elem.split("_");
-        mod = `${first.charAt(0).toUpperCase()}${first.slice(
-          1
-        )} ${second.charAt(0).toUpperCase()}${second.slice(1)}`;
-      } else {
-        mod = `${elem.charAt(0).toUpperCase()}${elem.slice(1)}`;
-      }
-      nameDict[elem] = mod;
-    });
-    return nameDict;
-  }
-
   render() {
     const sharedObject = electron.remote.getGlobal("sharedObj");
     console.log("global models", sharedObject.models);
@@ -154,14 +155,14 @@ class MakeQuery extends Component {
               handleChange={this.handleChange}
               model={this.state.selectedModel}
               schema={this.state.schema}
-              formatTableNames={this.formatNames}
+              formatTableNames={formatNames}
             />
           ) : (
             <SelectFields
               handleChange={this.handleChange}
               fields={this.state.selectedModel.fields}
               schema={this.state.schema}
-              formatFieldNames={this.formatNames}
+              formatFieldNames={formatNames}
             />
           )}
           <div className="Container">
