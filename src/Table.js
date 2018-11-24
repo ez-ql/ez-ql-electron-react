@@ -6,7 +6,7 @@ const getColumns = fieldsArray => {
   return fieldsArray.map(field => ({ dataField: field, text: field })); //plug in regex logic here!!
 };
 const Table = props => {
-  const { data } = this.props;
+  const { data } = props;
   const columns = data[0] ? getColumns(Object.keys(data[0])) : 0;
 
   return (

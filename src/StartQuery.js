@@ -62,15 +62,17 @@ class StartQuery extends Component {
           {models.length > 0
             ? Object.keys(modModels).map(model => {
                 return (
-                  <div>
-                    {/* DELETE AFTER MERGE DUE TO BETTER 
-                      key={model.model_id}
-                      onClick={() => {
+                  // DELETE AFTER MERGE DUE TO BETTER SOLUTION - TESTING ONLY
+                  //replace with <div> or incoming solution
+                  <div
+                    key={model.model_id}
+                    onClick={() => {
                       window
                         .require("electron")
                         .remote.getGlobal("sharedObj").currQuery.from =
                         model.model_name;
-                    }} */}
+                    }}
+                  >
                     <Link
                       to={{
                         pathname: "/makeQuery",

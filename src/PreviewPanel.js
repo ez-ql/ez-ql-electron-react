@@ -9,6 +9,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import PreviewTabs from "./PreviewTabs";
 const electron = window.require("electron");
 const sharedObj = electron.remote.getGlobal("sharedObj");
+const ipcRenderer = electron.ipcRenderer;
 
 const styles = theme => ({
   root: {

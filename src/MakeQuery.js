@@ -35,7 +35,7 @@ class MakeQuery extends Component {
 
   componentDidMount() {
     const modelName = this.props.location.state.model;
-    //DELETE BELOW AFTER MERGE DUE TO BETTER CHANGE
+    //DELETE BELOW AFTER MERGE DUE TO BETTER CHANGE - THIS IS FOR TESTING ONLY
     //const modelName = sharedObject.currQuery.from;
     const selectedModel = sharedObject.models.find(
       model => model.model_name === modelName
