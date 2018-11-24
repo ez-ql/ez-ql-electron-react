@@ -68,7 +68,6 @@ class MakeQuery extends Component {
   }
 
   handleChange(e) {
-    // if (this.state.expanded) this.setState({ previewExpanded: false });  ///TODO collapse preview panel when one of the fields are clicked
     if (e.target.name === "selectedModel") {
       const modelName = e.target.value;
       const selectedModel = this.state.schema.find(

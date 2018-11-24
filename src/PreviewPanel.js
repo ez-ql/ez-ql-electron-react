@@ -29,15 +29,12 @@ class PreviewPanel extends Component {
       fields: 0,
       rows: 0,
       sqlQuery: ""
-      // expanded: null
     };
   }
 
   componentDidMount() {
-    //TODO make this the reply from the updated backend call, INCLUDE SQL query
     ipcRenderer.on("async-query-reply", (event, arg) => {
       this.setState({
-        //TODO assuming arg contains rows and sqlQuery
         previewData: arg.slice(0, 10),
         numFields: Object.keys(arg[0]).length,
         numRows: arg.length,
@@ -50,15 +47,8 @@ class PreviewPanel extends Component {
     ipcRenderer.removeAllListeners("async-query-reply");
   }
 
-  handleChange = panel => (event, expanded) => {
-    this.setState({
-      expanded: expanded ? panel : false
-    });
-  };
-
   render() {
     const { classes } = this.props;
-    // const { expanded } = this.state;
     return (
       <div className={classes.root}>
         <ExpansionPanel>
