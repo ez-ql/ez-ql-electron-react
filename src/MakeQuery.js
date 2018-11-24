@@ -34,20 +34,16 @@ class MakeQuery extends Component {
   }
 
   componentDidMount() {
-    const modelName = sharedObject.currQuery.from;
+    const modelName = this.props.location.state.model;
+    //DELETE BELOW AFTER MERGE DUE TO BETTER CHANGE
+    //const modelName = sharedObject.currQuery.from;
     const selectedModel = sharedObject.models.find(
       model => model.model_name === modelName
     );
     const copy = { ...selectedModel };
     copy.fields = [];
     const schema = sharedObject.models;
-    const from = modelName;
-    this.setState({
-      from,
-      schema,
-      selectedModel,
-      selectedModelsAndFields: [copy]
-    });
+    this.setState({ schema, selectedModel, selectedModelsAndFields: [copy] });
   }
 
   handleChange(e) {
@@ -126,10 +122,29 @@ class MakeQuery extends Component {
     electron.remote.getGlobal("sharedObj").currQuery.fields = this.state.fields;
   }
 
+  //func to convert table and field labels to human-readable format
+  //takes an array
+  //no regex necessary (for our sample data set)
+  formatNames(arr) {
+    let nameDict = {};
+    let mod;
+    arr.forEach(elem => {
+      if (elem.includes("_")) {
+        let [first, second] = elem.split("_");
+        mod = `${first.charAt(0).toUpperCase()}${first.slice(
+          1
+        )} ${second.charAt(0).toUpperCase()}${second.slice(1)}`;
+      } else {
+        mod = `${elem.charAt(0).toUpperCase()}${elem.slice(1)}`;
+      }
+      nameDict[elem] = mod;
+    });
+    return nameDict;
+  }
+
   render() {
     const sharedObject = electron.remote.getGlobal("sharedObj");
     console.log("global models", sharedObject.models);
-    //one issue: right now, in order to pass selectedData and query as props to RefineQuery and Joins, you need to click Submit - we should change that
     console.log("next", this.state.nextView);
     return (
       <div className="Flex-Container">
@@ -139,12 +154,14 @@ class MakeQuery extends Component {
               handleChange={this.handleChange}
               model={this.state.selectedModel}
               schema={this.state.schema}
+              formatTableNames={this.formatNames}
             />
           ) : (
             <SelectFields
               handleChange={this.handleChange}
               fields={this.state.selectedModel.fields}
               schema={this.state.schema}
+              formatFieldNames={this.formatNames}
             />
           )}
           <div className="Container">

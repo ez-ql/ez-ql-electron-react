@@ -22,8 +22,34 @@ class StartQuery extends Component {
     ipcRenderer.removeAllListeners("async-db-schema-reply");
   }
 
+  //func to format field and table names @start of query builder
+  //redefined here b/c of unilateral data flow of react
+  //method to fix could be to pass func to MakeQuery as props via Link - maybe we could switch to using Route instead
+  formatModelAndFieldNames = arr => {
+    let fieldDict = {};
+    let mod;
+    arr.forEach(elem => {
+      if (elem.includes("_")) {
+        let [first, second] = elem.split("_");
+        mod = `${first.charAt(0).toUpperCase()}${first.slice(
+          1
+        )} ${second.charAt(0).toUpperCase()}${second.slice(1)}`;
+      } else {
+        mod = `${elem.charAt(0).toUpperCase()}${elem.slice(1)}`;
+      }
+      fieldDict[elem] = mod;
+    });
+    return fieldDict;
+  };
+
   render() {
     const models = this.state.models;
+    let modModels;
+    models.length
+      ? (modModels = this.formatModelAndFieldNames(
+          models.map(elem => elem.model_name)
+        ))
+      : console.log("no models yet");
 
     return (
       <div className="Height-80 Title Column">
@@ -34,24 +60,24 @@ class StartQuery extends Component {
         </div>
         <div className="Row-buttons Flex-Wrap">
           {models.length > 0
-            ? models.map(model => {
+            ? Object.keys(modModels).map(model => {
                 return (
-                  <div
-                    key={model.model_id}
-                    onClick={() => {
+                  <div>
+                    {/* DELETE AFTER MERGE DUE TO BETTER 
+                      key={model.model_id}
+                      onClick={() => {
                       window
                         .require("electron")
                         .remote.getGlobal("sharedObj").currQuery.from =
                         model.model_name;
-                    }}
-                  >
+                    }} */}
                     <Link
                       to={{
                         pathname: "/makeQuery",
-                        state: { model: model.model_name }
+                        state: { model: model }
                       }}
                     >
-                      <button className="Button">{model.model_name}</button>
+                      <button className="Button">{modModels[model]}</button>
                     </Link>
                   </div>
                 );
