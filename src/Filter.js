@@ -1,13 +1,7 @@
 import React from "react";
 import ScrollMenu from "./ScrollMenu";
-import squel from "squel";
-
 const electron = window.require("electron");
-const ipcRenderer = electron.ipcRenderer;
 
-//this is a component for handling the Filter step of the query-builder process
-//only handles basic filters right now
-//the local state here is attrocious - we can likely cut this down
 class Filter extends React.Component {
   constructor(props) {
     super(props);
@@ -15,12 +9,12 @@ class Filter extends React.Component {
       tableToFilter: "",
       tableFields: [],
       fieldToFilter: "",
-      query: this.props.query,
-      selectedTablesAndFields: this.props.selectedTablesAndFields,
+      filteredFields: [],
       operator: "",
       userEntered: "",
-      selectedData: {},
-      submitted: false,
+      selectedFields: [],
+      selectedModels: [],
+      availableFilters: [],
       //we should be able to add a few more options here
       fieldFilterOptions: {
         equals: "=",
@@ -38,36 +32,46 @@ class Filter extends React.Component {
     this.handleSubmitQuery = this.handleSubmitQuery.bind(this);
   }
 
-  componentDidMount() {
-    //was able to see the correct filtered reply in the console...after a delay
-    ipcRenderer.on("async-query-reply", (event, arg) => {
-      this.setState({ selectedData: arg });
-      console.log("***********", this.state.selectedData);
-    });
-  }
-
   handleSelectedTable(table) {
-    let selectedTable = table;
+    const selectedTable = table;
+    const models = electron.remote.getGlobal("sharedObj").models;
+    const fields = models
+      .filter(globalModel => globalModel.model_name === selectedTable)[0]
+      .fields.map(field => field.field_name);
+    const selectedFields = this.state.selectedFields.map(
+      field => field.field_name
+    );
+    const filteredFields = fields.filter(field =>
+      selectedFields.includes(field)
+    );
     this.setState({
       tableToFilter: selectedTable,
-      tableFields: this.state.selectedTablesAndFields[selectedTable]
+      tableFields: filteredFields
     });
   }
 
   handleSelectedField(field) {
-    let selectedField = field;
-    let existingQuery = this.state.query;
+    const fieldToFilter = this.state.selectedFields.filter(
+      globalField => globalField.field_name === field
+    )[0];
+    const availableFilters =
+      fieldToFilter.field_type === "integer" ||
+      fieldToFilter.field_type === "decimal" ||
+      fieldToFilter.field_type === "date" ||
+      fieldToFilter.field_type === "year"
+        ? Object.keys(this.state.fieldFilterOptions)
+        : ["equals", "does not equal"];
     this.setState({
-      fieldToFilter: selectedField,
-      query: existingQuery + " WHERE " + selectedField + " "
+      availableFilters,
+      fieldToFilter: field
     });
   }
 
   handleFieldFiltering(operator) {
-    let existingQuery = this.state.query;
+    const fieldToFilter = `${this.state.fieldToFilter} ${operator}`;
     this.setState({
-      operator: this.state.fieldFilterOptions[operator],
-      query: existingQuery + this.state.fieldFilterOptions[operator] + " "
+      fieldToFilter,
+      operator
     });
   }
 
@@ -75,7 +79,7 @@ class Filter extends React.Component {
   //hopefully we can get rid of this eventually (or replace with predictive searching!)
   //a few choices (show all distinct values, for example), but dependent on data type - does not appear that it's possible to identify data type of column using squel.js
   handleUserEntry(event) {
-    let userEntered = event.target.value;
+    const userEntered = event.target.value;
     this.setState({
       userEntered
     });
@@ -83,30 +87,49 @@ class Filter extends React.Component {
 
   handleSubmitQuery(event) {
     event.preventDefault();
-    let existingQuery = this.state.query;
-    const newQuery = squel
-      .select()
-      .from(this.state.tableToFilter)
-      .fields(this.state.tableFields)
-      .where(
-        `${this.state.fieldToFilter} ${this.state.operator} '${
-          this.state.userEntered
-        }'`
-      )
-      .toString();
-    ipcRenderer.send("async-new-query", newQuery);
+    const fieldToFilter = `${this.state.tableToFilter}.${
+      this.state.fieldToFilter
+    } ${this.state.userEntered}`;
+    const filteredFields = [...this.state.filteredFields];
+    filteredFields.push(fieldToFilter);
+    const mainModel = electron.remote.getGlobal("sharedObj").currQuery.from;
+    const where = filteredFields.join(" AND ");
+    electron.remote.getGlobal("sharedObj").currQuery.where = where;
     this.setState({
-      query: existingQuery + this.state.userEntered,
       userEntered: "",
-      submitted: !this.state.submitted
+      fieldToFilter: "",
+      filteredFields
+    });
+  }
+
+  componentDidMount() {
+    const globalObj = electron.remote.getGlobal("sharedObj");
+    const models = globalObj.models;
+    const currQuery = globalObj.currQuery;
+    const selectedModels = [...currQuery.addedTables];
+    selectedModels.push(currQuery.from);
+    let selectedFields = [];
+    selectedModels.forEach(model => {
+      const fields = models.filter(
+        globalModel => globalModel.model_name === model
+      )[0].fields;
+      const currentSelectedFields = selectedFields.map(
+        field => field.field_name
+      );
+      const filteredFields = fields.filter(
+        field =>
+          currQuery.fields.includes(field.field_name) &&
+          !currentSelectedFields.includes(field.field_name)
+      );
+      selectedFields = selectedFields.concat(filteredFields);
+    });
+    this.setState({
+      selectedFields,
+      selectedModels
     });
   }
 
   render() {
-    console.log("CURRENT QUERY", this.state.query);
-    const selectedTablesAndFields = this.props.selectedTablesAndFields;
-    const allTables = Object.keys(selectedTablesAndFields);
-
     return (
       <div>
         <div>
@@ -115,7 +138,7 @@ class Filter extends React.Component {
           }
           <h3>Select table to filter</h3>
           <ScrollMenu
-            items={allTables}
+            items={this.state.selectedModels}
             handleChange={this.handleSelectedTable}
           />
           {
@@ -125,7 +148,7 @@ class Filter extends React.Component {
             <div>
               <h3>Select field from that table to filter</h3>
               <ScrollMenu
-                items={selectedTablesAndFields[this.state.tableToFilter]}
+                items={this.state.tableFields}
                 handleChange={this.handleSelectedField}
               />
             </div>
@@ -138,7 +161,7 @@ class Filter extends React.Component {
           {this.state.fieldToFilter ? (
             <div>
               <ScrollMenu
-                items={Object.keys(this.state.fieldFilterOptions)}
+                items={this.state.availableFilters}
                 handleChange={this.handleFieldFiltering}
               />
             </div>

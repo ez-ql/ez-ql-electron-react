@@ -1,23 +1,44 @@
 import React, { Component } from "react";
-import squel from "squel";
-import Selector from './Selector/Selector'
-import SelectTable from './SelectTable'
-import SelectFields from './SelectFields'
+import Selector from "./Selector/Selector";
+import SelectTable from "./SelectTable";
+import SelectFields from "./SelectFields";
 import { Link } from "react-router-dom";
 import FormDialog from './FormDialog'
 import Button from "@material-ui/core/Button";
+import PreviewPanel from "./PreviewPanel";
 
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal('sharedObj')
 const Store = window.require("electron-store");
 const store = new Store();
+const ipcRenderer = electron.ipcRenderer;
+
+
+//func to convert table and field labels to human-readable format
+//takes an array
+//no regex necessary (for our sample data set)
+export const formatNames = arr => {
+  let nameDict = {};
+  let mod;
+  arr.forEach(elem => {
+    if (elem.includes("_")) {
+      let [first, second] = elem.split("_");
+      mod = `${first.charAt(0).toUpperCase()}${first.slice(1)} ${second
+        .charAt(0)
+        .toUpperCase()}${second.slice(1)}`;
+    } else {
+      mod = `${elem.charAt(0).toUpperCase()}${elem.slice(1)}`;
+    }
+    nameDict[elem] = mod;
+  });
+  return nameDict;
+};
 
 class MakeQuery extends Component {
   constructor(props) {
     super(props);
     this.state = {
       from: "",
-      // query: "",
       fields: [],
       selectedModel: {},
       selectedData: {},
@@ -26,7 +47,8 @@ class MakeQuery extends Component {
       tables: [],
       selectedModelsAndFields: [],
       selectedSlide: 0,
-      schema: []
+      schema: [],
+      previewExpanded: false
     };
     this.handleFieldChange = this.handleFieldChange.bind(this);
     this.handleModelChange = this.handleModelChange.bind(this);
@@ -88,8 +110,8 @@ class MakeQuery extends Component {
   }
 
   toggleView() {
-    const bool = this.state.nextView
-    this.setState({ nextView: !bool })
+    const bool = this.state.nextView;
+    this.setState({ nextView: !bool });
   }
 
 
@@ -142,14 +164,16 @@ class MakeQuery extends Component {
   }
 
   joinStep() {
-    electron.remote.getGlobal('sharedObj').currQuery.selectedModelsAndFields = this.state.selectedModelsAndFields;
-    electron.remote.getGlobal('sharedObj').currQuery.from = this.state.from;
-    electron.remote.getGlobal('sharedObj').currQuery.fields = this.state.fields;
+    electron.remote.getGlobal(
+      "sharedObj"
+    ).currQuery.selectedModelsAndFields = this.state.selectedModelsAndFields;
+    electron.remote.getGlobal("sharedObj").currQuery.from = this.state.from;
+    electron.remote.getGlobal("sharedObj").currQuery.fields = this.state.fields;
   }
 
   render() {
     //one issue: right now, in order to pass selectedData and query as props to RefineQuery and Joins, you need to click Submit - we should change that
-    console.log('SELECTED', this.state.selectedModel)
+
     return (
       <div className='Flex-Container Width-75 Height-75'>
         <div className='Column Center'>
@@ -159,12 +183,14 @@ class MakeQuery extends Component {
                 handleModelChange={this.handleModelChange}
                 model={this.state.selectedModel}
                 schema={this.state.schema}
+                formatTableNames={formatNames}
               /> :
               <SelectFields
                 handleFieldChange={this.handleFieldChange}
                 fields={this.state.selectedModel.fields}
                 schema={this.state.schema}
                 selectAll={this.selectAll}
+                formatFieldNames={formatNames}
               />
           }
           <div className='Container'>
@@ -208,6 +234,30 @@ class MakeQuery extends Component {
               START OVER
             </Button>
           </div>
+        </div>
+        <div
+          onClick={event => {
+            //only do this if panel is about to expand
+            if (!this.state.previewExpanded) {
+              //
+              //TODO
+              // add qualifiedFields to global Object
+              // --> first fields need to be added correctly to local state
+              //
+              // the below should work once fields are on the selectedModelsAndFields array.
+              //
+              // sharedObject.currQuery.qualifiedFields = this.state.selectedModelsAndFields.map(
+              //   modelAndFields => modelAndFields.fields.map(field => `${modelsAndFields.model_name}.${field})
+              // );
+
+              ipcRenderer.send("async-new-query");
+            }
+            this.setState(state => ({
+              previewExpanded: !state.previewExpanded
+            }));
+          }}
+        >
+          <PreviewPanel />
         </div>
       </div>
     );

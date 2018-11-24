@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import squel from "squel";
 import Aggregate from "./Aggregate";
 import Filter from "./Filter";
 import Joins from "./Joins";
 const electron = window.require("electron");
-const ipcRenderer = electron.ipcRenderer;
 
 //this can be a component for beginning the aggregates and filtering process
 //we can likely split this up for use in the `carousel`
