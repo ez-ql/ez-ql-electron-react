@@ -45,7 +45,7 @@ async function createWindow() {
 
     client
       .query(
-        "SELECT models.model_id, models.model_name, fields.field_name, fields.field_id, fields.field_type FROM models LEFT JOIN fields on models.model_id = fields.model_id WHERE models.database_id = 1"
+        "SELECT models.model_id, models.model_name, fields.field_name, fields.field_id, fields.field_type, fields.field_example FROM models LEFT JOIN fields on models.model_id = fields.model_id WHERE models.database_id = 1"
       )
       .then(res => {
         'HERE!!!!!!!!!!!!!!!!!'
@@ -296,7 +296,7 @@ const relatedFields = fieldsArr => {
 
 //   client
 //     .query(
-//       "SELECT models.model_id, models.model_name, fields.field_name, fields.field_id, fields.field_type FROM models LEFT JOIN fields on models.model_id = fields.model_id WHERE models.database_id = 1"
+//       "SELECT models.model_id, models.model_name, fields.field_name, fields.field_id, fields.field_type, fields.field_example FROM models LEFT JOIN fields on models.model_id = fields.model_id WHERE models.database_id = 1"
 //     )
 //     .then(res => {
 //       relatedFields(res.rows);
