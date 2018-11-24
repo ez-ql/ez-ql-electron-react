@@ -22,7 +22,7 @@ class StartQuery extends Component {
       model => model.model_name === modelName
     );
     sharedObject.currQuery.selectedModel = selectedModel;
-    if (!sharedObject.currQuery.from) sharedObject.currQuery.from = modelName;
+    sharedObject.currQuery.from = modelName;
   }
 
   //func to format field and table names @start of query builder
