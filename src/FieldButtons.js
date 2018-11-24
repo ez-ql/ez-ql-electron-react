@@ -2,6 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Tooltip from "@material-ui/core/Tooltip";
+import Button from '@material-ui/core/Button';
+
 
 const styles = theme => ({
   lightTooltip: {
@@ -140,15 +142,15 @@ class FieldButtons extends React.Component {
                     }
                   }}
                 >
-                  <button
+                  <Button
                     className="Button"
                     type="submit"
                     name="fields"
                     value={field}
-                    onClick={this.props.handleChange}
+                    onClick={() => this.props.handleFieldChange(field)}
                   >
                     {this.props.modFields[field]}
-                  </button>
+                  </Button>
                 </Tooltip>
               </div>
             );

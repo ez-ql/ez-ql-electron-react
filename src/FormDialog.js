@@ -5,6 +5,7 @@ import Aggregate from "./Aggregate";
 import Joins from "./Joins";
 import Filter from "./Filter";
 import { withStyles } from "@material-ui/core/styles";
+import { Link } from 'react-router-dom'
 
 const styles = {
   dialog: {
@@ -23,10 +24,12 @@ class FormDialog extends React.Component {
     };
   }
 
-  componentDidMount(){
-    this.props.onClick();
+  componentDidMount() {
+
   }
+
   handleClickOpen = () => {
+    this.props.onClick();
     this.setState({ open: true });
   };
 
@@ -46,7 +49,8 @@ class FormDialog extends React.Component {
     const { classes } = this.props
     return (
       <div>
-        <Button onClick={this.handleClickOpen}>Next</Button>
+        <Button className='Button Row-buttons' onClick={this.handleClickOpen}>Next</Button>
+        {/* <button className='Button Row-buttons' onClick={this.handleClickOpen}>Next</button> */}
         <Dialog
           className="dialog"
           open={this.state.open}
@@ -57,25 +61,36 @@ class FormDialog extends React.Component {
           {this.state.step === "joins" ? (
             <div>
               <Joins />
-              <button value="joins" onClick={this.handleNext}>
+              <Button value="joins" onClick={this.handleNext}>
                 Aggregate
-              </button>
+              </Button>
             </div>
           ) : this.state.step === "aggregate" ? (
             <div>
               <Aggregate />
-              <button value="aggregate" onClick={this.handleNext}>
+              <Button value="aggregate" onClick={this.handleNext}>
                 Filter
-              </button>
+              </Button>
             </div>
           ) : (
-            <div>
-              <Filter />
-              <button value="filter" onClick={this.handleNext}>
-                Done
-              </button>
-            </div>
-          )}
+                <div>
+                  <Filter />
+                  <Button value="filter" >
+                    Finalize
+              </Button>
+                </div>
+              )
+          }
+          {/* testing finalize button */}
+          <div>
+            <Button
+              value="finalize"
+              component={Link}
+              to="/finalizeQuery"
+            >
+              Finalize
+          </Button>
+          </div>
         </Dialog>
       </div>
     );

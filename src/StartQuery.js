@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import Button from '@material-ui/core/Button';
+
 const electron = window.require("electron");
-const ipcRenderer = electron.ipcRenderer;
+const sharedObject = electron.remote.getGlobal('sharedObj')
 
 class StartQuery extends Component {
   state = {
@@ -9,17 +11,18 @@ class StartQuery extends Component {
   };
 
   componentDidMount() {
-    ipcRenderer.send(
-      "async-selected-db-schema",
-      "SELECT models.model_id, models.model_name, foreignKeys.relatedModel_id, foreignKeys.model_foreign_field , foreignKeys.relatedModel_primary_field FROM models LEFT JOIN foreignKeys on models.model_id = foreignKeys.model_id"
-    );
-    ipcRenderer.on("async-db-schema-reply", (event, arg) => {
-      this.setState({ models: arg });
-    });
+    const models = sharedObject.models
+    console.log('**********HERE*******')
+    console.log('MODELS', models)
+    this.setState({ models })
   }
 
-  componentWillUnmount() {
-    ipcRenderer.removeAllListeners("async-db-schema-reply");
+  addModel(modelName) {
+    const selectedModel = sharedObject.models.find(
+      model => model.model_name === modelName
+    );
+    electron.remote.getGlobal('sharedObj').currQuery.selectedModel = selectedModel;
+    electron.remote.getGlobal('sharedObj').currQuery.from = modelName;
   }
 
   //func to format field and table names @start of query builder
@@ -43,6 +46,7 @@ class StartQuery extends Component {
   };
 
   render() {
+    console.log('shared', sharedObject)
     const models = this.state.models;
     let modModels;
     models.length
@@ -52,37 +56,28 @@ class StartQuery extends Component {
       : console.log("no models yet");
 
     return (
-      <div className="Height-80 Title Column">
-        <div className="Column Center Height-50">
+      <div className="Height-40 Title Column Center Width-50">
+        <div className="Column Center Height-20">
           <div className="Flex-End Column ">
-            <h1>Select a table</h1>
+            <h1 className='Grey'>SELECT A TABLE</h1>
           </div>
         </div>
         <div className="Row-buttons Flex-Wrap">
           {models.length > 0
-            ? Object.keys(modModels).map((model, idx) => {
-                return (
-                  // DELETE AFTER MERGE DUE TO BETTER SOLUTION - TESTING ONLY
-                  //replace with <div> or incoming solution
-                  <div
-                    key={idx}
-                    onClick={() => {
-                      window
-                        .require("electron")
-                        .remote.getGlobal("sharedObj").currQuery.from = model;
-                    }}
+            ? models.map(model => {
+              return (
+                <div>
+                  <Button
+                    onClick={() => this.addModel(model.model_name)}
+                    className="Row-buttons Button"
+                    component={Link}
+                    to="/makeQuery"
                   >
-                    <Link
-                      to={{
-                        pathname: "/makeQuery",
-                        state: { model: model }
-                      }}
-                    >
-                      <button className="Button">{modModels[model]}</button>
-                    </Link>
-                  </div>
-                );
-              })
+                    {model.model_name}
+                  </Button>
+                </div>
+              );
+            })
             : "Loading..."}
         </div>
       </div>
