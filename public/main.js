@@ -23,7 +23,6 @@ async function createWindow() {
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
   mainWindow.on("closed", () => (mainWindow = null));
-<<<<<<< HEAD
 
   console.log("***db schema arg main***", );
   const client = new Client({
@@ -59,8 +58,6 @@ async function createWindow() {
       })
       .catch(err => console.error(err.stack))
   ]);
-=======
->>>>>>> master
 }
 
 // const pool = new Pool({ connectionString })
@@ -250,22 +247,12 @@ const relatedFields = fieldsArr => {
           globalModel.fields.push({
             field_name: field.field_name,
             field_id: field.field_id,
-<<<<<<< HEAD
-            field_type: field.field_type
-          })
-          console.log('globalModel', globalModel)
-          return globalModel
-        } else {
-          console.log('globalModel', globalModel)
-          return globalModel
-=======
             field_type: field.field_type,
             field_example: field.field_example
           });
           return globalModel;
         } else {
           return globalModel;
->>>>>>> master
         }
       });
     } else {
@@ -291,7 +278,6 @@ const relatedFields = fieldsArr => {
   });
 };
 
-<<<<<<< HEAD
 // ipcMain.on("async-selected-db-schema", async (event, arg) => {
 //   console.log("***db schema arg main***", arg);
 //   const client = new Client({
@@ -319,35 +305,6 @@ const relatedFields = fieldsArr => {
 //       client.end();
 //     });
 // });
-=======
-ipcMain.on("async-selected-db-schema", async (event, arg) => {
-  console.log("***db schema arg main***", arg);
-  const client = new Client({
-    host: "localhost",
-    database: "ez-ql",
-    port: 5432
-  });
-  client.connect();
-  client
-    .query(arg)
-    .then(res => {
-      console.log("res", res.rows);
-      relatedTables(res.rows);
-    })
-    .catch(err => console.error(err.stack));
-
-  client
-    .query(
-      "SELECT models.model_id, models.model_name, fields.field_name, fields.field_id, fields.field_type, fields.field_example FROM models LEFT JOIN fields on models.model_id = fields.model_id WHERE models.database_id = 1"
-    )
-    .then(res => {
-      relatedFields(res.rows);
-      console.log("global shared", global.sharedObj);
-      event.sender.send("async-db-schema-reply", global.sharedObj.models);
-      client.end();
-    });
-});
->>>>>>> master
 
 app.on("ready", createWindow);
 

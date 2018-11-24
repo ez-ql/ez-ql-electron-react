@@ -114,9 +114,11 @@
 }
 
 .Width-75 {
-  max-width: 75em;
+  width: 60rem;
+  min-width: 30rem;
   border-radius: 10%;
   background-color: rgb(181, 228, 228);
+  margin-bottom: 3%;
 }
 
 .Table-box {
@@ -133,6 +135,10 @@
   align-self: center;
   display: flex;
 }
+.Margin-top {
+  margin-top: 10%;
+}
+
 
 h1 {
   justify-content: center;

@@ -47,7 +47,7 @@ import React from "react";
 import FieldButtons from "./FieldButtons";
 
 const SelectFields = props => {
-  const handleFieldChange = props.handleChange;
+  const handleFieldChange = props.handleFieldChange;
   const fields = props.fields || [];
   const fieldNames = fields.map(elem => elem.field_name);
   const modFields = props.formatFieldNames(fieldNames);

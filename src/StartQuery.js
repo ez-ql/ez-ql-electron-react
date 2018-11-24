@@ -21,7 +21,8 @@ class StartQuery extends Component {
     const selectedModel = sharedObject.models.find(
       model => model.model_name === modelName
     );
-    electron.remote.getGlobal('sharedObj').currQuery.selectedModel = selectedModel
+    electron.remote.getGlobal('sharedObj').currQuery.selectedModel = selectedModel;
+    electron.remote.getGlobal('sharedObj').currQuery.from = modelName;
   }
 
   //func to format field and table names @start of query builder

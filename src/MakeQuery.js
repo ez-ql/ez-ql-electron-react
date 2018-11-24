@@ -173,8 +173,12 @@ class MakeQuery extends Component {
 
   render() {
     //one issue: right now, in order to pass selectedData and query as props to RefineQuery and Joins, you need to click Submit - we should change that
+console.log('SELECTED', this.state.selectedModel)
+console.log('GLOBAL selected', electron.remote.getGlobal('sharedObj').currQuery.selectedModel)
+console.log('FROM',  electron.remote.getGlobal('sharedObj').currQuery.from)
 
     return (
+      <div>
       <div className='Flex-Container Width-75 Height-75'>
         <div className='Column Center'>
           {
@@ -235,7 +239,9 @@ class MakeQuery extends Component {
             </Button>
           </div>
         </div>
+        </div>
         <div
+          className='Margin-top Light-blue'
           onClick={event => {
             //only do this if panel is about to expand
             if (!this.state.previewExpanded) {
@@ -259,6 +265,7 @@ class MakeQuery extends Component {
         >
           <PreviewPanel />
         </div>
+
       </div>
     );
   }

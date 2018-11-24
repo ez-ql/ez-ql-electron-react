@@ -38,6 +38,7 @@ const SelectTable = props => {
   const modRelatedModels = relatedModels[0]
     ? formatTableNames(relatedModels.map(elem => elem.model_name))
     : "No related models";
+    console.log('modRelatedModels', modRelatedModels)
 
   return Object.keys(modRelatedModels).length ? (
     <div className="Title Height-80">
