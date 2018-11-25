@@ -18,7 +18,7 @@ const Table = props => {
     <div className="table">
       {columns.length > 0 ? (
         <BootstrapTable
-          keyField={columns.find(field => field.dataField.indexOf("id") > 0)}
+          keyField={columns[0]}
           data={data}
           columns={columns}
           bordered={true}
