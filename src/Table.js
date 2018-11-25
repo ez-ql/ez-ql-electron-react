@@ -15,13 +15,15 @@ const Table = props => {
   const columns = data[0] ? getColumns(Object.keys(data[0])) : 0;
 
   return (
-    <div className="table">
+    <div>
       {columns.length > 0 ? (
         <BootstrapTable
+          striped={true}
+          bordered={true}
+          condensed={false}
           keyField={columns.find(field => field.dataField.indexOf("id") > 0)}
           data={data}
           columns={columns}
-          bordered={true}
           noDataIndication="Table is Empty"
         />
       ) : (

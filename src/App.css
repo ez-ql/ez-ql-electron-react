@@ -7,9 +7,21 @@
   height: 40vmin;
 }
 
-.table {
+table {
   text-align: left;
   justify-content: none;
+  font-family: "Roboto", sans-serif;
+  /* border-collapse: separate;
+  background-color: grey; */
+  /* width: 90%; */
+}
+
+.table tbody {
+  border: grey solid 1px;
+}
+
+.table th {
+  font-weight: 500;
 }
 
 .App-header {
