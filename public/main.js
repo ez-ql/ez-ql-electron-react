@@ -7,6 +7,7 @@ const path = require("path");
 const url = require("url");
 const squel = require("squel");
 const isDev = require("electron-is-dev");
+// const process = require('process')
 
 const connectionString = "postgresql://localhost:5432/BikeStores";
 // const ezqlConnectionString = "postgresql://localhost:5432/ez-ql";
@@ -25,6 +26,7 @@ async function createWindow() {
   mainWindow.on("closed", () => (mainWindow = null));
 
   console.log("***db schema arg main***", );
+  console.log('dburl', process.env.DATABASE_URL)
   const client = new Client({
     host: "localhost",
     database: "ez-ql",
