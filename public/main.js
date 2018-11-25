@@ -14,7 +14,6 @@ const connectionString = "postgresql://localhost:5432/BikeStores";
 let mainWindow;
 // let global = { sharedObj: { models: [], currQuery: {selectedModelsAndFields: [], from: '', fields: []} } };
 
-
 async function createWindow() {
   mainWindow = new BrowserWindow({ width: 900, height: 680 });
   mainWindow.loadURL(
@@ -24,7 +23,7 @@ async function createWindow() {
   );
   mainWindow.on("closed", () => (mainWindow = null));
 
-  console.log("***db schema arg main***", );
+  console.log("***db schema arg main***");
   const client = new Client({
     host: "localhost",
     database: "ez-ql",
@@ -35,11 +34,11 @@ async function createWindow() {
     client
       .query(
         "SELECT models.model_id, models.model_name, foreignKeys.relatedModel_id, foreignKeys.model_foreign_field , foreignKeys.relatedModel_primary_field FROM models LEFT JOIN foreignKeys on models.model_id = foreignKeys.model_id"
-        )
+      )
       .then(res => {
-        console.log('res', res.rows)
+        console.log("res", res.rows);
         relatedTables(res.rows);
-        console.log('GLOBAL', global.sharedObj.models)
+        console.log("GLOBAL", global.sharedObj.models);
       })
       .catch(err => console.error(err.stack)),
 
@@ -48,12 +47,12 @@ async function createWindow() {
         "SELECT models.model_id, models.model_name, fields.field_name, fields.field_id, fields.field_type, fields.field_example FROM models LEFT JOIN fields on models.model_id = fields.model_id WHERE models.database_id = 1"
       )
       .then(res => {
-        'HERE!!!!!!!!!!!!!!!!!'
+        "HERE!!!!!!!!!!!!!!!!!";
         relatedFields(res.rows);
 
         // console.log("global shared", global.sharedObj)
         // event.sender.send("async-db-schema-reply", global.sharedObj.models);
-        global.sharedObj = global.sharedObj
+        global.sharedObj = global.sharedObj;
         client.end();
       })
       .catch(err => console.error(err.stack))
@@ -172,8 +171,12 @@ const buildSquelQuery = () => {
   where && (query = query.where(where));
   order.length && (order.forEach(sortBy => query = query.order(sortBy.qualifiedField, sortBy.ascendingending)))
 
-  global.sharedObj.sqlQuery = query.toString();
-  return query.toString();
+  let queryString = query.toString();
+  if (queryString.indexOf("OUTER ") > -1) {
+    queryString = queryString.replace("OUTER ", "FULL ");
+  }
+  global.sharedObj.sqlQuery = queryString;
+  return queryString;
 };
 
 const queryGuard = query => {
@@ -207,7 +210,7 @@ const relatedTables = modelsArr => {
         globalModel => model.model_id === globalModel.model_id
       ).length
     ) {
-      console.log('here!!!!!!!', global.sharedObj.models)
+      console.log("here!!!!!!!", global.sharedObj.models);
       global.sharedObj.models = global.sharedObj.models.map(globalModel => {
         if (globalModel.model_id === model.model_id) {
           globalModel.related_models.push({
@@ -238,7 +241,7 @@ const relatedTables = modelsArr => {
 };
 
 const relatedFields = fieldsArr => {
-  console.log('******RELATEDFIELDS*********')
+  console.log("******RELATEDFIELDS*********");
   fieldsArr.forEach(field => {
     if (
       global.sharedObj.models.filter(
@@ -269,15 +272,15 @@ const relatedFields = fieldsArr => {
               field_example: field.field_example
             }
           ];
-          console.log('globalModel', globalModel)
+          console.log("globalModel", globalModel);
           return globalModel;
         } else {
-          console.log('globalModel', globalModel)
+          console.log("globalModel", globalModel);
           return globalModel;
         }
       });
     }
-    console.log('GGLOBAL!!!!!!!', global.sharedObj.models)
+    console.log("GGLOBAL!!!!!!!", global.sharedObj.models);
   });
 };
 
