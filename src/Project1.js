@@ -17,9 +17,9 @@ const Project1 = () => {
       <div>
       <h2>Project 1</h2>
       </div>
-      <div className='Row Container Title'>
+      {/* <div className='Row Container Title'>
         <Selector items={sharedObject.currQuery.selectedModelsAndFields} selectedSlide={selectedSlide} />
-      </div>
+      </div> */}
       <div>
             <Button
               value="finalize"

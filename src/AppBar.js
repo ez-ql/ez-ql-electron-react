@@ -14,6 +14,10 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
+
+const electron = window.require("electron");
+const ipcRenderer = electron.ipcRenderer;
+
 const styles = {
   root: {
     flexGrow: 1,
@@ -40,6 +44,22 @@ class ButtonAppBar extends React.Component {
 
   }
 
+  componentDidMount(){
+    console.log('HERE in CDM')
+    // ipcRenderer.send("async-project-query");
+    // ipcRenderer.on("async-project-reply", (event, arg) => {
+      console.log('PROJECTS ARG')
+
+      // this.setState({
+      //   project: arg
+      // });
+    // });
+  }
+
+  componentWillUnmount(){
+    // ipcRenderer.removeAllListeners()
+  }
+
   toggleDrawer = () => () => {
     this.setState({
       open: !this.state.open,
@@ -53,7 +73,7 @@ class ButtonAppBar extends React.Component {
       <div className={classes.list}>
       <List>
         <ListItem key={'Database'} >
-        <ListItemText  primary='Your Database' />
+        <ListItemText  primary='Bike Stores Database' />
         </ListItem>
         {/* <ListItem button key={'List'}>
         <ListItemText primary='Project 2' />
@@ -61,6 +81,10 @@ class ButtonAppBar extends React.Component {
       </List>
        <Divider />
        <List>
+         {
+
+         }
+
         <ListItem
           button
           key={'List'}

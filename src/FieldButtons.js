@@ -23,7 +23,7 @@ const styles = theme => ({
         borderWidth: "0 1em 1em 1em",
         borderColor: `transparent transparent ${
           theme.palette.grey[700]
-        } transparent`
+          } transparent`
       }
     },
     '&[x-placement*="top"] $arrowArrow': {
@@ -36,7 +36,7 @@ const styles = theme => ({
         borderWidth: "1em 1em 0 1em",
         borderColor: `${
           theme.palette.grey[700]
-        } transparent transparent transparent`
+          } transparent transparent transparent`
       }
     },
     '&[x-placement*="right"] $arrowArrow': {
@@ -48,7 +48,7 @@ const styles = theme => ({
         borderWidth: "1em 1em 1em 0",
         borderColor: `transparent ${
           theme.palette.grey[700]
-        } transparent transparent`
+          } transparent transparent`
       }
     },
     '&[x-placement*="left"] $arrowArrow': {
@@ -60,7 +60,7 @@ const styles = theme => ({
         borderWidth: "1em 0 1em 1em",
         borderColor: `transparent transparent transparent ${
           theme.palette.grey[700]
-        }`
+          }`
       }
     }
   },
@@ -107,10 +107,10 @@ class FieldButtons extends React.Component {
               thisField.field_type === "varchar"
                 ? "string"
                 : thisField.field_type === "enum"
-                ? "custom code"
-                : thisField.field_type === "zipcode"
-                ? "zip code"
-                : thisField.field_type;
+                  ? "custom code"
+                  : thisField.field_type === "zipcode"
+                    ? "zip code"
+                    : thisField.field_type;
             let example =
               type === "string"
                 ? `"${thisField.field_example}"`
@@ -120,9 +120,9 @@ class FieldButtons extends React.Component {
                 <Tooltip
                   title={
                     <React.Fragment>
-                        {
-                            //line break not working
-                        }
+                      {
+                        //line break not working
+                      }
                       {`e.g: ${example}\nType: ${type}`}
                       <span
                         className={classes.arrowArrow}
@@ -155,6 +155,14 @@ class FieldButtons extends React.Component {
               </div>
             );
           })}
+        <Button
+          className="Button"
+          type="submit"
+          name="fields"
+          onClick={() => this.props.selectAll()}
+        >
+          SELECT ALL
+        </Button>
       </div>
     );
   }
