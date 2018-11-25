@@ -83,9 +83,10 @@ global.sharedObj = {
     joinType: "", // e.g. 'left_join' 4 options e.g. 'join', 'outer_join', 'left_join', 'right_join'
     leftRef: "", // e.g. 'orders.customer_id'  qualified field name (foreign key)
     rightRef: "", // e.g. 'customers.customer_id' qualified field name (primary key)
-    group: "", // e.g. 'customers.customer_id, orders.order_date'
-    addedModel: [], // array of objects e.g. {model_id: 3 , model_name: '', ...}
-    addedModelFields: [],
+    group: "", // e.g. 'customers.customer_id, orders.order_date',
+    order: [], //e.g. {qualifiedField: customers.last_name", ascending: false} --> DESC, {qualifiedField: "customers.first_name", ascending: true} --> ascending .order("customers.last_name", false)
+    // addedModel: [], // array of objects e.g. {model_id: 3 , model_name: '', ...} potentially delete
+    // addedModelFields: [], // potentially delete
     selectedModelsAndFields: [] // array of objects
   },
   sqlQuery: "" //sql query string for preview reference
@@ -123,6 +124,7 @@ const buildSquelQuery = () => {
     rightRef,
     group,
     where,
+    order,
     selectedModelsAndFields
   } = global.sharedObj.currQuery;
 
@@ -168,6 +170,7 @@ const buildSquelQuery = () => {
 
   group && (query = query.group(group));
   where && (query = query.where(where));
+  order.length && (order.forEach(sortBy => query = query.order(sortBy.qualifiedField, sortBy.ascendingending)))
 
   global.sharedObj.sqlQuery = query.toString();
   return query.toString();
