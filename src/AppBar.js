@@ -46,13 +46,14 @@ class ButtonAppBar extends React.Component {
 
   componentDidMount(){
     console.log('HERE in CDM')
-    ipcRenderer.on("async-project-reply", (event, arg) => {
+    // ipcRenderer.send("async-project-query");
+    // ipcRenderer.on("async-project-reply", (event, arg) => {
       console.log('PROJECTS ARG')
 
       // this.setState({
       //   project: arg
       // });
-    });
+    // });
   }
 
   componentWillUnmount(){
