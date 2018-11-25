@@ -34,7 +34,6 @@ class PreviewPanel extends Component {
 
   componentDidMount() {
     ipcRenderer.on("async-query-reply", (event, arg) => {
-      console.log('PREVIEW PANEL')
       this.setState({
         previewData: arg.slice(0, 10),
         numFields: Object.keys(arg[0]).length,

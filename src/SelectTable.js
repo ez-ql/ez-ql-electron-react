@@ -10,6 +10,8 @@ const SelectTable = props => {
     });
     return found;
   });
+  //what purpose does the below line have?
+  relatedModels.filter(x => x);
 
   // return (
   //   <div className='Title Height-80'>
@@ -41,7 +43,7 @@ const SelectTable = props => {
   return Object.keys(modRelatedModels).length ? (
     <div className="Title Height-80">
       <div className="Column Center Height-50">
-        <h1 className="Flex-End Column Grey">SELECT RELATED TABLE</h1>
+        <h1 className="Flex-End Column Grey">Select Related Table</h1>
       </div>
       <div className="Row-buttons">
         {relatedModels[0]
@@ -53,6 +55,7 @@ const SelectTable = props => {
                     type="submit"
                     name="selectedModel"
                     value={model}
+                    // onClick={() => handleModelChange(model.model_name)}
                     onClick={() => handleModelChange(model)}
                   >
                     {modRelatedModels[model]}

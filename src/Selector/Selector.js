@@ -81,9 +81,9 @@ export default class Selector extends Component {
         selectedIndex: selectedIndex
       });
     }
-    const modelName = this.flkty.selectedSlide.cells[0].element.firstChild.classList[0];
-    console.log('MODEL NAME', modelName)
-
+    const modelName = this.flkty.selectedSlide.cells[0].element.innerText.split(
+      " "
+    )[0];
     this.props.selectedSlide(modelName);
   };
 
@@ -160,7 +160,9 @@ export default class Selector extends Component {
 
   dragEnd = e => {
     this.dragStarted = false;
-    const modelName = this.flkty.selectedSlide.cells[0].element.firstChild.classList[0];
+    const modelName = this.flkty.selectedSlide.cells[0].element.innerText.split(
+      " "
+    )[0];
     this.props.selectedSlide(modelName);
   };
 
@@ -207,7 +209,7 @@ export default class Selector extends Component {
         <div ref={ch => (this.wrapper = ch)}>
           {items.map(item => (
             <div style={itemStyle} className="item Grey">
-              <div className={`${item.model_name} inner Grey`} id={item.model_name}>{`${this.formatTableAndFieldNames(
+              <div className="inner Grey">{`${this.formatTableAndFieldNames(
                 item.model_name
               )} Table`}</div>
               {item.fields.map(category => (

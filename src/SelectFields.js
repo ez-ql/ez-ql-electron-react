@@ -54,16 +54,13 @@ const SelectFields = props => {
   return (
     <div className="Title Height-80">
       <div className="Column Center Height-50">
-        <h1 className="Flex-End Column Grey">SELECT FIELDS</h1>
+        <h1 className="Flex-End Column Grey">Select Fields</h1>
       </div>
-      <div>
       <FieldButtons
         fields={fields}
         modFields={modFields}
         handleFieldChange={handleFieldChange}
-        selectAll={props.selectAll}
       />
-      </div>
     </div>
   );
 };
