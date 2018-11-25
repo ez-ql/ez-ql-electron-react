@@ -5,14 +5,8 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
-  // lightTooltip: {
-  //   background: theme.palette.common.white,
-  //   color: theme.palette.text.primary,
-  //   boxShadow: theme.shadows[1],
-  //   fontSize: 15
-  // },
   tooltip: {
-    fontSize: "1em"
+    fontSize: 13
   },
   arrowPopper: {
     textAlign: "center",
@@ -96,7 +90,10 @@ class FieldButtons extends React.Component {
                       />
                     </React.Fragment>
                   }
-                  classes={{ popper: classes.arrowPopper }}
+                  classes={{
+                    popper: classes.arrowPopper,
+                    tooltip: classes.tooltip
+                  }}
                   PopperProps={{
                     popperOptions: {
                       modifiers: {
@@ -109,6 +106,7 @@ class FieldButtons extends React.Component {
                   }}
                 >
                   <Button
+                    className="Button"
                     type="submit"
                     name="fields"
                     value={field}
