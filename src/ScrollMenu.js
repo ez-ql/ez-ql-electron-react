@@ -1,5 +1,6 @@
 import React from "react";
 import Select from "react-select";
+import { formatNames } from "./MakeQuery"
 
 //re-usable component for scrollable menus - implements Select from npm's react-select library
 //right now the menu items are super weirdly lightly colored - need to change this
@@ -24,13 +25,14 @@ class ScrollMenu extends React.Component {
 
   render() {
     const items = this.props.items;
+    const itemsWithLabels = formatNames(items) //[order_id, customer_id] --> {order_id: order id, customer_id: customer id}
     let listItems = [];
-    if (items) {
-      items.map((elem, i) => {
+    if (itemsWithLabels) {
+      items.forEach((elem, i) => {
         let newItem = {};
         //react-select requires that the items be passed in as an array of objects with the following keys
         newItem["value"] = elem;
-        newItem["label"] = elem;
+        newItem["label"] = itemsWithLabels[elem];
         listItems.push(newItem);
       });
       return (
