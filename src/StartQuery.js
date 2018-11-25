@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 
 const electron = window.require("electron");
-const sharedObject = electron.remote.getGlobal('sharedObj')
+// const sharedObject = electron.remote.getGlobal('sharedObj')
 
 class StartQuery extends Component {
   state = {
@@ -11,14 +11,14 @@ class StartQuery extends Component {
   };
 
   componentDidMount() {
-    const models = sharedObject.models
+    const models = electron.remote.getGlobal('sharedObj').models
     console.log('**********HERE*******')
     console.log('MODELS', models)
     this.setState({ models })
   }
 
   addModel(modelName) {
-    const selectedModel = sharedObject.models.find(
+    const selectedModel = electron.remote.getGlobal('sharedObj').models.find(
       model => model.model_name === modelName
     );
     electron.remote.getGlobal('sharedObj').currQuery.selectedModel = selectedModel;
@@ -46,7 +46,7 @@ class StartQuery extends Component {
   };
 
   render() {
-    console.log('shared', sharedObject)
+    // console.log('shared', sharedObject)
     const models = this.state.models;
     let modModels;
     models.length
@@ -59,7 +59,7 @@ class StartQuery extends Component {
       <div className="Height-40 Title Column Center Width-50">
         <div className="Column Center Height-20">
           <div className="Flex-End Column ">
-            <h1 className='Grey'>SELECT A TABLE</h1>
+            <h1 className='Grey Height-50'>SELECT A TABLE</h1>
           </div>
         </div>
         <div className="Row-buttons Flex-Wrap">

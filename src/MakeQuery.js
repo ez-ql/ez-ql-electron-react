@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import PreviewPanel from "./PreviewPanel";
 
 const electron = window.require("electron");
-const sharedObject = electron.remote.getGlobal('sharedObj')
+// const sharedObject = electron.remote.getGlobal('sharedObj')
 const Store = window.require("electron-store");
 const store = new Store();
 const ipcRenderer = electron.ipcRenderer;
@@ -63,7 +63,7 @@ class MakeQuery extends Component {
     const selectedModel = electron.remote.getGlobal('sharedObj').currQuery.selectedModel
     const copy = { ...selectedModel };
     copy.fields = []
-    const schema = sharedObject.models
+    const schema = electron.remote.getGlobal('sharedObj').models
     this.setState({
       schema,
       selectedModel,
@@ -75,12 +75,15 @@ class MakeQuery extends Component {
     const selectedModel = this.state.schema.find(
       model => model.model_name === modelName
     );
+    console.log('selectedModel in HMC', selectedModel)
     const copy = { ...selectedModel, fields: [] };
     const selectedModelsAndFields = [...this.state.selectedModelsAndFields];
     const [ includesSelectedModel ] = selectedModelsAndFields.filter(model => model.model_name === modelName)
     if (!includesSelectedModel) {
       selectedModelsAndFields.unshift(copy)
       this.toggleView();
+      console.log('in handleModelChange')
+      electron.remote.getGlobal('sharedObj').currQuery.selectedModel = selectedModel
       this.setState({
         from: modelName,
         nextView: false,
@@ -110,6 +113,7 @@ class MakeQuery extends Component {
   }
 
   toggleView() {
+    console.log('GLOBAL selected', electron.remote.getGlobal('sharedObj').currQuery.selectedModel)
     const bool = this.state.nextView;
     this.setState({ nextView: !bool });
   }
@@ -132,9 +136,12 @@ class MakeQuery extends Component {
   // }
 
   selectedSlide(modelName) {
+
+    console.log('SELECTEDSLIDE', modelName)
     const selectedModel = this.state.schema.find(
       model => model.model_name === modelName
     );
+    console.log('selectedModel in SS', selectedModel)
     this.setState({
       selectedModel,
       nextView: false
@@ -180,7 +187,7 @@ console.log('FROM',  electron.remote.getGlobal('sharedObj').currQuery.from)
     return (
       <div>
       <div className='Flex-Container Width-75 Height-75'>
-        <div className='Column Center'>
+        <div className='Column Center Height-50'>
           {
             this.state.nextView ?
               <SelectTable
