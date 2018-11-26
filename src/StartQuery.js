@@ -47,7 +47,6 @@ class StartQuery extends Component {
   };
 
   render() {
-    // console.log('shared', sharedObject)
     const models = this.state.models;
     let modModels;
     models.length
@@ -65,16 +64,17 @@ class StartQuery extends Component {
         </div>
         <div className="Row-buttons Flex-Wrap">
           {models.length > 0
-            ? models.map(model => {
+            ? Object.keys(modModels).map(model => {
+              console.log('MODEL IN START QUERY', modModels[model])
                 return (
                   <div>
                     <Button
-                      onClick={() => this.addModel(model.model_name)}
+                      onClick={() => this.addModel(model)}
                       className="Row-buttons Button"
                       component={Link}
                       to="/makeQuery"
                     >
-                      {model.model_name}
+                      {modModels[model]}
                     </Button>
                   </div>
                 );

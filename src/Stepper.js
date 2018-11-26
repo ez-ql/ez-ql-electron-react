@@ -74,7 +74,8 @@ class HorizontalStepper extends Component {
 
   componentDidMount() {
     const steps = this.getSteps();
-    const selectedModelsAndFields = electron.remote.getGlobal('sharedObj').currQuery.selectedModelsAndFields
+    const selectedModelsAndFields = electron.remote.getGlobal("sharedObj")
+      .currQuery.selectedModelsAndFields;
     this.setState({
       steps,
       selectedModelsAndFields
@@ -90,7 +91,7 @@ class HorizontalStepper extends Component {
           <div className="Column Center Height-50">
             <div>
               {activeStep === steps.length ? (
-                <div>
+                <div onClick={() => ipcRenderer.send("async-new-query")}>
                   <Button value="finalize" component={Link} to="/finalizeQuery">
                     Review Query Results
                   </Button>
