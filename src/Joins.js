@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import ScrollMenu from "./ScrollMenu";
+import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
+
 const electron = window.require("electron");
 
 class Joins extends Component {
@@ -83,6 +86,7 @@ class Joins extends Component {
   }
 
   componentDidMount() {
+    console.log('IN JOINS')
     let sharedObj = electron.remote.getGlobal("sharedObj");
     let models = electron.remote.getGlobal("sharedObj").models;
     let currQuery = electron.remote.getGlobal("sharedObj").currQuery;
@@ -104,12 +108,17 @@ class Joins extends Component {
   }
 
   render() {
-    if (this.state.models.length) {
-      const remainingTables = this.getRemainingTables(
-        this.state.models.map(elem => elem.model_name),
-        this.state.selectedTables
-      );
+    console.log('staate', this.state.models.length)
+    // if (this.state.models.length) {
+    //   const remainingTables = this.getRemainingTables(
+    //     this.state.models.map(elem => elem.model_name),
+    //     this.state.selectedTables
+    //   );
       return (
+      <div>
+      <div className='Flex-Container Width-75 Height-75'>
+        <div className='Column Center Height-50'>
+
         <div>
           {
             <div>
@@ -118,16 +127,25 @@ class Joins extends Component {
                 items={Object.keys(this.state.allJoinTypes)}
                 handleChange={this.handleSelectedJoinType}
               />
-              <button type="button" onClick={this.handleSubmitJoin}>
-                Submit
-              </button>
+              <Button
+                type="button"
+//ADD link
+// to component={Link}
+// to="/startQuery"
+                onClick={() => this.handleSubmitJoin()}>
+                Next
+              </Button>
             </div>
           }
         </div>
+      </div>
+      </div>
+      </div>
       );
-    } else {
+    {/* } else {
       return null;
-    }
+    } */}
+    // }
   }
 }
 

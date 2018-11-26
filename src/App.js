@@ -6,6 +6,7 @@ import StartQuery from "./StartQuery";
 import { Route, Switch } from "react-router-dom";
 import AppBar from './AppBar'
 import Project1 from './Project1'
+import Joins from './Joins'
 import FinalizeQuery from './FinalizeQuery'
 // import { ContentLink } from "material-ui/svg-icons";
 import { Link } from 'react-router-dom'
@@ -25,6 +26,7 @@ class App extends Component {
           <Route path="/makeQuery" component={MakeQuery} />
           <Route path="/project1" component={Project1} />
           <Route path='/finalizeQuery' component={FinalizeQuery} />
+          <Route path="/joins" component={Joins} />
           {/*ADJUST AS APPLICABLE Default route*/}
         </Switch>
         </div>

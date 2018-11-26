@@ -220,7 +220,7 @@ class MakeQuery extends Component {
                 />
               )}
             </div>
-            <div>
+            <div className='Margin-top-10'>
               {!this.state.nextView && (
                 <div>
                   <Button
@@ -233,6 +233,16 @@ class MakeQuery extends Component {
                 </div>
               )}
               <div>
+              <Button
+                component={Link}
+                to="/joins"
+                className="Button Row-buttons"
+                onClick={() =>this.joinStep()}
+              >
+                Joins
+              </Button>
+              </div>
+              <div>
                 {this.state.selectedModelsAndFields.length === 2 && (
                   <div>
                     <FormDialog onClick={this.joinStep} />
@@ -241,7 +251,11 @@ class MakeQuery extends Component {
               </div>
             </div>
             <div>
-              <Button className="Button" component={Link} to="/startQuery">
+              <Button
+                className="Button"
+                component={Link}
+                to="/startQuery"
+              >
                 START OVER
               </Button>
             </div>
