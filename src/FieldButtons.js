@@ -16,7 +16,7 @@ const styles = theme => ({
         borderWidth: "0 1em 1em 1em",
         borderColor: `transparent transparent ${
           theme.palette.grey[700]
-        } transparent`
+          } transparent`
       }
     }
   },
@@ -67,10 +67,10 @@ class FieldButtons extends React.Component {
               thisField.field_type === "varchar"
                 ? "string"
                 : thisField.field_type === "enum"
-                ? "custom code"
-                : thisField.field_type === "zipcode"
-                ? "zip code"
-                : thisField.field_type;
+                  ? "custom code"
+                  : thisField.field_type === "zipcode"
+                    ? "zip code"
+                    : thisField.field_type;
             let example =
               type === "string"
                 ? `"${thisField.field_example}"`
@@ -117,6 +117,14 @@ class FieldButtons extends React.Component {
               </div>
             );
           })}
+        <Button
+          className="Button"
+          type="submit"
+          name="fields"
+          onClick={() => this.props.selectAll()}
+        >
+          SELECT ALL
+        </Button>
       </div>
     );
   }

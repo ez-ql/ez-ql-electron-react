@@ -36,9 +36,7 @@ async function createWindow() {
         "SELECT models.model_id, models.model_name, foreignKeys.relatedModel_id, foreignKeys.model_foreign_field , foreignKeys.relatedModel_primary_field FROM models LEFT JOIN foreignKeys on models.model_id = foreignKeys.model_id"
       )
       .then(res => {
-        console.log("res", res.rows);
         relatedTables(res.rows);
-        console.log("GLOBAL", global.sharedObj.models);
       })
       .catch(err => console.error(err.stack)),
 
@@ -47,16 +45,45 @@ async function createWindow() {
         "SELECT models.model_id, models.model_name, fields.field_name, fields.field_id, fields.field_type, fields.field_example FROM models LEFT JOIN fields on models.model_id = fields.model_id WHERE models.database_id = 1"
       )
       .then(res => {
-        "HERE!!!!!!!!!!!!!!!!!";
         relatedFields(res.rows);
+      })
+      .catch(err => console.error(err.stack)),
 
-        // console.log("global shared", global.sharedObj)
-        // event.sender.send("async-db-schema-reply", global.sharedObj.models);
-        global.sharedObj = global.sharedObj;
+      client
+      .query('SELECT user_id, users.organization_id, user_email, user_firstname, user_lastname, is_admin, organization_name FROM users LEFT JOIN organizations ON users.organization_id = organizations.organization_id WHERE user_id = 1'
+      )
+      .then(res => {
+       global.sharedObj.user = res.rows[0]
+      })
+      .catch(err => console.error(err.stack)),
+
+      client
+      .query('SELECT * FROM databases'
+      )
+      .then(res => {
+       global.sharedObj.databases = res.rows
+      })
+      .catch(err => console.error(err.stack)),
+
+      client
+      .query('SELECT * from projects'
+      )
+      .then(res => {
+       global.sharedObj.projects = res.rows
+      })
+      .catch(err => console.error(err.stack)),
+
+    client
+      .query(
+        "SELECT * FROM userqueries LEFT JOIN queries ON userqueries.query_id = queries.query_id"
+      )
+      .then(res => {
+        global.sharedObj.queries = res.rows
         client.end();
       })
       .catch(err => console.error(err.stack))
   ]);
+  console.log('globalObj initial load', global.sharedObj)
 }
 
 // const pool = new Pool({ connectionString })
@@ -74,6 +101,10 @@ async function createWindow() {
 
 global.sharedObj = {
   models: [],
+  user: {},
+  databases: [],
+  projects: [],
+  queries: [],  
   currQuery: {
     from: "", // e.g. 'orders'
     fields: [], // e.g. ['order_id', 'order_date', 'customer_id']
@@ -169,7 +200,11 @@ const buildSquelQuery = () => {
 
   group && (query = query.group(group));
   where && (query = query.where(where));
-  order.length && (order.forEach(sortBy => query = query.order(sortBy.qualifiedField, sortBy.ascendingending)))
+  order.length &&
+    order.forEach(
+      sortBy =>
+        (query = query.order(sortBy.qualifiedField, sortBy.ascendingending))
+    );
 
   let queryString = query.toString();
   if (queryString.indexOf("OUTER ") > -1) {
@@ -187,6 +222,19 @@ const queryGuard = query => {
   }
 };
 
+ipcMain.on("async-project-query", async (event, arg) => {
+  const client = new Client({ connectionString });
+  client.connect();
+  client
+    .query("SELECT project_id, project_name FROM projects ")
+    .then(res => {
+      console.log("first row of results", res.rows[0]);
+      event.sender.send("async-project-reply", res.rows);
+      client.end();
+    })
+    .catch(err => console.error(err.stack || err));
+});
+
 ipcMain.on("async-new-query", async (event, arg) => {
   const query = queryGuard(buildSquelQuery());
   const client = new Client({ connectionString });
@@ -195,7 +243,6 @@ ipcMain.on("async-new-query", async (event, arg) => {
     .query(query)
     .then(res => {
       console.log("first row of results", res.rows[0]);
-      console.log("all results", res.rows);
       event.sender.send("async-query-reply", res.rows);
       client.end();
     })
@@ -210,7 +257,6 @@ const relatedTables = modelsArr => {
         globalModel => model.model_id === globalModel.model_id
       ).length
     ) {
-      console.log("here!!!!!!!", global.sharedObj.models);
       global.sharedObj.models = global.sharedObj.models.map(globalModel => {
         if (globalModel.model_id === model.model_id) {
           globalModel.related_models.push({
@@ -241,7 +287,6 @@ const relatedTables = modelsArr => {
 };
 
 const relatedFields = fieldsArr => {
-  console.log("******RELATEDFIELDS*********");
   fieldsArr.forEach(field => {
     if (
       global.sharedObj.models.filter(
@@ -272,15 +317,12 @@ const relatedFields = fieldsArr => {
               field_example: field.field_example
             }
           ];
-          console.log("globalModel", globalModel);
           return globalModel;
         } else {
-          console.log("globalModel", globalModel);
           return globalModel;
         }
       });
     }
-    console.log("GGLOBAL!!!!!!!", global.sharedObj.models);
   });
 };
 

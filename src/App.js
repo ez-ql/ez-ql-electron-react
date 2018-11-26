@@ -7,6 +7,7 @@ import { Route, Switch } from "react-router-dom";
 import AppBar from './AppBar'
 import Project1 from './Project1'
 import FinalizeQuery from './FinalizeQuery'
+import HorizontalStepper from './Stepper'
 // import { ContentLink } from "material-ui/svg-icons";
 import { Link } from 'react-router-dom'
 // import Drawer from './Drawer'
@@ -25,6 +26,7 @@ class App extends Component {
           <Route path="/makeQuery" component={MakeQuery} />
           <Route path="/project1" component={Project1} />
           <Route path='/finalizeQuery' component={FinalizeQuery} />
+          <Route path='/refineQuery' component={HorizontalStepper} />
           {/*ADJUST AS APPLICABLE Default route*/}
         </Switch>
         </div>
