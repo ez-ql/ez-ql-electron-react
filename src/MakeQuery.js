@@ -5,7 +5,7 @@ import SelectFields from "./SelectFields";
 import { Link } from "react-router-dom";
 import FormDialog from "./FormDialog";
 import Button from "@material-ui/core/Button";
-import PreviewPanel from "./PreviewPanel";
+import StartOverButton from "./StartOverButton";
 import PreviewModal from "./PreviewModal";
 import JoinModal from "./JoinModal";
 const electron = window.require("electron");
@@ -300,19 +300,7 @@ class MakeQuery extends Component {
               </div>
             </div>
             <div>
-              <Button
-                className="Button"
-                onClick={() => {
-                  electron.remote.getGlobal(
-                    "sharedObj"
-                  ).currQuery = initialCurrQuery;
-                  electron.remote.getGlobal("sharedObj").sqlQuery = "";
-                }}
-                component={Link}
-                to="/startQuery"
-              >
-                START OVER
-              </Button>
+              <StartOverButton />
             </div>
             <div>
               <Button className="Button" component={Link} to="/refineQuery">
