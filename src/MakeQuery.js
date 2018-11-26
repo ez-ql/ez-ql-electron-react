@@ -6,11 +6,9 @@ import { Link } from "react-router-dom";
 import FormDialog from "./FormDialog";
 import Button from "@material-ui/core/Button";
 import PreviewPanel from "./PreviewPanel";
-
+import PreviewModal from "./PreviewModal";
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
-const Store = window.require("electron-store");
-const store = new Store();
 const ipcRenderer = electron.ipcRenderer;
 
 //func to convert table and field labels to human-readable format
@@ -61,8 +59,8 @@ class MakeQuery extends Component {
     const selectedModel = electron.remote.getGlobal("sharedObj").currQuery
       .selectedModel;
     const copy = { ...selectedModel };
-    copy.fields = []
-    const schema = electron.remote.getGlobal('sharedObj').models
+    copy.fields = [];
+    const schema = electron.remote.getGlobal("sharedObj").models;
     this.setState({
       schema,
       selectedModel,
@@ -74,7 +72,7 @@ class MakeQuery extends Component {
     const selectedModel = this.state.schema.find(
       model => model.model_name === modelName
     );
-    console.log('selectedModel in HMC', selectedModel)
+    console.log("selectedModel in HMC", selectedModel);
     const copy = { ...selectedModel, fields: [] };
     const selectedModelsAndFields = [...this.state.selectedModelsAndFields];
     const [includesSelectedModel] = selectedModelsAndFields.filter(
@@ -83,8 +81,10 @@ class MakeQuery extends Component {
     if (!includesSelectedModel) {
       selectedModelsAndFields.unshift(copy);
       this.toggleView();
-      console.log('in handleModelChange')
-      electron.remote.getGlobal('sharedObj').currQuery.selectedModel = selectedModel
+      console.log("in handleModelChange");
+      electron.remote.getGlobal(
+        "sharedObj"
+      ).currQuery.selectedModel = selectedModel;
       this.setState({
         //from: modelName,
         nextView: false,
@@ -115,7 +115,10 @@ class MakeQuery extends Component {
   }
 
   toggleView() {
-    console.log('GLOBAL selected', electron.remote.getGlobal('sharedObj').currQuery.selectedModel)
+    console.log(
+      "GLOBAL selected",
+      electron.remote.getGlobal("sharedObj").currQuery.selectedModel
+    );
     const bool = this.state.nextView;
     this.setState({ nextView: !bool });
   }
@@ -137,12 +140,11 @@ class MakeQuery extends Component {
   // }
 
   selectedSlide(modelName) {
-
-    console.log('SELECTEDSLIDE', modelName)
+    console.log("SELECTEDSLIDE", modelName);
     const selectedModel = this.state.schema.find(
       model => model.model_name === modelName
     );
-    console.log('selectedModel in SS', selectedModel)
+    console.log("selectedModel in SS", selectedModel);
     this.setState({
       selectedModel,
       nextView: false
@@ -180,6 +182,29 @@ class MakeQuery extends Component {
     electron.remote.getGlobal("sharedObj").currQuery.fields = this.state.fields;
   }
 
+  loadPreview = event => {
+    console.log("*****SHARED OBJECT******", sharedObject);
+    //only do this if panel is about to expand
+    if (!this.state.previewExpanded) {
+      const [qualifiedFieldsToAdd] = this.state.selectedModelsAndFields.map(
+        modelAndFields =>
+          modelAndFields.fields.map(
+            field => `${modelAndFields.model_name}.${field}`
+          )
+      );
+      const newQualifiedFields = [
+        ...sharedObject.currQuery.qualifiedFields,
+        ...qualifiedFieldsToAdd
+      ];
+      sharedObject.currQuery.qualifiedFields = newQualifiedFields;
+
+      ipcRenderer.send("async-new-query");
+    }
+    this.setState(state => ({
+      previewExpanded: !state.previewExpanded
+    }));
+  };
+
   render() {
     //one issue: right now, in order to pass selectedData and query as props to RefineQuery and Joins, you need to click Submit - we should change that
     console.log("SELECTED", this.state.selectedModel);
@@ -191,17 +216,16 @@ class MakeQuery extends Component {
 
     return (
       <div>
-      <div className='Flex-Container Width-75 Height-75'>
-        <div className='Column Center Height-50'>
-          {
-            this.state.nextView ?
+        <div className="Flex-Container Width-75 Height-75">
+          <div className="Column Center Height-50">
+            {this.state.nextView ? (
               <SelectTable
                 handleModelChange={this.handleModelChange}
                 model={this.state.selectedModel}
                 schema={this.state.schema}
                 formatTableNames={formatNames}
               />
-             : (
+            ) : (
               <SelectFields
                 handleFieldChange={this.handleFieldChange}
                 fields={this.state.selectedModel.fields}
@@ -250,35 +274,10 @@ class MakeQuery extends Component {
                 REFINE QUERY
               </Button>
             </div>
+            <div onClick={this.loadPreview}>
+              <PreviewModal />
+            </div>
           </div>
-        </div>
-        <div
-          className="Margin-top Light-blue"
-          onClick={event => {
-            console.log("*****SHARED OBJECT******", sharedObject);
-            //only do this if panel is about to expand
-            if (!this.state.previewExpanded) {
-              const [
-                qualifiedFieldsToAdd
-              ] = this.state.selectedModelsAndFields.map(modelAndFields =>
-                modelAndFields.fields.map(
-                  field => `${modelAndFields.model_name}.${field}`
-                )
-              );
-              const newQualifiedFields = [
-                ...sharedObject.currQuery.qualifiedFields,
-                ...qualifiedFieldsToAdd
-              ];
-              sharedObject.currQuery.qualifiedFields = newQualifiedFields;
-
-              ipcRenderer.send("async-new-query");
-            }
-            this.setState(state => ({
-              previewExpanded: !state.previewExpanded
-            }));
-          }}
-        >
-          <PreviewPanel />
         </div>
       </div>
     );
