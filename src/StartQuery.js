@@ -15,7 +15,7 @@ class StartQuery extends Component {
     console.log('**********HERE*******')
     console.log('MODELS', models)
     this.setState({ models })
-    
+
   }
 
   addModel(modelName) {
@@ -51,8 +51,8 @@ class StartQuery extends Component {
     let modModels;
     models.length
       ? (modModels = this.formatModelAndFieldNames(
-          models.map(elem => elem.model_name)
-        ))
+        models.map(elem => elem.model_name)
+      ))
       : console.log("no models yet");
 
     return (

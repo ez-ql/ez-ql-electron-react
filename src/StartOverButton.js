@@ -20,6 +20,7 @@ const initialCurrQuery = {
 const StartOverButton = () => {
   return (
     <Button
+      variant="contained"
       className="Button"
       onClick={() => {
         electron.remote.getGlobal("sharedObj").currQuery = initialCurrQuery;

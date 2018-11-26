@@ -73,7 +73,7 @@ class ButtonAppBar extends React.Component {
       <div className={classes.list}>
       <List>
         <ListItem key={'Database'} >
-        <ListItemText  primary='Bike Stores Database' />
+        <ListItemText primary='Bike Stores Database' />
         </ListItem>
         {/* <ListItem button key={'List'}>
         <ListItemText primary='Project 2' />
@@ -107,7 +107,7 @@ class ButtonAppBar extends React.Component {
         onClose={this.toggleDrawer()}
       >
           <div
-            className="Lightgrey"
+            className="White"
             tabIndex={0}
             role="button"
             onClick={this.toggleDrawer()}

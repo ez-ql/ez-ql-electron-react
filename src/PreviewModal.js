@@ -70,9 +70,27 @@ class PreviewModal extends React.Component {
 
     return (
       <div>
-        <Button className="Button" onClick={this.handleOpen}>
+        {
+          this.props.buttonClass ?
+        <Button
+          variant="contained"
+          className={this.props.buttonClass}
+          className="Button"
+          color={this.props.color}
+          onClick={this.handleOpen}
+        >
           Preview
         </Button>
+        :
+        <Button
+        variant="contained"
+        className="Button"
+        color={this.props.color}
+        onClick={this.handleOpen}
+      >
+        Preview
+      </Button>
+        }
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
