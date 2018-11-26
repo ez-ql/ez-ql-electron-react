@@ -7,6 +7,7 @@ import FormDialog from "./FormDialog";
 import Button from "@material-ui/core/Button";
 import PreviewPanel from "./PreviewPanel";
 import PreviewModal from "./PreviewModal";
+import JoinModal from "./JoinModal";
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
 const ipcRenderer = electron.ipcRenderer;
@@ -44,7 +45,8 @@ class MakeQuery extends Component {
       selectedModelsAndFields: [],
       selectedSlide: 0,
       schema: [],
-      previewExpanded: false
+      previewExpanded: false,
+      joinModal: false
     };
     this.handleFieldChange = this.handleFieldChange.bind(this);
     this.handleModelChange = this.handleModelChange.bind(this);
@@ -72,7 +74,6 @@ class MakeQuery extends Component {
     const selectedModel = this.state.schema.find(
       model => model.model_name === modelName
     );
-    console.log("selectedModel in HMC", selectedModel);
     const copy = { ...selectedModel, fields: [] };
     const selectedModelsAndFields = [...this.state.selectedModelsAndFields];
     const [includesSelectedModel] = selectedModelsAndFields.filter(
@@ -81,21 +82,25 @@ class MakeQuery extends Component {
     if (!includesSelectedModel) {
       selectedModelsAndFields.unshift(copy);
       this.toggleView();
-      console.log("in handleModelChange");
       electron.remote.getGlobal(
         "sharedObj"
       ).currQuery.selectedModel = selectedModel;
+      electron.remote.getGlobal(
+        "sharedObj"
+      ).currQuery.selectedModelsAndFields = selectedModelsAndFields;
       this.setState({
         //from: modelName,
         nextView: false,
         selectedModel,
-        selectedModelsAndFields
+        selectedModelsAndFields,
+        joinModal: true
       });
     }
   }
 
   handleFieldChange(newField) {
     let { fields } = this.state;
+    let qualifiedFields = [...electron.remote.getGlobal('sharedObj').currQuery.qualifiedFields]
     if (!fields.some(field => field === newField)) {
       fields.push(newField);
       let selectedModelsAndFields = this.state.selectedModelsAndFields.map(
@@ -107,6 +112,12 @@ class MakeQuery extends Component {
           return table;
         }
       );
+      electron.remote.getGlobal(
+        "sharedObj"
+      ).currQuery.selectedModelsAndFields = selectedModelsAndFields;
+      electron.remote.getGlobal("sharedObj").currQuery.fields = fields;
+      qualifiedFields.push(`${this.state.selectedModel.model_name}.${newField}`)
+      electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields = qualifiedFields
       this.setState({
         fields,
         selectedModelsAndFields
@@ -115,13 +126,15 @@ class MakeQuery extends Component {
   }
 
   toggleView() {
-    console.log(
-      "GLOBAL selected",
-      electron.remote.getGlobal("sharedObj").currQuery.selectedModel
-    );
     const bool = this.state.nextView;
     this.setState({ nextView: !bool });
   }
+
+  toggleJoinModal = () => {
+    this.setState({
+      joinModal: false
+    });
+  };
 
   // handleSubmit(e) {
   //   e.preventDefault();
@@ -140,11 +153,9 @@ class MakeQuery extends Component {
   // }
 
   selectedSlide(modelName) {
-    console.log("SELECTEDSLIDE", modelName);
     const selectedModel = this.state.schema.find(
       model => model.model_name === modelName
     );
-    console.log("selectedModel in SS", selectedModel);
     this.setState({
       selectedModel,
       nextView: false
@@ -153,17 +164,29 @@ class MakeQuery extends Component {
 
   removeField(fieldName, modelName) {
     let selectedModelsAndFields = this.state.selectedModelsAndFields;
-    const [model] = selectedModelsAndFields.filter(
-      model => model.model_name === modelName
-    );
-    const fields = model.fields.filter(field => field !== fieldName);
+    //will currently remove field from both tables if it has the same name, not ideal but let's go with it for now
+    const fields = this.state.fields.filter(field => field !== fieldName);
     selectedModelsAndFields = selectedModelsAndFields.map(model => {
-      return model.model_name === modelName ? { ...model, fields } : model;
+      model.fields = model.fields.filter(field => field !== fieldName)
+      return model;
     });
-    this.setState({ selectedModelsAndFields });
+    electron.remote.getGlobal(
+      "sharedObj"
+    ).currQuery.selectedModelsAndFields = selectedModelsAndFields;
+    electron.remote.getGlobal("sharedObj").currQuery.fields = fields;
+    electron.remote.getGlobal(
+      "sharedObj"
+    ).currQuery.qualifiedFields = electron.remote
+      .getGlobal("sharedObj")
+      .currQuery.qualifiedFields.filter(
+        field => field.split('.')[1] !== fieldName
+      );
+    this.setState({ selectedModelsAndFields, fields });
   }
 
   selectAll() {
+    const globalFields = [...electron.remote.getGlobal("sharedObj").currQuery.fields]
+    const globalQualifiedFields = [...electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields]
     const fields = [...this.state.selectedModel.fields].map(
       field => field.field_name
     );
@@ -172,7 +195,11 @@ class MakeQuery extends Component {
         ? { ...model, fields }
         : model;
     });
-    this.setState({ selectedModelsAndFields: updated });
+    const qualifiedFields = fields.map(field => `${this.state.selectedModel.model_name}.${field}`)
+    electron.remote.getGlobal("sharedObj").currQuery.fields = globalFields.concat(fields)
+    electron.remote.getGlobal("sharedObj").currQuery.selectedModelsAndFields = updated
+    electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields = globalQualifiedFields.concat(qualifiedFields)
+    this.setState({ selectedModelsAndFields: updated, fields: globalFields.concat(fields) });
   }
 
   joinStep() {
@@ -207,17 +234,13 @@ class MakeQuery extends Component {
 
   render() {
     //one issue: right now, in order to pass selectedData and query as props to RefineQuery and Joins, you need to click Submit - we should change that
-    console.log("SELECTED", this.state.selectedModel);
-    console.log(
-      "GLOBAL selected",
-      electron.remote.getGlobal("sharedObj").currQuery.selectedModel
-    );
-    console.log("FROM", electron.remote.getGlobal("sharedObj").currQuery.from);
-
     return (
       <div>
         <div className="Flex-Container Width-75 Height-75">
           <div className="Column Center Height-50">
+            {this.state.joinModal && (
+              <JoinModal toggleJoinModal={this.toggleJoinModal} />
+            )}
             {this.state.nextView ? (
               <SelectTable
                 handleModelChange={this.handleModelChange}
