@@ -29,11 +29,7 @@ const styles = theme => ({
 
 class JoinModal extends React.Component {
   state = {
-    open: true,
-    previewData: [],
-    fields: 0,
-    rows: 0,
-    sqlQuery: ""
+    open: true
   };
 
   handleClose = () => {
