@@ -12,6 +12,20 @@ const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
 const ipcRenderer = electron.ipcRenderer;
 
+const initialCurrQuery = {
+  from: "",
+  fields: [],
+  where: "",
+  qualifiedFields: [],
+  joinType: "",
+  leftRef: "",
+  rightRef: "",
+  group: "",
+  order: [],
+  selectedModelsAndFields: [],
+  selectedModel: {}
+};
+
 //func to convert table and field labels to human-readable format
 //takes an array
 //no regex necessary (for our sample data set)
@@ -55,6 +69,7 @@ class MakeQuery extends Component {
     this.joinStep = this.joinStep.bind(this);
     this.removeField = this.removeField.bind(this);
     this.selectAll = this.selectAll.bind(this);
+    this.loadPreview = this.loadPreview.bind(this);
   }
 
   componentDidMount() {
@@ -211,25 +226,22 @@ class MakeQuery extends Component {
 
   loadPreview = event => {
     console.log("*****SHARED OBJECT******", sharedObject);
-    //only do this if panel is about to expand
-    if (!this.state.previewExpanded) {
-      const [qualifiedFieldsToAdd] = this.state.selectedModelsAndFields.map(
-        modelAndFields =>
-          modelAndFields.fields.map(
-            field => `${modelAndFields.model_name}.${field}`
-          )
-      );
-      const newQualifiedFields = [
-        ...sharedObject.currQuery.qualifiedFields,
-        ...qualifiedFieldsToAdd
-      ];
-      sharedObject.currQuery.qualifiedFields = newQualifiedFields;
+    const [qualifiedFieldsToAdd] = this.state.selectedModelsAndFields.map(
+      modelAndFields =>
+        modelAndFields.fields.map(
+          field => `${modelAndFields.model_name}.${field}`
+        )
+    );
+    const newQualifiedFields = [
+      ...electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields,
+      ...qualifiedFieldsToAdd
+    ];
 
-      ipcRenderer.send("async-new-query");
-    }
-    this.setState(state => ({
-      previewExpanded: !state.previewExpanded
-    }));
+    electron.remote.getGlobal(
+      "sharedObj"
+    ).currQuery.qualifiedFields = newQualifiedFields;
+
+    ipcRenderer.send("async-new-query");
   };
 
   render() {
@@ -288,7 +300,17 @@ class MakeQuery extends Component {
               </div>
             </div>
             <div>
-              <Button className="Button" component={Link} to="/startQuery">
+              <Button
+                className="Button"
+                onClick={() => {
+                  electron.remote.getGlobal(
+                    "sharedObj"
+                  ).currQuery = initialCurrQuery;
+                  electron.remote.getGlobal("sharedObj").sqlQuery = "";
+                }}
+                component={Link}
+                to="/startQuery"
+              >
                 START OVER
               </Button>
             </div>
