@@ -8,6 +8,23 @@
   height: 40vmin;
 }
 
+table {
+  text-align: left;
+  justify-content: none;
+  font-family: "Roboto", sans-serif;
+  /* border-collapse: separate;
+  background-color: grey; */
+  /* width: 90%; */
+}
+
+.table tbody {
+  border: grey solid 1px;
+}
+
+.table th {
+  font-weight: 500;
+}
+
 .App-header {
   background-color: #8f96a3;
   min-height: 8%;
@@ -26,7 +43,7 @@
 .App-body {
   display: flex;
   justify-content: center;
-  background-color: rgb(41, 17, 17);
+  background-color: rgb(19, 19, 50);
   height: 100vh;
   /* opacity: .2; */
   z-index: -2;
@@ -126,7 +143,8 @@
 
 .Width-50 {
   width: 50%;
-  max-width: 50rem;
+  max-width: 30rem;
+  min-width: 18rem;
   border-radius: 10%;
   background-color: rgb(181, 228, 228);
 }
@@ -192,8 +210,8 @@ h1 {
 
 .Button {
   align-items: center;
-  background-color: grey;
-  color: white;
+  /* background-color: grey; */
+  /* color: white; */
   text-align: center;
   text-decoration: none;
   cursor: default;

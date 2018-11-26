@@ -3,6 +3,7 @@ import Paper from "@material-ui/core/Paper";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Table from "./Table";
+import TableBootstrap from "./Table_react-bootstrap";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -17,7 +18,7 @@ function TabContainer(props) {
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    width: "80%",
+    width: "100%",
     backgroundColor: theme.palette.background.paper,
     textAlign: "left"
   },
@@ -37,11 +38,12 @@ class PreviewTabs extends React.Component {
 
   render() {
     const { previewData, numFields, numRows, sqlQuery } = this.props.props;
+    console.log(this.props.props);
     const { classes } = this.props;
     const { selectedTab } = this.state;
 
     return (
-      <Paper square className={classes.root}>
+      <Paper elevation="0" className={classes.root}>
         <Tabs
           value={this.state.selectedTab}
           indicatorColor="primary"
@@ -60,7 +62,7 @@ class PreviewTabs extends React.Component {
               Please submit your request to receive the complete result.
             </Typography>
             <Typography component="div">
-              <Table data={previewData} className="table" />
+              <TableBootstrap data={previewData} className="table" />
             </Typography>
           </TabContainer>
         )}

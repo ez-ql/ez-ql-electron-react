@@ -11,6 +11,7 @@ import Filter from "./Filter";
 import Sort from "./Sort";
 import { Link } from "react-router-dom";
 import StepConnector from '@material-ui/core/StepConnector';
+import PreviewModal from "./PreviewModal";
 
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
@@ -132,75 +133,73 @@ class HorizontalStepper extends Component {
                           )}
                     </div>
                     <div className="Column Width-30 Align-self-center ">
-                    <div className={classes.root}>
-                      <Stepper
-                        className={classes.stepperColor}
-                        activeStep={activeStep}
-                        orientation="horizontal"
-                      >
-                        {steps.map((label, index) => {
-                          const props = {};
-                          const labelProps = {};
-                          labelProps.optional = (
-                            <Typography variant="caption">Optional</Typography>
-                          );
-                          if (this.isStepSkipped(index)) {
-                            props.completed = false;
-                          }
-                          return (
-                            <Step key={label} {...props}>
-                              <StepLabel
-                                {...labelProps}
-                                classes={{ iconContainer: classes.iconContainer }}
-                              >
-                                {label}
-                              </StepLabel>
-                            </Step>
-                          );
-                        })}
-                      </Stepper>
+                      <div className={classes.root}>
+                        <Stepper
+                          className={classes.stepperColor}
+                          activeStep={activeStep}
+                          orientation="horizontal"
+                        >
+                          {steps.map((label, index) => {
+                            const props = {};
+                            const labelProps = {};
+                            labelProps.optional = (
+                              <Typography variant="caption">Optional</Typography>
+                            );
+                            if (this.isStepSkipped(index)) {
+                              props.completed = false;
+                            }
+                            return (
+                              <Step key={label} {...props}>
+                                <StepLabel
+                                  {...labelProps}
+                                  classes={{ iconContainer: classes.iconContainer }}
+                                >
+                                  {label}
+                                </StepLabel>
+                              </Step>
+                            );
+                          })}
+                        </Stepper>
                       </div>
                     </div>
-                    <div>
-                      <Button
-                        disabled={activeStep === 0}
-                        variant="contained"
-                        color="primary"
-                        onClick={this.handleBack}
-                        className={classes.button}
-                      >
-                        Back
+                    <div className="Row-buttons">
+                      <div >
+                        <Button
+                          disabled={activeStep === 0}
+                          variant="contained"
+                          color="primary"
+                          onClick={this.handleBack}
+                          className={classes.button}
+                        >
+                          Back
                     </Button>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={this.handleNext}
-                        className={classes.button}
-                      >
-                        {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                      </div>
+                      <div >
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={this.handleNext}
+                          className={classes.button}
+                        >
+                          Next
                       </Button>
-                      <Button
-                        // disabled={activeStep === 0}
-                        variant="contained"
-                        color="primary"
-                        component={Link}
-                        to="/finalizeQuery"
-                        className={classes.button}
-                      >
-                        Finish
+                      </div>
+                      <div >
+                        <Button
+                          // disabled={activeStep === 0}
+                          variant="contained"
+                          color="primary"
+                          component={Link}
+                          to="/finalizeQuery"
+                          className={classes.button}
+                        >
+                          Finish
                     </Button>
-                    <Button
-                    //  ****** ADD PREVIEW *******
-
-                        // disabled={activeStep === 0}
-                        variant="contained"
-                        color="primary"
-                        // component={Link}
-                        // to="/finalizeQuery"
-                        className={classes.button}
+                      </div>
+                      <div onClick={this.loadPreview}
                       >
-                        Preview
-                    </Button>
+                        <PreviewModal buttonClass={classes.button}  color="primary"/>
+                      </div>
                     </div>
                   </div>
                 )}

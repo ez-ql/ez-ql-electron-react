@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
   arrowPopper: {
+    textAlign: "center",
     '&[x-placement*="bottom"] $arrowArrow': {
       top: 0,
       left: 0,
@@ -16,7 +17,7 @@ const styles = theme => ({
         borderWidth: "0 1em 1em 1em",
         borderColor: `transparent transparent ${
           theme.palette.grey[700]
-          } transparent`
+        } transparent`
       }
     }
   },
@@ -67,14 +68,15 @@ class FieldButtons extends React.Component {
               thisField.field_type === "varchar"
                 ? "string"
                 : thisField.field_type === "enum"
-                  ? "custom code"
-                  : thisField.field_type === "zipcode"
-                    ? "zip code"
-                    : thisField.field_type;
+                ? "custom code"
+                : thisField.field_type === "zipcode"
+                ? "zip code"
+                : thisField.field_type;
             let example =
               type === "string"
                 ? `"${thisField.field_example}"`
                 : thisField.field_example;
+
             return (
               <div>
                 <Tooltip
