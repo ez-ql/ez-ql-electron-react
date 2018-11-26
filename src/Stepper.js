@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Button from "@material-ui/core/Button";
-import PreviewPanel from "./PreviewPanel";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -58,7 +57,8 @@ class HorizontalStepper extends Component {
     return ["Aggregate Fields", "Filter by Field Value", "Sort by Field Value"];
   };
 
-  handleNext = () => {
+  handleNext = (event) => {
+    ipcRenderer.send('async-new-query')
     const { activeStep } = this.state;
     let { skipped } = this.state;
     if (this.isStepSkipped(activeStep)) {
@@ -224,8 +224,6 @@ class HorizontalStepper extends Component {
                 ...qualifiedFieldsToAdd
               ];
               sharedObject.currQuery.qualifiedFields = newQualifiedFields;
-
-              ipcRenderer.send("async-new-query");
             }
             this.setState(state => ({
               previewExpanded: !state.previewExpanded
