@@ -9,6 +9,7 @@ class Filter extends React.Component {
       tableToFilter: "",
       tableFields: [],
       fieldToFilter: "",
+      fieldToFilterType: "",
       filteredFields: [],
       operator: "",
       userEntered: "",
@@ -33,12 +34,12 @@ class Filter extends React.Component {
   }
 
   handleSelectedTable(table) {
-    let tableFields = []
+    let tableFields = [];
     this.state.selectedModels.forEach(model => {
-      if(table === model.model_name) {
-        tableFields = tableFields.concat(model.fields)
+      if (table === model.model_name) {
+        tableFields = tableFields.concat(model.fields);
       }
-    })
+    });
     this.setState({
       tableToFilter: table,
       tableFields
@@ -58,12 +59,15 @@ class Filter extends React.Component {
         : ["equals", "does not equal"];
     this.setState({
       availableFilters,
-      fieldToFilter: field
+      fieldToFilter: field,
+      fieldToFilterType: fieldToFilter.field_type
     });
   }
 
   handleFieldFiltering(operator) {
-    const fieldToFilter = `${this.state.fieldToFilter} ${operator}`;
+    const fieldToFilter = `${this.state.fieldToFilter} ${
+      this.state.fieldFilterOptions[operator]
+    }`;
     this.setState({
       fieldToFilter,
       operator
@@ -84,7 +88,13 @@ class Filter extends React.Component {
     event.preventDefault();
     const fieldToFilter = `${this.state.tableToFilter}.${
       this.state.fieldToFilter
-    } ${this.state.userEntered}`;
+    } ${
+      this.state.fieldToFilterType === "integer" ||
+      this.state.fieldToFilterType === "decimal" ||
+      this.state.fieldToFilterType === "year"
+        ? `${this.state.userEntered}`
+        : `'${this.state.userEntered}'`
+    }`;
     const filteredFields = [...this.state.filteredFields];
     filteredFields.push(fieldToFilter);
     const where = filteredFields.join(" AND ");
@@ -103,12 +113,14 @@ class Filter extends React.Component {
     const selectedModels = currQuery.selectedModelsAndFields;
     let selectedFields = [];
     currQuery.selectedModelsAndFields.forEach(model => {
-      const modelDetail = models.filter(globalModel => globalModel.model_name === model.model_name)
+      const modelDetail = models.filter(
+        globalModel => globalModel.model_name === model.model_name
+      );
       modelDetail[0].fields.forEach(globalField => {
-        if(model.fields.includes(globalField.field_name)) {
-        selectedFields.push(globalField)
+        if (model.fields.includes(globalField.field_name)) {
+          selectedFields.push(globalField);
         }
-      })
+      });
     });
     this.setState({
       selectedFields,
