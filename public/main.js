@@ -7,7 +7,6 @@ const path = require("path");
 const url = require("url");
 const squel = require("squel");
 const isDev = require("electron-is-dev");
-// const process = require('process')
 
 const connectionString = "postgresql://localhost:5432/BikeStores";
 // const ezqlConnectionString = "postgresql://localhost:5432/ez-ql";
@@ -120,7 +119,8 @@ global.sharedObj = {
     selectedModel: {}, //e.g. {qualifiedField: customers.last_name", ascending: false} --> DESC, {qualifiedField: "customers.first_name", ascending: true} --> ascending .order("customers.last_name", false)
     // addedModel: [], // array of objects e.g. {model_id: 3 , model_name: '', ...} potentially delete
     // addedModelFields: [], // potentially delete
-    selectedModelsAndFields: [] // array of objects
+    selectedModelsAndFields: [], // array of objects
+    selectedModel: {}
   },
   sqlQuery: "" //sql query string for preview reference
 };

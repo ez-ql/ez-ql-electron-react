@@ -12,16 +12,16 @@ const Table = props => {
   }
   const rowValuesOnly = data.map(row => Object.values(row));
 
-  // const options = {
-  //   //tbd
-  // };
+  const options = {
+    responsive: "scroll"
+  };
 
   return (
     <MUIDataTable
       title={"Preview results"}
       data={rowValuesOnly}
       columns={prettyColumnNames}
-      //options={options}
+      options={options}
     />
   );
 };

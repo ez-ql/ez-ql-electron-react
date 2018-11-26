@@ -33,7 +33,7 @@ const styles = theme => ({
 class PreviewModal extends React.Component {
   state = {
     open: false,
-    previewData: [],
+    data: [],
     numFields: 0,
     numRows: 0,
     sqlQuery: ""
@@ -44,7 +44,7 @@ class PreviewModal extends React.Component {
       console.log("PREVIEW MODAL MOUNTED");
       console.log("***response received", arg);
       this.setState({
-        previewData: arg.slice(0, 10),
+        data: arg.slice(0, 10),
         numFields: Object.keys(arg[0]).length,
         numRows: arg.length,
         sqlQuery: electron.remote.getGlobal("sharedObj").sqlQuery
@@ -66,13 +66,31 @@ class PreviewModal extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { previewData, numFields, numRows, sqlQuery } = this.state;
+    const { data, numFields, numRows, sqlQuery } = this.state;
 
     return (
       <div>
-        <Button className="Button" onClick={this.handleOpen}>
+        {
+          this.props.buttonClass ?
+        <Button
+          variant="contained"
+          className={this.props.buttonClass}
+          className="Button"
+          color={this.props.color}
+          onClick={this.handleOpen}
+        >
           Preview
         </Button>
+        :
+        <Button
+        variant="contained"
+        className="Button"
+        color={this.props.color}
+        onClick={this.handleOpen}
+      >
+        Preview
+      </Button>
+        }
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"

@@ -4,13 +4,11 @@ import "./App.css";
 import MakeQuery from "./MakeQuery";
 import StartQuery from "./StartQuery";
 import { Route, Switch } from "react-router-dom";
-import AppBar from "./AppBar";
-import Project1 from "./Project1";
-import FinalizeQuery from "./FinalizeQuery";
-import HorizontalStepper from "./Stepper";
-// import { ContentLink } from "material-ui/svg-icons";
-import { Link } from "react-router-dom";
-// import Drawer from './Drawer'
+import AppBar from './AppBar'
+import Project1 from './Project1'
+import Joins from './Joins'
+import FinalizeQuery from './FinalizeQuery'
+import HorizontalStepper from './Stepper'
 
 class App extends Component {
   render() {

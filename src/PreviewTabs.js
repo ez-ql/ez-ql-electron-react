@@ -36,11 +36,11 @@ class PreviewTabs extends React.Component {
   };
 
   render() {
-    const { previewData, numFields, numRows, sqlQuery } = this.props.props;
+    const { data, numFields, numRows, sqlQuery } = this.props.props;
     console.log("*****props.props****", this.props.props);
     const { classes } = this.props;
     const { selectedTab } = this.state;
-
+    console.log('PREVIEWDATA', data)
     return (
       <Paper elevation={0} className={classes.root}>
         <Tabs
@@ -61,8 +61,8 @@ class PreviewTabs extends React.Component {
               Please submit your request to receive the complete result.
             </Typography>{" "}
             <Typography component="div">
-              {previewData.length > 0 ? (
-                <Table data={previewData} className="table" />
+              {data.length > 0 ? (
+                <Table data={data} className="table" />
               ) : (
                 "Loading..."
               )}
@@ -74,7 +74,7 @@ class PreviewTabs extends React.Component {
             <Typography variant="caption" style={{ marginBottom: 15 }}>
               Your current request will result in this many rows and columns:
             </Typography>
-            {previewData.length > 0 ? (
+            {data.length > 0 ? (
               <Typography>
                 Instances (rows): {numRows}
                 <br />
@@ -93,7 +93,7 @@ class PreviewTabs extends React.Component {
                   For your reference you can find the SQL query used to produce
                   the current preview data or results below.
                 </Typography>
-                {previewData.length > 0 ? (
+                {data.length > 0 ? (
                   <Typography className={classes.monospace}>
                     {sqlQuery}
                   </Typography>
