@@ -49,7 +49,7 @@ class Aggregate extends Component {
     let parentModel = "";
     this.state.selectedModels.forEach(model => {
       const filteredFields = model.fields.filter(
-        globalField => globalField.field_name === field
+        globalField => globalField === field
       );
       filteredFields.length && (parentModel = model.model_name);
     });
@@ -77,7 +77,7 @@ class Aggregate extends Component {
       let parentModel = "";
       this.state.selectedModels.forEach(model => {
         const filteredFields = model.fields.filter(
-          globalField => globalField.field_name === field
+          globalField => globalField === field
         );
         filteredFields.length && (parentModel = model.model_name);
       });
@@ -89,7 +89,7 @@ class Aggregate extends Component {
         let parentModel = "";
         this.state.selectedModels.forEach(model => {
           const filteredFields = model.fields.filter(
-            globalField => globalField.field_name === field
+            globalField => globalField === field
           );
           filteredFields.length && (parentModel = model.model_name);
         });

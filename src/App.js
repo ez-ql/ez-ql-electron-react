@@ -8,6 +8,7 @@ import AppBar from './AppBar'
 import Project1 from './Project1'
 import Joins from './Joins'
 import FinalizeQuery from './FinalizeQuery'
+import HorizontalStepper from './Stepper'
 // import { ContentLink } from "material-ui/svg-icons";
 import { Link } from 'react-router-dom'
 // import Drawer from './Drawer'
@@ -27,6 +28,7 @@ class App extends Component {
           <Route path="/project1" component={Project1} />
           <Route path='/finalizeQuery' component={FinalizeQuery} />
           <Route path="/joins" component={Joins} />
+          <Route path='/refineQuery' component={HorizontalStepper} />
           {/*ADJUST AS APPLICABLE Default route*/}
         </Switch>
         </div>

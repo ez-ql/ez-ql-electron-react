@@ -259,6 +259,11 @@ class MakeQuery extends Component {
                 START OVER
               </Button>
             </div>
+            <div>
+              <Button className="Button" component={Link} to="/refineQuery">
+                REFINE QUERY
+              </Button>
+            </div>
           </div>
         </div>
         <div
