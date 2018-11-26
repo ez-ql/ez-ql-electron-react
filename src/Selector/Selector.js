@@ -179,6 +179,7 @@ export default class Selector extends Component {
   //takes str, not array, like in rest of query-builder
   formatTableAndFieldNames = str => {
     let mod;
+    if (!str) return str;
     if (str.includes("_")) {
       let [first, second] = str.split("_");
       mod = `${first.charAt(0).toUpperCase()}${first.slice(1)} ${second

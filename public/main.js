@@ -7,7 +7,6 @@ const path = require("path");
 const url = require("url");
 const squel = require("squel");
 const isDev = require("electron-is-dev");
-// const process = require('process')
 
 const connectionString = "postgresql://localhost:5432/BikeStores";
 // const ezqlConnectionString = "postgresql://localhost:5432/ez-ql";

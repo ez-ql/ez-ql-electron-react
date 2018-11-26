@@ -196,10 +196,10 @@ class HorizontalStepper extends Component {
                           Finish
                     </Button>
                       </div>
-                      <div onClick={this.loadPreview}
+                      {/* <div onClick={this.loadPreview}
                       >
                         <PreviewModal buttonClass={classes.button}  color="primary"/>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 )}

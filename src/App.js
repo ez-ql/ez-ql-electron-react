@@ -9,28 +9,24 @@ import Project1 from './Project1'
 import Joins from './Joins'
 import FinalizeQuery from './FinalizeQuery'
 import HorizontalStepper from './Stepper'
-// import { ContentLink } from "material-ui/svg-icons";
-import { Link } from 'react-router-dom'
-// import Drawer from './Drawer'
 
 class App extends Component {
-
   render() {
     return (
       <div className="App">
         <header className="App-header Flex-Container">
           <AppBar />
         </header>
-        <div className='App-body'>
-        <Switch>
-          <Route path="/startQuery" component={StartQuery} />
-          <Route path="/makeQuery" component={MakeQuery} />
-          <Route path="/project1" component={Project1} />
-          <Route path='/finalizeQuery' component={FinalizeQuery} />
-          <Route path="/joins" component={Joins} />
-          <Route path='/refineQuery' component={HorizontalStepper} />
-          {/*ADJUST AS APPLICABLE Default route*/}
-        </Switch>
+        <div className="App-body">
+          <Switch>
+            <Route path="/startQuery" component={StartQuery} />
+            <Route path="/makeQuery" component={MakeQuery} />
+            <Route path="/project1" component={Project1} />
+            <Route path="/finalizeQuery" component={FinalizeQuery} />
+            <Route path="/refineQuery" component={HorizontalStepper} />
+            <Route component={StartQuery} />
+            {/*ADJUST LAST LINE AS APPLICABLE Default route*/}
+          </Switch>
         </div>
       </div>
     );
