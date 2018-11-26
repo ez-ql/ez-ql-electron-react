@@ -49,27 +49,26 @@ async function createWindow() {
       })
       .catch(err => console.error(err.stack)),
 
-      client
-      .query('SELECT user_id, users.organization_id, user_email, user_firstname, user_lastname, is_admin, organization_name FROM users LEFT JOIN organizations ON users.organization_id = organizations.organization_id WHERE user_id = 1'
+    client
+      .query(
+        "SELECT user_id, users.organization_id, user_email, user_firstname, user_lastname, is_admin, organization_name FROM users LEFT JOIN organizations ON users.organization_id = organizations.organization_id WHERE user_id = 1"
       )
       .then(res => {
-       global.sharedObj.user = res.rows[0]
+        global.sharedObj.user = res.rows[0];
       })
       .catch(err => console.error(err.stack)),
 
-      client
-      .query('SELECT * FROM databases'
-      )
+    client
+      .query("SELECT * FROM databases")
       .then(res => {
-       global.sharedObj.databases = res.rows
+        global.sharedObj.databases = res.rows;
       })
       .catch(err => console.error(err.stack)),
 
-      client
-      .query('SELECT * from projects'
-      )
+    client
+      .query("SELECT * from projects")
       .then(res => {
-       global.sharedObj.projects = res.rows
+        global.sharedObj.projects = res.rows;
       })
       .catch(err => console.error(err.stack)),
 
@@ -78,12 +77,12 @@ async function createWindow() {
         "SELECT * FROM userqueries LEFT JOIN queries ON userqueries.query_id = queries.query_id"
       )
       .then(res => {
-        global.sharedObj.queries = res.rows
+        global.sharedObj.queries = res.rows;
         client.end();
       })
       .catch(err => console.error(err.stack))
   ]);
-  console.log('globalObj initial load', global.sharedObj)
+  console.log("globalObj initial load", global.sharedObj);
 }
 
 // const pool = new Pool({ connectionString })
@@ -104,7 +103,7 @@ global.sharedObj = {
   user: {},
   databases: [],
   projects: [],
-  queries: [],  
+  queries: [],
   currQuery: {
     from: "", // e.g. 'orders'
     fields: [], // e.g. ['order_id', 'order_date', 'customer_id']
@@ -114,7 +113,8 @@ global.sharedObj = {
     leftRef: "", // e.g. 'orders.customer_id'  qualified field name (foreign key)
     rightRef: "", // e.g. 'customers.customer_id' qualified field name (primary key)
     group: "", // e.g. 'customers.customer_id, orders.order_date',
-    order: [], //e.g. {qualifiedField: customers.last_name", ascending: false} --> DESC, {qualifiedField: "customers.first_name", ascending: true} --> ascending .order("customers.last_name", false)
+    order: [],
+    selectedModel: {}, //e.g. {qualifiedField: customers.last_name", ascending: false} --> DESC, {qualifiedField: "customers.first_name", ascending: true} --> ascending .order("customers.last_name", false)
     // addedModel: [], // array of objects e.g. {model_id: 3 , model_name: '', ...} potentially delete
     // addedModelFields: [], // potentially delete
     selectedModelsAndFields: [] // array of objects
