@@ -7,6 +7,7 @@ const path = require("path");
 const url = require("url");
 const squel = require("squel");
 const isDev = require("electron-is-dev");
+// const process = require('process')
 
 const connectionString = "postgresql://localhost:5432/BikeStores";
 // const ezqlConnectionString = "postgresql://localhost:5432/ez-ql";
@@ -21,6 +22,8 @@ async function createWindow() {
       ? "http://localhost:3000"
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
+  mainWindow.webContents.openDevTools();
+
   mainWindow.on("closed", () => (mainWindow = null));
 
   console.log("***db schema arg main***");
