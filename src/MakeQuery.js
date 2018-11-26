@@ -297,11 +297,8 @@ class MakeQuery extends Component {
               </Button>
             </div>
             <div onClick={this.loadPreview}>
-              <PreviewModal loadPreview={this.loadPreview} />
+              <PreviewModal />
             </div>
-          </div>
-          <div onClick={this.loadPreview}>
-            <PreviewPanel />
           </div>
         </div>
       </div>

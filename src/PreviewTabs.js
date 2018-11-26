@@ -3,15 +3,13 @@ import Paper from "@material-ui/core/Paper";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Table from "./Table";
-import TableWithCSV from "./TableWithCSV";
-import TableBootstrap from "./Table_react-bootstrap";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
 function TabContainer(props) {
   return (
     <Typography component="div" style={{ padding: 8 * 3 }}>
-      {props.children}
+      {props.children} d
     </Typography>
   );
 }
@@ -64,9 +62,9 @@ class PreviewTabs extends React.Component {
             </Typography>{" "}
             <Typography component="div">
               {previewData.length > 0 ? (
-                <TableWithCSV data={previewData} className="table" />
+                <Table data={previewData} className="table" />
               ) : (
-                "Loading"
+                "Loading..."
               )}
             </Typography>
           </TabContainer>
@@ -76,8 +74,15 @@ class PreviewTabs extends React.Component {
             <Typography variant="caption" style={{ marginBottom: 15 }}>
               Your current request will result in this many rows and columns:
             </Typography>
-            <Typography>Instances (rows): {numRows}</Typography>
-            <Typography>Fields (columns): {numFields}</Typography>
+            {previewData.length > 0 ? (
+              <Typography>
+                Instances (rows): {numRows}
+                <br />
+                Fields (columns): {numFields}
+              </Typography>
+            ) : (
+              "Loading..."
+            )}
           </TabContainer>
         )}
         {selectedTab === 2 && (
@@ -88,9 +93,13 @@ class PreviewTabs extends React.Component {
                   For your reference you can find the SQL query used to produce
                   the current preview data or results below.
                 </Typography>
-                <Typography className={classes.monospace}>
-                  {sqlQuery}
-                </Typography>
+                {previewData.length > 0 ? (
+                  <Typography className={classes.monospace}>
+                    {sqlQuery}
+                  </Typography>
+                ) : (
+                  "Loading..."
+                )}
               </div>
             ) : (
               <Typography>There was no query submitted.</Typography>
