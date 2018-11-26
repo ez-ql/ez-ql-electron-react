@@ -104,7 +104,7 @@ global.sharedObj = {
   user: {},
   databases: [],
   projects: [],
-  queries: [],  
+  queries: [],
   currQuery: {
     from: "", // e.g. 'orders'
     fields: [], // e.g. ['order_id', 'order_date', 'customer_id']
@@ -117,7 +117,8 @@ global.sharedObj = {
     order: [], //e.g. {qualifiedField: customers.last_name", ascending: false} --> DESC, {qualifiedField: "customers.first_name", ascending: true} --> ascending .order("customers.last_name", false)
     // addedModel: [], // array of objects e.g. {model_id: 3 , model_name: '', ...} potentially delete
     // addedModelFields: [], // potentially delete
-    selectedModelsAndFields: [] // array of objects
+    selectedModelsAndFields: [], // array of objects
+    selectedModel: {}
   },
   sqlQuery: "" //sql query string for preview reference
 };

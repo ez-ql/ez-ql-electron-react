@@ -221,18 +221,7 @@ class MakeQuery extends Component {
               )}
             </div>
             <div className='Margin-top-10'>
-              {!this.state.nextView && (
-                <div>
-                  <Button
-                    type="submit"
-                    className="Button"
-                    onClick={this.toggleView}
-                  >
-                    connect another table
-                  </Button>
-                </div>
-              )}
-              <div>
+              {/* <div>
               <Button
                 component={Link}
                 to="/joins"
@@ -241,17 +230,19 @@ class MakeQuery extends Component {
               >
                 Joins
               </Button>
-              </div>
+              </div> */}
               <div>
-                {this.state.selectedModelsAndFields.length === 2 && (
+                {/* {this.state.selectedModelsAndFields.length === 2 && (
                   <div>
                     <FormDialog onClick={this.joinStep} />
                   </div>
-                )}
+                )} */}
               </div>
             </div>
-            <div>
+            <div className="Row Center Row-buttons ">
+            <div className="Margin-buttons">
               <Button
+                variant="contained"
                 className="Button"
                 component={Link}
                 to="/startQuery"
@@ -259,11 +250,29 @@ class MakeQuery extends Component {
                 START OVER
               </Button>
             </div>
-            <div>
-              <Button className="Button" component={Link} to="/refineQuery">
+            <div className="Margin-buttons">
+              <Button
+                variant="contained"
+                className="Button"
+                component={Link}
+                to="/refineQuery"
+              >
                 REFINE QUERY
               </Button>
             </div>
+            </div>
+            {(!this.state.nextView && this.state.selectedModelsAndFields.length < 2) && (
+                <div className="">
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    className="Button"
+                    onClick={this.toggleView}
+                  >
+                    connect another table
+                  </Button>
+                </div>
+              )}
           </div>
         </div>
         <div

@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import Flickity from "flickity";
 
 const itemStyle = {
-  width: '200px',
-  height: '260px',
-  background: 'lightgrey',
-  borderRadius: '10px',
-  margin: '10px',
-  backgroundColor: 'rgb(105, 186, 186)',
-  border: 'rgb(92, 92, 92)'
+  width: "200px",
+  height: "260px",
+  background: "lightgrey",
+  borderRadius: "10px",
+  margin: "10px",
+  backgroundColor: "rgb(105, 186, 186)",
+  border: "rgb(92, 92, 92)"
   // width: "30%",
   // height: "260px",
   // background: "lightgrey",
@@ -54,10 +54,9 @@ export default class Selector extends Component {
     if (prevProps.items !== this.props.items) {
       this.appendChange();
     }
-
   }
 
-  initFlickity = (idx=this.scrollAt) => {
+  initFlickity = (idx = this.scrollAt) => {
     const options = {
       cellSelector: ".item",
       contain: false,
@@ -82,8 +81,9 @@ export default class Selector extends Component {
         selectedIndex: selectedIndex
       });
     }
-    const modelName = this.flkty.selectedSlide.cells[0].element.firstChild.classList[0];
-    console.log('MODEL NAME', modelName)
+    const modelName = this.flkty.selectedSlide.cells[0].element.firstChild
+      .classList[0];
+    console.log("MODEL NAME", modelName);
 
     this.props.selectedSlide(modelName);
   };
@@ -161,17 +161,17 @@ export default class Selector extends Component {
 
   dragEnd = e => {
     this.dragStarted = false;
-    const modelName = this.flkty.selectedSlide.cells[0].element.firstChild.classList[0];
+    const modelName = this.flkty.selectedSlide.cells[0].element.firstChild
+      .classList[0];
     this.props.selectedSlide(modelName);
   };
 
   appendChange() {
     if (this.flkty) {
-
-      console.log('SELECTED INERX', this.state.selectedIndex)
-      console.log('SELECTED FLKTY', this.flkty)
-        this.flkty.destroy();
-        this.initFlickity();
+      console.log("SELECTED INERX", this.state.selectedIndex);
+      console.log("SELECTED FLKTY", this.flkty);
+      this.flkty.destroy();
+      this.initFlickity();
     }
   }
 
@@ -192,9 +192,9 @@ export default class Selector extends Component {
 
   render() {
     const { items } = this.props;
-    console.log('SelectedIDX', this.state.selectedIndex)
+    console.log("SelectedIDX", this.state.selectedIndex);
     return (
-      <div >
+      <div>
         {/* <div ref={ch => this.wrapper = ch} >
           {items.map(item =>
             <div  style={itemStyle} className="item Grey">
@@ -205,16 +205,26 @@ export default class Selector extends Component {
               } */}
         <div ref={ch => (this.wrapper = ch)}>
           {items.map(item => (
-            <div style={itemStyle} className="item Grey">
-              <div className={`${item.model_name} inner White`} id={item.model_name}>{`${this.formatTableAndFieldNames(
-                item.model_name
-              )} Table`}</div>
-              {item.fields.map(category => (
-                <div className="inner">
-                  {this.formatTableAndFieldNames(category)}
-                  <button className="inner " onClick={() => this.props.removeField(category, item.model_name)}> x </button>
-                </div>
-              ))}
+            <div style={itemStyle} className="item Grey Display Column">
+              <div
+                className={`${item.model_name} inner White`}
+                id={item.model_name}
+              >{`${this.formatTableAndFieldNames(item.model_name)} Table`}</div>
+              <div>
+                {item.fields.map(category => (
+                  <div className="inner">
+                    {this.formatTableAndFieldNames(category)}
+                    <button
+                      className="inner"
+                      onClick={() =>
+                        this.props.removeField(category, item.model_name)
+                      }
+                    >
+                      x
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>

@@ -79,7 +79,8 @@ class Sort extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="Height-80 Title Column Center Width-50">
+      <div className="Display Column Center">
         <h3>Select a field to sort by</h3>
         {this.state.order.length
           ? `Currently sorted by: ${this.state.order
@@ -115,6 +116,7 @@ class Sort extends React.Component {
             Submit
           </button>
         </div>
+      </div>
       </div>
     );
   }
