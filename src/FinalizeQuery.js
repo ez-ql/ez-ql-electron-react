@@ -38,7 +38,6 @@ class FinalizeQuery extends React.Component {
           <h1>COMPLETE YOUR QUERY</h1>
           <div>
             <Button className="Button" value="save">Save</Button>
-            <Button className="Button" value="export">Export</Button>
             <Button className="Button" value="export">Visualize</Button>
             <StartOverButton />
           </div>
