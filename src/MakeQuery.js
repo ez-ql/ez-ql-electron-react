@@ -53,6 +53,7 @@ class MakeQuery extends Component {
     this.joinStep = this.joinStep.bind(this);
     this.removeField = this.removeField.bind(this);
     this.selectAll = this.selectAll.bind(this);
+    this.loadPreview = this.loadPreview.bind(this);
   }
 
   componentDidMount() {
@@ -184,25 +185,22 @@ class MakeQuery extends Component {
 
   loadPreview = event => {
     console.log("*****SHARED OBJECT******", sharedObject);
-    //only do this if panel is about to expand
-    if (!this.state.previewExpanded) {
-      const [qualifiedFieldsToAdd] = this.state.selectedModelsAndFields.map(
-        modelAndFields =>
-          modelAndFields.fields.map(
-            field => `${modelAndFields.model_name}.${field}`
-          )
-      );
-      const newQualifiedFields = [
-        ...sharedObject.currQuery.qualifiedFields,
-        ...qualifiedFieldsToAdd
-      ];
-      sharedObject.currQuery.qualifiedFields = newQualifiedFields;
+    const [qualifiedFieldsToAdd] = this.state.selectedModelsAndFields.map(
+      modelAndFields =>
+        modelAndFields.fields.map(
+          field => `${modelAndFields.model_name}.${field}`
+        )
+    );
+    const newQualifiedFields = [
+      ...electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields,
+      ...qualifiedFieldsToAdd
+    ];
 
-      ipcRenderer.send("async-new-query");
-    }
-    this.setState(state => ({
-      previewExpanded: !state.previewExpanded
-    }));
+    electron.remote.getGlobal(
+      "sharedObj"
+    ).currQuery.qualifiedFields = newQualifiedFields;
+
+    ipcRenderer.send("async-new-query");
   };
 
   render() {
@@ -275,8 +273,11 @@ class MakeQuery extends Component {
               </Button>
             </div>
             <div onClick={this.loadPreview}>
-              <PreviewModal />
+              <PreviewModal loadPreview={this.loadPreview} />
             </div>
+          </div>
+          <div onClick={this.loadPreview}>
+            <PreviewPanel />
           </div>
         </div>
       </div>

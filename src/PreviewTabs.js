@@ -3,6 +3,7 @@ import Paper from "@material-ui/core/Paper";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Table from "./Table";
+import TableWithCSV from "./TableWithCSV";
 import TableBootstrap from "./Table_react-bootstrap";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
@@ -38,12 +39,12 @@ class PreviewTabs extends React.Component {
 
   render() {
     const { previewData, numFields, numRows, sqlQuery } = this.props.props;
-    console.log(this.props.props);
+    console.log("*****props.props****", this.props.props);
     const { classes } = this.props;
     const { selectedTab } = this.state;
 
     return (
-      <Paper elevation="0" className={classes.root}>
+      <Paper elevation={0} className={classes.root}>
         <Tabs
           value={this.state.selectedTab}
           indicatorColor="primary"
@@ -60,9 +61,13 @@ class PreviewTabs extends React.Component {
               This is a preview - only up to the first 10 rows of your current
               request are shown. <br />
               Please submit your request to receive the complete result.
-            </Typography>
+            </Typography>{" "}
             <Typography component="div">
-              <TableBootstrap data={previewData} className="table" />
+              {previewData.length > 0 ? (
+                <TableWithCSV data={previewData} className="table" />
+              ) : (
+                "Loading"
+              )}
             </Typography>
           </TabContainer>
         )}

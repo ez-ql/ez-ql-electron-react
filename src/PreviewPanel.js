@@ -26,15 +26,15 @@ class PreviewPanel extends Component {
     super(props);
     this.state = {
       previewData: [],
-      fields: 0,
-      rows: 0,
+      numFields: 0,
+      numRows: 0,
       sqlQuery: ""
     };
   }
 
   componentDidMount() {
     ipcRenderer.on("async-query-reply", (event, arg) => {
-      console.log('PREVIEW PANEL')
+      console.log("PREVIEW PANEL");
       this.setState({
         previewData: arg.slice(0, 10),
         numFields: Object.keys(arg[0]).length,
