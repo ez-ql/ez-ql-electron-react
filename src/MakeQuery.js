@@ -11,6 +11,20 @@ const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
 const ipcRenderer = electron.ipcRenderer;
 
+const initialCurrQuery = {
+  from: "",
+  fields: [],
+  where: "",
+  qualifiedFields: [],
+  joinType: "",
+  leftRef: "",
+  rightRef: "",
+  group: "",
+  order: [],
+  selectedModelsAndFields: [],
+  selectedModel: {}
+};
+
 //func to convert table and field labels to human-readable format
 //takes an array
 //no regex necessary (for our sample data set)
@@ -263,7 +277,17 @@ class MakeQuery extends Component {
               </div>
             </div>
             <div>
-              <Button className="Button" component={Link} to="/startQuery">
+              <Button
+                className="Button"
+                onClick={() => {
+                  electron.remote.getGlobal(
+                    "sharedObj"
+                  ).currQuery = initialCurrQuery;
+                  electron.remote.getGlobal("sharedObj").sqlQuery = "";
+                }}
+                component={Link}
+                to="/startQuery"
+              >
                 START OVER
               </Button>
             </div>
