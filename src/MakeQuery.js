@@ -247,7 +247,6 @@ class MakeQuery extends Component {
   render() {
     //one issue: right now, in order to pass selectedData and query as props to RefineQuery and Joins, you need to click Submit - we should change that
     return (
-      <div>
         <div className="Flex-Container Width-75 Height-75">
           <div className="Column Center Height-50">
             {this.state.joinModal && (
@@ -279,10 +278,41 @@ class MakeQuery extends Component {
                 />
               )}
             </div>
-            <div>
-              {!this.state.nextView && (
-                <div>
+            <div className='Margin-top-10 Column '>
+            </div>
+            <div className="Column Align-self-center  Center ">
+            {/* <div className="Margin-buttons Row"> */}
+              {/* <Button
+                variant="contained"
+                className="Button"
+                component={Link}
+                to="/startQuery"
+              >
+                START OVER
+              </Button> */}
+ {/* </div> */}
+            <div className="Row ">
+            <div className="Margin-buttons Row">
+              <StartOverButton />
+            </div>
+            <div className="Margin-buttons Row">
+              <Button
+                variant="contained"
+                className="Button"
+                component={Link}
+                to="/refineQuery"
+              >
+                REFINE QUERY
+              </Button>
+              </div>
+              <div className="Margin-buttons" onClick={this.loadPreview}>
+              <PreviewModal />
+            </div>
+            </div>
+            {(!this.state.nextView && this.state.selectedModelsAndFields.length < 2) && (
+                <div className="Maring-buttons">
                   <Button
+                    variant="contained"
                     type="submit"
                     className="Button"
                     onClick={this.toggleView}
@@ -291,25 +321,6 @@ class MakeQuery extends Component {
                   </Button>
                 </div>
               )}
-              <div>
-                {this.state.selectedModelsAndFields.length === 2 && (
-                  <div>
-                    <FormDialog onClick={this.joinStep} />
-                  </div>
-                )}
-              </div>
-            </div>
-            <div>
-              <StartOverButton />
-            </div>
-            <div>
-              <Button className="Button" component={Link} to="/refineQuery">
-                REFINE QUERY
-              </Button>
-            </div>
-            <div onClick={this.loadPreview}>
-              <PreviewModal />
-            </div>
           </div>
         </div>
       </div>

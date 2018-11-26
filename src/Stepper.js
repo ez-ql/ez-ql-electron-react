@@ -9,16 +9,37 @@ import Aggregate from "./Aggregate";
 import Filter from "./Filter";
 import Sort from "./Sort";
 import { Link } from "react-router-dom";
+import StepConnector from '@material-ui/core/StepConnector';
+import PreviewModal from "./PreviewModal";
 
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
 const ipcRenderer = electron.ipcRenderer;
 
-const styles = {
-  iconContainer: {
-    transform: "scale(2)"
+
+
+const styles = theme => ({
+  // iconContainer: {
+  //   transform: "scale(1.5)"
+  // },
+  root: {
+    width: '90%',
+    backgroundColor: "rgb(181, 228, 228)",
+  },
+  button: {
+    marginRight: theme.spacing.unit,
+    marginTop: theme.spacing.unit,
+  },
+  instructions: {
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
+  },
+  stepperColor: {
+    backgroundColor: "rgb(181, 228, 228)",
+    // justifyContent: 'flex-end'
+    // alignSelf: 'flex-end'
   }
-};
+});
 
 class HorizontalStepper extends Component {
   constructor(props) {
@@ -37,9 +58,7 @@ class HorizontalStepper extends Component {
   };
 
   handleNext = (event) => {
-    if (event.target.value === 'Finish') {
-      ipcRenderer.send('async-new-query')
-    }
+    ipcRenderer.send('async-new-query')
     const { activeStep } = this.state;
     let { skipped } = this.state;
     if (this.isStepSkipped(activeStep)) {
@@ -87,81 +106,103 @@ class HorizontalStepper extends Component {
   render() {
     const { activeStep, steps } = this.state;
     const { classes } = this.props;
+
     return (
-      <div className={classes.root}>
-        <div className="Flex-Container Width-75 Height-75">
-          <div className="Column Center Height-50">
-            <div>
+      <div className="Flex-Container Width-75 Height-75 Column Center ">
+        <div className="Column Height-50 Display Center ">
+          <div >
+            <div >
               {activeStep === steps.length ? (
-                <div onClick={() => ipcRenderer.send("async-new-query")}>
-                  <Button value="finalize" component={Link} to="/finalizeQuery">
+                <div>
+                  {/* <Button value="finalize" component={Link} to="/finalizeQuery">
                     Review Query Results
                   </Button>
                   <Button value="finalize" component={Link} to="/makeQuery">
                     Revise Table Selection
-                  </Button>
+                  </Button> */}
                 </div>
               ) : (
-                <div>
-                  <div>
-                    {activeStep === 0 ? (
-                      <Aggregate />
-                    ) : activeStep === 1 ? (
-                      <Filter />
-                    ) : (
-                      <Sort />
-                    )}
-                  </div>
-                  <div>
-                    <Stepper
-                      activeStep={activeStep}
-                      orientation="horizontal"
-                      connector={true}
-                    >
-                      {steps.map((label, index) => {
-                        const props = {};
-                        const labelProps = {};
-                        labelProps.optional = (
-                          <Typography variant="caption">Optional</Typography>
-                        );
-                        if (this.isStepSkipped(index)) {
-                          props.completed = false;
-                        }
-                        return (
-                          <Step key={label} {...props} className={classes.step}>
-                            <StepLabel
-                              {...labelProps}
-                              classes={{ iconContainer: classes.iconContainer }}
-                            >
-                              {label}
-                            </StepLabel>
-                          </Step>
-                        );
-                      })}
-                    </Stepper>
-                  </div>
-                  <div>
-                    <Button
-                      disabled={activeStep === 0}
-                      variant="contained"
-                      color="primary"
-                      onClick={this.handleBack}
-                      className={classes.button}
-                    >
-                      Back
+                  <div className='Column Display Width-60 ' >
+                    <div className="Align-self-center Width-30 Column Height-22 ">
+                      {activeStep === 0 ? (
+                        <Aggregate />
+                      ) : activeStep === 1 ? (
+                        <Filter />
+                      ) : (
+                            <Sort />
+                          )}
+                    </div>
+                    <div className="Column Width-30 Align-self-center ">
+                      <div className={classes.root}>
+                        <Stepper
+                          className={classes.stepperColor}
+                          activeStep={activeStep}
+                          orientation="horizontal"
+                        >
+                          {steps.map((label, index) => {
+                            const props = {};
+                            const labelProps = {};
+                            labelProps.optional = (
+                              <Typography variant="caption">Optional</Typography>
+                            );
+                            if (this.isStepSkipped(index)) {
+                              props.completed = false;
+                            }
+                            return (
+                              <Step key={label} {...props}>
+                                <StepLabel
+                                  {...labelProps}
+                                  classes={{ iconContainer: classes.iconContainer }}
+                                >
+                                  {label}
+                                </StepLabel>
+                              </Step>
+                            );
+                          })}
+                        </Stepper>
+                      </div>
+                    </div>
+                    <div className="Row-buttons">
+                      <div >
+                        <Button
+                          disabled={activeStep === 0}
+                          variant="contained"
+                          color="primary"
+                          onClick={this.handleBack}
+                          className={classes.button}
+                        >
+                          Back
                     </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={this.handleNext}
-                      className={classes.button}
-                      value={activeStep === steps.length - 1 ? "Finish" : "Next"}
-                    >
-                      {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                      </div>
+                      <div >
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={this.handleNext}
+                          className={classes.button}
+                        >
+                          Next
+                      </Button>
+                      </div>
+                      <div >
+                        <Button
+                          // disabled={activeStep === 0}
+                          variant="contained"
+                          color="primary"
+                          component={Link}
+                          to="/finalizeQuery"
+                          className={classes.button}
+                        >
+                          Finish
                     </Button>
+                      </div>
+                      {/* <div onClick={this.loadPreview}
+                      >
+                        <PreviewModal buttonClass={classes.button}  color="primary"/>
+                      </div> */}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
             </div>
           </div>
         </div>
@@ -189,6 +230,7 @@ class HorizontalStepper extends Component {
             }));
           }}
         >
+          <PreviewPanel />
         </div> */}
       </div>
     );

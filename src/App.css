@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-family: “Roboto”, sans-serif;
 }
 
 .App-logo {
@@ -42,7 +43,7 @@ table {
 .App-body {
   display: flex;
   justify-content: center;
-  background-color: rgb(17, 17, 41);
+  background-color: rgb(19, 19, 50);
   height: 100vh;
   /* opacity: .2; */
   z-index: -2;
@@ -95,8 +96,21 @@ table {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  padding: 2%;
-  min-height: 85px;
+  min-height: 5rem;
+  /* margin-top: 1rem; */
+}
+
+.min-Height-8 {
+  min-height: 8rem;
+}
+
+
+.Height-22 {
+  display: flex;
+  height: 20%;
+  min-height: 30rem;
+  width: 60%;
+  margin-top: 15%;
 }
 
 .Height-80 {
@@ -114,7 +128,7 @@ table {
 }
 
 .Height-50 {
-  min-height: 40px
+  min-height: 40px;
 }
 
 .Height-40 {
@@ -129,9 +143,15 @@ table {
 
 .Width-50 {
   width: 50%;
-  max-width: 50rem;
+  max-width: 30rem;
+  min-width: 18rem;
   border-radius: 10%;
   background-color: rgb(181, 228, 228);
+}
+
+
+.Width-100 {
+  width: 100%;
 }
 
 .Width-75 {
@@ -141,6 +161,14 @@ table {
   border-radius: 10%;
   background-color: rgb(181, 228, 228);
   margin-bottom: 3%;
+}
+
+.Width-60 {
+  width: 60rem;
+}
+
+.Width-30 {
+  width: 45rem
 }
 
 .Table-box {
@@ -160,8 +188,20 @@ table {
   display: flex;
 }
 
-.Margin-top {
-  margin-top: 10%;
+.Margin-top-10 {
+  margin-top: 1%;
+}
+
+.Margin-top-5 {
+  margin-top: 5%
+}
+
+.Margin-top-3 {
+  margin-top: 3%;
+}
+
+.Margin-top-1 {
+  margin-top: 1%;
 }
 
 h1 {
@@ -170,8 +210,23 @@ h1 {
 
 .Button {
   align-items: center;
-  background-color: grey;
-  color: white;
+  /* background-color: grey; */
+  /* color: white; */
+  text-align: center;
+  text-decoration: none;
+  cursor: default;
+  box-sizing: border-box;
+  border: 2px;
+  height: 40px;
+  font-size: 20px;
+  opacity: 0.5;
+  border-radius: 15%;
+  margin: 3px;
+  padding: 1px 7px 2px;
+}
+
+.SelectAll-Button {
+  align-items: center;
   text-align: center;
   text-decoration: none;
   cursor: default;
@@ -190,12 +245,21 @@ h1 {
   /* text-decoration: underline; */
 }
 
+.Light-green {
+  background-color:rgb(181, 228, 228)
+}
+
 .Grey {
   color: rgb(92, 92, 92);
 }
 
 .Lightgrey {
   background-color: rgb(220, 220, 220);
+  color: white
+}
+
+.Dark-blue {
+  background-color: rgb(41, 17, 17);
 }
 
 .Black {
@@ -213,4 +277,34 @@ h1 {
   to {
     transform: rotate(360deg);
   }
+}
+
+.Margin-buttons {
+  margin-top: 1rem;
+  padding: .5rem;
+}
+
+
+
+.Flex-start {
+  justify-content: flex-start;
+}
+
+.Display {
+  display: flex
+}
+
+.Align-self-end {
+  align-self: flex-end
+}
+
+.Align-self-center {
+  align-self: center
+}
+
+
+
+.Padding-3 {
+  padding: 1%;
+  margin-bottom: 3%
 }

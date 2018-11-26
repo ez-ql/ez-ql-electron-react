@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import ScrollMenu from "./ScrollMenu";
+import Button from "@material-ui/core/Button";
+
 const electron = window.require("electron");
 
 class Aggregate extends Component {
@@ -140,35 +142,41 @@ class Aggregate extends Component {
 
   render() {
     return (
-      <div>
-        <h3>Select Aggregator</h3>
+      <div className="Height-80 Title Column Center Width-50">
+      <div className="Display Column Center">
+        <h3>SELECT AGGREGATOR</h3>
         <ScrollMenu
           items={this.state.availableAggregators}
           handleChange={this.handleSelectedAggregator}
         />
         {this.state.selectedAggregator !== "" ? (
-          <div>
-            <div>
-              <h3>Select Field for {this.state.selectedAggregator}</h3>
+          <div className="Margin-top-5">
+            <div >
+              <h3>SELECT FIELD FOR {this.state.selectedAggregator}</h3>
               <ScrollMenu
                 items={this.state.availableFields}
                 handleChange={this.handleSelectedField}
               />
             </div>
-            <div>
-              <button onClick={this.handleSubmit} type="submit">
+            <div className="Margin-top-3">
+              <Button
+                variant="contained"
+                onClick={this.handleSubmit}
+                type="submit"
+              >
                 Submit
-              </button>
+              </Button>
             </div>
           </div>
         ) : null}
         {this.state.selectNextAggregator ? (
-          <div>
+          <div className='Row-buttons'>
             <button onClick={this.handleNextAggregator} type="submit">
               Select Another Aggregator
             </button>
           </div>
         ) : null}
+      </div>
       </div>
     );
   }
