@@ -7,13 +7,7 @@ class Joins extends Component {
     super(props);
     this.state = {
       baseModel: {},
-      baseModelFields: [],
-      addedModel: [],
-      addedModelFields: [],
-      fields: [],
-      selectedTableFields: [],
-      selectedTables: [],
-      tableToAdd: "",
+      addedModel: {},
       joinType: "",
       allJoinTypes: {
         "I want to see only records that have matching references in BOTH tables (inner join)":
@@ -27,7 +21,6 @@ class Joins extends Component {
       },
       refLeft: "",
       refRight: "",
-      tableFields: [],
       sharedObj: {},
       models: [],
       currQuery: {},
@@ -36,12 +29,6 @@ class Joins extends Component {
 
     this.handleSelectedJoinType = this.handleSelectedJoinType.bind(this);
     this.handleSubmitJoin = this.handleSubmitJoin.bind(this);
-  }
-
-  getRemainingTables(models, selectedTables, overlap = false) {
-    return models.filter(
-      model => overlap === selectedTables.some(table => table === model)
-    );
   }
 
   handleSelectedJoinType(type) {
@@ -68,18 +55,9 @@ class Joins extends Component {
 
     let leftRef = `${leftTableName}.${relation.model_foreign_field}`;
     let rightRef = `${rightTableName}.${relation.relatedmodel_primary_field}`;
-
-    const qualifiedFields = this.state.addedModelFields
-      .map(elem => `${rightTableName}.${elem}`)
-      .concat(
-        this.state.baseModelFields.map(elem => `${leftTableName}.${elem}`)
-      );
-
-    electron.remote.getGlobal(
-      "sharedObj"
-    ).currQuery.qualifiedFields = qualifiedFields;
     electron.remote.getGlobal("sharedObj").currQuery.leftRef = leftRef;
     electron.remote.getGlobal("sharedObj").currQuery.rightRef = rightRef;
+    this.props.handleClose()
   }
 
   componentDidMount() {
@@ -88,27 +66,18 @@ class Joins extends Component {
     let currQuery = electron.remote.getGlobal("sharedObj").currQuery;
     let selectedModelsAndFields = currQuery.selectedModelsAndFields.reverse();
     let baseModel = selectedModelsAndFields[0];
-    let baseModelFields = selectedModelsAndFields[0].fields;
     let addedModel = selectedModelsAndFields[1];
-    let addedModelFields = selectedModelsAndFields[1].fields;
 
     this.setState({
-      baseModelFields,
       baseModel,
       sharedObj,
       models,
       currQuery,
       addedModel,
-      addedModelFields
     });
   }
 
   render() {
-    if (this.state.models.length) {
-      const remainingTables = this.getRemainingTables(
-        this.state.models.map(elem => elem.model_name),
-        this.state.selectedTables
-      );
       return (
         <div>
           {
@@ -125,9 +94,6 @@ class Joins extends Component {
           }
         </div>
       );
-    } else {
-      return null;
-    }
   }
 }
 
