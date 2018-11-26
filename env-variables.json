@@ -1,0 +1,10 @@
+{
+  "EZ_QL_HOST":"ec2-50-17-203-51.compute-1.amazonaws.com",
+  "EZ_QL_DB": "d45kn1minul73v",
+  "EZ_QL_USER": "hbjkncszukjuhb",
+  "EZ_QL_PW": "e89c7a605f47579ca7f132bc6fb942e219d19062a48d724fb7a74be346308820",
+  "EZ_QL_CLIENT_1_HOST": "ec2-54-235-156-60.compute-1.amazonaws.com",
+  "EZ_QL_CLIENT_1_DB": "d8ef2eedu8cv6v",
+  "EZ_QL_CLIENT_1_USER": "keyenphllrjmii",
+  "EZ_QL_CLIENT_1_PW": "6b4cccd2b67193271ff121d6b5d2156bfd47eb8b14b262a384d223bbb861f869"
+}
