@@ -15,6 +15,7 @@
     "knex": "^0.15.2",
     "material-ui": "^1.0.0-beta.47",
     "material-ui-icons": "^1.0.0-beta.36",
+    "mui-datatables": "^2.0.0-beta-39",
     "pg": "^7.6.1",
     "react": "^16.6.3",
     "react-bootstrap-table-next": "^1.4.1",
