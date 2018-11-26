@@ -2,7 +2,7 @@ import React from 'react'
 import Button from "@material-ui/core/Button";
 
 const electron = window.require("electron");
-const sharedObject = electron.remote.getGlobal('sharedObj')
+// const sharedObject = electron.remote.getGlobal('sharedObj')
 
 class FinalizeQuery extends React.Component {
   constructor(props) {
@@ -13,7 +13,7 @@ class FinalizeQuery extends React.Component {
   }
 
   componentDidMount (){
-    const selectedModelsAndFields = sharedObject.currQuery.selectedModelsAndFields
+    const selectedModelsAndFields = electron.remote.getGlobal('sharedObj').currQuery.selectedModelsAndFields
     this.setState({ selectedModelsAndFields })
   }
 

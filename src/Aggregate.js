@@ -45,17 +45,13 @@ class Aggregate extends Component {
     });
   };
 
-  handleSelectedFields = field => {
+  handleSelectedField = field => {
     let parentModel = "";
-    electron.remote.getGlobal("sharedObj").models.forEach(model => {
+    this.state.selectedModels.forEach(model => {
       const filteredFields = model.fields.filter(
-        globalField => globalField.field_name === field
+        globalField => globalField === field
       );
-      if (
-        filteredFields.length &&
-        this.state.selectedModels.includes(model.model_name)
-      )
-        parentModel = model.model_name;
+      filteredFields.length && (parentModel = model.model_name);
     });
     const aggregatedFields = [...this.state.aggregatedFields];
     aggregatedFields.push(field);
@@ -79,15 +75,11 @@ class Aggregate extends Component {
     event.preventDefault();
     const fields = [...this.state.groupBy].map(field => {
       let parentModel = "";
-      electron.remote.getGlobal("sharedObj").models.forEach(model => {
+      this.state.selectedModels.forEach(model => {
         const filteredFields = model.fields.filter(
-          globalField => globalField.field_name === field
+          globalField => globalField === field
         );
-        if (
-          filteredFields.length &&
-          this.state.selectedModels.includes(model.model_name)
-        )
-          parentModel = model.model_name;
+        filteredFields.length && (parentModel = model.model_name);
       });
       return `${parentModel}.${field}`;
     });
@@ -95,15 +87,11 @@ class Aggregate extends Component {
     const group = [...this.state.groupBy]
       .map(field => {
         let parentModel = "";
-        electron.remote.getGlobal("sharedObj").models.forEach(model => {
+        this.state.selectedModels.forEach(model => {
           const filteredFields = model.fields.filter(
-            globalField => globalField.field_name === field
+            globalField => globalField === field
           );
-          if (
-            filteredFields.length &&
-            this.state.selectedModels.includes(model.model_name)
-          )
-            parentModel = model.model_name;
+          filteredFields.length && (parentModel = model.model_name);
         });
         return `${parentModel}.${field}`;
       })
@@ -132,24 +120,17 @@ class Aggregate extends Component {
 
   componentDidMount() {
     const globalObj = electron.remote.getGlobal("sharedObj");
-    const models = globalObj.models;
     const currQuery = globalObj.currQuery;
-    const selectedModels = [currQuery.addedModel[0].model_name];
-    selectedModels.push(currQuery.from);
+    const models = globalObj.models;
+    const selectedModels = currQuery.selectedModelsAndFields;
     let selectedFields = [];
-    selectedModels.forEach(model => {
-      const fields = models.filter(
-        globalModel => globalModel.model_name === model
-      )[0].fields;
-      const currentSelectedFields = selectedFields.map(
-        field => field.field_name
-      );
-      const filteredFields = fields.filter(
-        field =>
-          currQuery.fields.includes(field.field_name) &&
-          !currentSelectedFields.includes(field.field_name)
-      );
-      selectedFields = selectedFields.concat(filteredFields);
+    currQuery.selectedModelsAndFields.forEach(model => {
+      const modelDetail = models.filter(globalModel => globalModel.model_name === model.model_name)
+      modelDetail[0].fields.forEach(globalField => {
+        if(model.fields.includes(globalField.field_name)) {
+        selectedFields.push(globalField)
+        }
+      })
     });
     this.setState({
       selectedFields,
@@ -171,7 +152,7 @@ class Aggregate extends Component {
               <h3>Select Field for {this.state.selectedAggregator}</h3>
               <ScrollMenu
                 items={this.state.availableFields}
-                handleChange={this.handleSelectedFields}
+                handleChange={this.handleSelectedField}
               />
             </div>
             <div>

@@ -9,6 +9,7 @@ class Filter extends React.Component {
       tableToFilter: "",
       tableFields: [],
       fieldToFilter: "",
+      fieldToFilterType: "",
       filteredFields: [],
       operator: "",
       userEntered: "",
@@ -33,20 +34,15 @@ class Filter extends React.Component {
   }
 
   handleSelectedTable(table) {
-    const selectedTable = table;
-    const models = electron.remote.getGlobal("sharedObj").models;
-    const fields = models
-      .filter(globalModel => globalModel.model_name === selectedTable)[0]
-      .fields.map(field => field.field_name);
-    const selectedFields = this.state.selectedFields.map(
-      field => field.field_name
-    );
-    const filteredFields = fields.filter(field =>
-      selectedFields.includes(field)
-    );
+    let tableFields = [];
+    this.state.selectedModels.forEach(model => {
+      if (table === model.model_name) {
+        tableFields = tableFields.concat(model.fields);
+      }
+    });
     this.setState({
-      tableToFilter: selectedTable,
-      tableFields: filteredFields
+      tableToFilter: table,
+      tableFields
     });
   }
 
@@ -63,12 +59,15 @@ class Filter extends React.Component {
         : ["equals", "does not equal"];
     this.setState({
       availableFilters,
-      fieldToFilter: field
+      fieldToFilter: field,
+      fieldToFilterType: fieldToFilter.field_type
     });
   }
 
   handleFieldFiltering(operator) {
-    const fieldToFilter = `${this.state.fieldToFilter} ${operator}`;
+    const fieldToFilter = `${this.state.fieldToFilter} ${
+      this.state.fieldFilterOptions[operator]
+    }`;
     this.setState({
       fieldToFilter,
       operator
@@ -89,10 +88,15 @@ class Filter extends React.Component {
     event.preventDefault();
     const fieldToFilter = `${this.state.tableToFilter}.${
       this.state.fieldToFilter
-    } ${this.state.userEntered}`;
+    } ${
+      this.state.fieldToFilterType === "integer" ||
+      this.state.fieldToFilterType === "decimal" ||
+      this.state.fieldToFilterType === "year"
+        ? `${this.state.userEntered}`
+        : `'${this.state.userEntered}'`
+    }`;
     const filteredFields = [...this.state.filteredFields];
     filteredFields.push(fieldToFilter);
-    const mainModel = electron.remote.getGlobal("sharedObj").currQuery.from;
     const where = filteredFields.join(" AND ");
     electron.remote.getGlobal("sharedObj").currQuery.where = where;
     this.setState({
@@ -104,24 +108,19 @@ class Filter extends React.Component {
 
   componentDidMount() {
     const globalObj = electron.remote.getGlobal("sharedObj");
-    const models = globalObj.models;
     const currQuery = globalObj.currQuery;
-    const selectedModels = [...currQuery.addedTables];
-    selectedModels.push(currQuery.from);
+    const models = globalObj.models;
+    const selectedModels = currQuery.selectedModelsAndFields;
     let selectedFields = [];
-    selectedModels.forEach(model => {
-      const fields = models.filter(
-        globalModel => globalModel.model_name === model
-      )[0].fields;
-      const currentSelectedFields = selectedFields.map(
-        field => field.field_name
+    currQuery.selectedModelsAndFields.forEach(model => {
+      const modelDetail = models.filter(
+        globalModel => globalModel.model_name === model.model_name
       );
-      const filteredFields = fields.filter(
-        field =>
-          currQuery.fields.includes(field.field_name) &&
-          !currentSelectedFields.includes(field.field_name)
-      );
-      selectedFields = selectedFields.concat(filteredFields);
+      modelDetail[0].fields.forEach(globalField => {
+        if (model.fields.includes(globalField.field_name)) {
+          selectedFields.push(globalField);
+        }
+      });
     });
     this.setState({
       selectedFields,
@@ -138,7 +137,7 @@ class Filter extends React.Component {
           }
           <h3>Select table to filter</h3>
           <ScrollMenu
-            items={this.state.selectedModels}
+            items={this.state.selectedModels.map(model => model.model_name)}
             handleChange={this.handleSelectedTable}
           />
           {
