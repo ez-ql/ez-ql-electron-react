@@ -47,7 +47,7 @@ class PreviewModal extends React.Component {
         previewData: arg.slice(0, 10),
         numFields: Object.keys(arg[0]).length,
         numRows: arg.length,
-        sqlQuery: sharedObj.sqlQuery
+        sqlQuery: electron.remote.getGlobal("sharedObj").sqlQuery
       });
     });
   }
