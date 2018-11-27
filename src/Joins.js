@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import ScrollMenu from "./ScrollMenu";
+import Button from "@material-ui/core/Button";
 const electron = window.require("electron");
+
 
 class Joins extends Component {
   constructor(props) {
@@ -87,9 +89,12 @@ class Joins extends Component {
                 items={Object.keys(this.state.allJoinTypes)}
                 handleChange={this.handleSelectedJoinType}
               />
-              <button type="button" onClick={this.handleSubmitJoin}>
+              <Button
+                variant="contained"
+                type="button"
+                onClick={this.handleSubmitJoin}>
                 Submit
-              </button>
+              </Button>
             </div>
           }
         </div>

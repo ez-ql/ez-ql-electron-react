@@ -15,7 +15,7 @@ class StartQuery extends Component {
     console.log('**********HERE*******')
     console.log('MODELS', models)
     this.setState({ models })
-    
+
   }
 
   addModel(modelName) {
@@ -47,13 +47,12 @@ class StartQuery extends Component {
   };
 
   render() {
-    // console.log('shared', sharedObject)
     const models = this.state.models;
     let modModels;
     models.length
       ? (modModels = this.formatModelAndFieldNames(
-          models.map(elem => elem.model_name)
-        ))
+        models.map(elem => elem.model_name)
+      ))
       : console.log("no models yet");
 
     return (
@@ -65,16 +64,17 @@ class StartQuery extends Component {
         </div>
         <div className="Row-buttons Flex-Wrap">
           {models.length > 0
-            ? models.map(model => {
+            ? Object.keys(modModels).map(model => {
+              console.log('MODEL IN START QUERY', modModels[model])
                 return (
                   <div>
                     <Button
-                      onClick={() => this.addModel(model.model_name)}
+                      onClick={() => this.addModel(model)}
                       className="Row-buttons Button"
                       component={Link}
                       to="/makeQuery"
                     >
-                      {model.model_name}
+                      {modModels[model]}
                     </Button>
                   </div>
                 );

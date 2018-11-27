@@ -130,8 +130,8 @@ class Filter extends React.Component {
 
   render() {
     return (
-      <div>
-        <div>
+      <div className="Height-80 Title Column Center Width-50">
+      <div className="Display Column Center">
           {
             //step #1 - select table from tables previously selected - right now, this is only one b/c join feature is not written
           }

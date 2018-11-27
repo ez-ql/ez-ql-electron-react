@@ -7,7 +7,8 @@ const itemStyle = {
   background: "lightgrey",
   borderRadius: "10px",
   margin: "10px",
-  backgroundColor: "rgb(105, 186, 186)"
+  backgroundColor: "rgb(105, 186, 186)",
+  border: "rgb(92, 92, 92)"
   // width: "30%",
   // height: "260px",
   // background: "lightgrey",
@@ -203,28 +204,28 @@ export default class Selector extends Component {
                 item.fields.map(category =>
                 <div className='Grey'>{category} <button className="inner Lightgrey White" onClick={() => this.props.removeField(category, item.model_name)}> x </button></div>)
               } */}
-
         <div ref={ch => (this.wrapper = ch)}>
           {items.map(item => (
-            <div style={itemStyle} className="item Grey">
+            <div style={itemStyle} className="item Grey Display Column">
               <div
-                className={`${item.model_name} inner Grey`}
+                className={`${item.model_name} inner White`}
                 id={item.model_name}
               >{`${this.formatTableAndFieldNames(item.model_name)} Table`}</div>
-              {item.fields.map(category => (
-                <div className="inner">
-                  {this.formatTableAndFieldNames(category)}
-                  <button
-                    className="inner Lightgrey White"
-                    onClick={() =>
-                      this.props.removeField(category, item.model_name)
-                    }
-                  >
-                    {" "}
-                    x{" "}
-                  </button>
-                </div>
-              ))}
+              <div>
+                {item.fields.map(category => (
+                  <div className="inner">
+                    {this.formatTableAndFieldNames(category)}
+                    <button
+                      className="inner"
+                      onClick={() =>
+                        this.props.removeField(category, item.model_name)
+                      }
+                    >
+                      x
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>
