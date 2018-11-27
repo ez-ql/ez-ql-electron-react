@@ -106,6 +106,7 @@ global.sharedObj = {
   databases: [],
   projects: [],
   queries: [],
+  selectedProjects: {},
   currQuery: {
     from: "", // e.g. 'orders'
     fields: [], // e.g. ['order_id', 'order_date', 'customer_id']
@@ -120,7 +121,7 @@ global.sharedObj = {
     // addedModel: [], // array of objects e.g. {model_id: 3 , model_name: '', ...} potentially delete
     // addedModelFields: [], // potentially delete
     selectedModelsAndFields: [], // array of objects
-    selectedModel: {}
+
   },
   sqlQuery: "" //sql query string for preview reference
 };
@@ -239,7 +240,7 @@ ipcMain.on("async-project-query", async (event, arg) => {
 });
 
 ipcMain.on("async-new-query", async (event, arg) => {
-  const query = queryGuard(buildSquelQuery());
+  const query = arg ? queryGuard(arg) : queryGuard(buildSquelQuery());
   const client = new Client({ connectionString });
   client.connect();
   client

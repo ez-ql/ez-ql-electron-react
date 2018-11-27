@@ -5,11 +5,12 @@ import MakeQuery from "./MakeQuery";
 import StartQuery from "./StartQuery";
 import { Route, Switch } from "react-router-dom";
 import AppBar from './AppBar'
-import Project1 from './Project1'
+import Project from './Project'
 import Joins from './Joins'
 import FinalizeQuery from './FinalizeQuery'
 import HorizontalStepper from './Stepper'
 import Visualization from './Visualization'
+import Homepage from './Homepage'
 
 class App extends Component {
   render() {
@@ -22,11 +23,11 @@ class App extends Component {
           <Switch>
             <Route path="/startQuery" component={StartQuery} />
             <Route path="/makeQuery" component={MakeQuery} />
-            <Route path="/project1" component={Project1} />
+            <Route path="/Project" component={Project} />
             <Route path="/finalizeQuery" component={FinalizeQuery} />
             <Route path="/refineQuery" component={HorizontalStepper} />
             <Route path="/visualize" component={Visualization} />
-            <Route component={StartQuery} />
+            <Route component={Homepage} />
             {/*ADJUST LAST LINE AS APPLICABLE Default route*/}
           </Switch>
         </div>
