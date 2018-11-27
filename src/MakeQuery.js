@@ -12,20 +12,6 @@ const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
 const ipcRenderer = electron.ipcRenderer;
 
-const initialCurrQuery = {
-  from: "",
-  fields: [],
-  where: "",
-  qualifiedFields: [],
-  joinType: "",
-  leftRef: "",
-  rightRef: "",
-  group: "",
-  order: [],
-  selectedModelsAndFields: [],
-  selectedModel: {}
-};
-
 //func to convert table and field labels to human-readable format
 //takes an array
 //no regex necessary (for our sample data set)
@@ -59,7 +45,7 @@ class MakeQuery extends Component {
       selectedModelsAndFields: [],
       selectedSlide: 0,
       schema: [],
-      previewExpanded: false,
+      //previewExpanded: false,
       joinModal: false
     };
     this.handleFieldChange = this.handleFieldChange.bind(this);

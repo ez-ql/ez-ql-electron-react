@@ -33,19 +33,13 @@ class PreviewPanel extends Component {
   }
 
   componentDidMount() {
-    ipcRenderer.on("async-query-reply", (event, arg) => {
-      console.log("PREVIEW PANEL");
-      this.setState({
-        previewData: arg.slice(0, 10),
-        numFields: Object.keys(arg[0]).length,
-        numRows: arg.length,
-        sqlQuery: sharedObj.sqlQuery
-      });
+    const data = electron.remote.getGlobal("sharedObj").data;
+    this.setState({
+      data: data,
+      numFields: Object.keys(data[0]).length,
+      numRows: data.length,
+      sqlQuery: electron.remote.getGlobal("sharedObj").sqlQuery
     });
-  }
-
-  componentWillUnmount() {
-    ipcRenderer.removeAllListeners("async-query-reply");
   }
 
   render() {
@@ -57,7 +51,7 @@ class PreviewPanel extends Component {
             <Button className={classes.heading}>Preview</Button>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            <PreviewTabs props={{ ...this.state }} />
+            <PreviewTabs props={{ ...this.state }} preview={true} />
           </ExpansionPanelDetails>
         </ExpansionPanel>
       </div>

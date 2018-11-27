@@ -119,10 +119,10 @@ global.sharedObj = {
     selectedModel: {}, //e.g. {qualifiedField: customers.last_name", ascending: false} --> DESC, {qualifiedField: "customers.first_name", ascending: true} --> ascending .order("customers.last_name", false)
     // addedModel: [], // array of objects e.g. {model_id: 3 , model_name: '', ...} potentially delete
     // addedModelFields: [], // potentially delete
-    selectedModelsAndFields: [], // array of objects
-    selectedModel: {}
+    selectedModelsAndFields: [] // array of objects
   },
-  sqlQuery: "" //sql query string for preview reference
+  sqlQuery: "", //sql query string for preview reference
+  data: []
 };
 
 // -----DUMMY DATA FOR TESTING------
@@ -246,7 +246,8 @@ ipcMain.on("async-new-query", async (event, arg) => {
     .query(query)
     .then(res => {
       console.log("first row of results", res.rows[0]);
-      event.sender.send("async-query-reply", res.rows);
+      global.sharedObj.data = res.rows;
+      event.sender.send("async-query-reply");
       client.end();
     })
     .catch(err => console.error(err.stack || err));

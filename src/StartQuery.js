@@ -11,17 +11,16 @@ class StartQuery extends Component {
   };
 
   componentDidMount() {
-    const models = electron.remote.getGlobal('sharedObj').models
-    console.log('**********HERE*******')
-    console.log('MODELS', models)
-    this.setState({ models })
-
+    const models = electron.remote.getGlobal("sharedObj").models;
+    console.log("**********HERE*******");
+    console.log("MODELS", models);
+    this.setState({ models });
   }
 
   addModel(modelName) {
-    const selectedModel = electron.remote.getGlobal('sharedObj').models.find(
-      model => model.model_name === modelName
-    );
+    const selectedModel = electron.remote
+      .getGlobal("sharedObj")
+      .models.find(model => model.model_name === modelName);
     sharedObject.currQuery.selectedModel = selectedModel;
     sharedObject.currQuery.from = modelName;
   }
@@ -51,21 +50,21 @@ class StartQuery extends Component {
     let modModels;
     models.length
       ? (modModels = this.formatModelAndFieldNames(
-        models.map(elem => elem.model_name)
-      ))
+          models.map(elem => elem.model_name)
+        ))
       : console.log("no models yet");
 
     return (
       <div className="Height-40 Title Column Center Width-50">
         <div className="Column Center Height-20">
           <div className="Flex-End Column ">
-            <h1 className='Grey Height-50'>SELECT A TABLE</h1>
+            <h1 className="Grey Height-50">SELECT A TABLE</h1>
           </div>
         </div>
         <div className="Row-buttons Flex-Wrap">
           {models.length > 0
             ? Object.keys(modModels).map(model => {
-              console.log('MODEL IN START QUERY', modModels[model])
+                console.log("MODEL IN START QUERY", modModels[model]);
                 return (
                   <div>
                     <Button

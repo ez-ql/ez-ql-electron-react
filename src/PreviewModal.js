@@ -40,21 +40,18 @@ class PreviewModal extends React.Component {
   };
 
   componentDidMount() {
-    ipcRenderer.on("async-query-reply", (event, arg) => {
-      console.log("PREVIEW MODAL MOUNTED");
-      console.log("***response received", arg);
-      this.setState({
-        data: arg.slice(0, 10),
-        numFields: Object.keys(arg[0]).length,
-        numRows: arg.length,
-        sqlQuery: electron.remote.getGlobal("sharedObj").sqlQuery
-      });
+    ipcRenderer.on("async-query-reply", () => {
+      const data = electron.remote.getGlobal("sharedObj").data;
+      if (data[0]) {
+        this.setState({
+          data: data,
+          numFields: Object.keys(data).length,
+          numRows: data.length,
+          sqlQuery: electron.remote.getGlobal("sharedObj").sqlQuery
+        });
+      }
     });
   }
-
-  // componentWillUnmount() {
-  //   ipcRenderer.removeAllListeners("async-query-reply");
-  // }
 
   handleOpen = () => {
     this.setState({ open: true });
@@ -70,27 +67,26 @@ class PreviewModal extends React.Component {
 
     return (
       <div>
-        {
-          this.props.buttonClass ?
-        <Button
-          variant="contained"
-          className={this.props.buttonClass}
-          className="Button"
-          color={this.props.color}
-          onClick={this.handleOpen}
-        >
-          Preview
-        </Button>
-        :
-        <Button
-        variant="contained"
-        className="Button"
-        color={this.props.color}
-        onClick={this.handleOpen}
-      >
-        Preview
-      </Button>
-        }
+        {this.props.buttonClass ? (
+          <Button
+            variant="contained"
+            className={this.props.buttonClass}
+            className="Button"
+            color={this.props.color}
+            onClick={this.handleOpen}
+          >
+            Preview
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            className="Button"
+            color={this.props.color}
+            onClick={this.handleOpen}
+          >
+            Preview
+          </Button>
+        )}
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
@@ -99,8 +95,8 @@ class PreviewModal extends React.Component {
         >
           <div style={getModalStyle()} className={classes.paper}>
             {/* <Typography variant="h6" id="modal-title">Preview</Typography> */}
-            <Typography variant="subtitle1" id="simple-modal-description">
-              <PreviewTabs props={{ ...this.state }} />
+            <Typography variant="subtitle1" id="modal-preview">
+              <PreviewTabs props={{ ...this.state }} preview={true} />
             </Typography>
           </div>
         </Modal>
