@@ -114,6 +114,15 @@ class Sort extends React.Component {
               />
             </label>
           </div>
+          <div>
+            <Button
+              variant="contained"
+              onClick={this.handleSubmit}
+              type="button"
+            >
+              Submit
+            </Button>
+          </div>
         </div>
       </div>
     );
