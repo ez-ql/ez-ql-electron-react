@@ -17,9 +17,6 @@ const sharedObject = electron.remote.getGlobal("sharedObj");
 const ipcRenderer = electron.ipcRenderer;
 
 const styles = theme => ({
-  // iconContainer: {
-  //   transform: "scale(1.5)"
-  // },
   root: {
     width: "90%",
     backgroundColor: "rgb(181, 228, 228)"
@@ -34,8 +31,6 @@ const styles = theme => ({
   },
   stepperColor: {
     backgroundColor: "rgb(181, 228, 228)"
-    // justifyContent: 'flex-end'
-    // alignSelf: 'flex-end'
   }
 });
 
@@ -109,22 +104,21 @@ class HorizontalStepper extends Component {
     const { classes } = this.props;
 
     return (
-      <div className="Flex-Container Width-75 Height-75 Column Center ">
+      <div className="Flex-Container Min-width-30 Height-75 Column Center ">
         <div className="Column Height-50 Display Center ">
           <div>
             <div>
-              {activeStep === steps.length ? (
-                <div>
-                  {/* <Button value="finalize" component={Link} to="/finalizeQuery">
-                    Review Query Results
-                  </Button>
-                  <Button value="finalize" component={Link} to="/makeQuery">
-                    Revise Table Selection
-                  </Button> */}
-                </div>
-              ) : (
+              {activeStep === steps.length ? null : (
+                // <div>
+                /* <Button value="finalize" component={Link} to="/finalizeQuery">
+                  Review Query Results
+                </Button>
+                <Button value="finalize" component={Link} to="/makeQuery">
+                  Revise Table Selection
+                </Button> */
+                // </div>
                 <div className="Column Display Width-60 ">
-                  <div className="Align-self-center Width-30 Column Height-22 ">
+                  <div className="Align-self-center Width-30 Column Min-height-30 ">
                     {activeStep === 0 ? (
                       <Aggregate />
                     ) : activeStep === 1 ? (
@@ -165,7 +159,7 @@ class HorizontalStepper extends Component {
                       </Stepper>
                     </div>
                   </div>
-                  <div className="Row-buttons">
+                  <div className="Row-buttons Margin-top-1">
                     <div>
                       <Button
                         disabled={activeStep === 0}
@@ -179,6 +173,7 @@ class HorizontalStepper extends Component {
                     </div>
                     <div>
                       <Button
+                        disabled={activeStep === 2}
                         variant="contained"
                         color="primary"
                         onClick={this.handleNext}
@@ -199,12 +194,13 @@ class HorizontalStepper extends Component {
                       >
                         Finish
                       </Button>
-                    </div>
-                    <div onClick={this.loadPreview}>
-                      <PreviewModal
-                        buttonClass={classes.button}
-                        color="primary"
-                      />
+                      <div onClick={this.loadPreview}>
+                        <PreviewModal
+                          variant="contained"
+                          color="primary"
+                          buttonClass={classes.button}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>

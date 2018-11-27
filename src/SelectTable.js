@@ -12,7 +12,7 @@ const SelectTable = props => {
   });
 
   // return (
-  //   <div className='Title Height-80'>
+  //   <div className='Title Min-height-75'>
   //     <div className='Column Center Height-50'  >
   //       <h1 className='Flex-End Column Grey'>SELECT RELATED TABLE</h1>
   //     </div>
@@ -39,7 +39,7 @@ const SelectTable = props => {
     console.log('modRelatedModels', modRelatedModels)
 
   return Object.keys(modRelatedModels).length ? (
-    <div className="Title Height-80">
+    <div className="Title Min-height-75">
       <div className="Column Center Height-50">
         <h1 className="Flex-End Column Grey">SELECT RELATED TABLE</h1>
       </div>

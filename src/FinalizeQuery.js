@@ -33,7 +33,7 @@ class FinalizeQuery extends React.Component {
 
   render() {
     return (
-      <div className="Flex-Container Width-75 Height-75">
+      <div className="Flex-Container Min-width-30 Height-75">
         <div className="Column Center Height-50">
           <h1>COMPLETE YOUR QUERY</h1>
           <div>

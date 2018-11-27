@@ -1,22 +1,31 @@
 import React, { Component } from "react";
 import Flickity from "flickity";
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import { withStyles } from '@material-ui/core/styles';
+
 
 const itemStyle = {
   width: "200px",
-  height: "260px",
+  height: "300px",
   background: "lightgrey",
   borderRadius: "10px",
   margin: "10px",
   backgroundColor: "rgb(105, 186, 186)",
   border: "rgb(92, 92, 92)"
-  // width: "30%",
-  // height: "260px",
-  // background: "lightgrey",
-  // borderRadius: "5px",
-  // margin: "10px"
 };
 
-export default class Selector extends Component {
+const styles = theme => ({
+  root: {
+    color: theme.palette.text.primary,
+  },
+  icon: {
+    margin: theme.spacing.unit,
+    fontSize: 18,
+    color: "rgb(92, 92, 92)"
+  },
+});
+
+ class Selector extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -192,7 +201,7 @@ export default class Selector extends Component {
   };
 
   render() {
-    const { items } = this.props;
+    const { items, classes } = this.props;
     console.log("SelectedIDX", this.state.selectedIndex);
     return (
       <div>
@@ -208,21 +217,23 @@ export default class Selector extends Component {
           {items.map(item => (
             <div style={itemStyle} className="item Grey Display Column">
               <div
-                className={`${item.model_name} inner White`}
+                className={`${item.model_name} inner White Larger-font`}
                 id={item.model_name}
               >{`${this.formatTableAndFieldNames(item.model_name)} Table`}</div>
               <div>
                 {item.fields.map(category => (
-                  <div className="inner">
-                    {this.formatTableAndFieldNames(category)}
-                    <button
-                      className="inner"
-                      onClick={() =>
-                        this.props.removeField(category, item.model_name)
-                      }
-                    >
-                      x
-                    </button>
+                  <div className="inner Row Flex-space-around ">
+                    <div className="Smaller-font Align-self-end">
+                      {this.formatTableAndFieldNames(category)}
+                    </div>
+                    <div
+                        className="inner Light-blue Max-height"
+                        onClick={() =>
+                          this.props.removeField(category, item.model_name)
+                        }
+                      >
+                        <DeleteOutlinedIcon className={classes.icon} />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -233,3 +244,6 @@ export default class Selector extends Component {
     );
   }
 }
+
+
+export default withStyles(styles)(Selector)

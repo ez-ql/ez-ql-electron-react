@@ -85,10 +85,12 @@ class MakeQuery extends Component {
     });
   }
 
+  getSelectedModel(modelName) {
+    return this.state.schema.find(model => model.model_name === modelName);
+  }
+
   handleModelChange(modelName) {
-    const selectedModel = this.state.schema.find(
-      model => model.model_name === modelName
-    );
+    const selectedModel = this.getSelectedModel(modelName);
     const copy = { ...selectedModel, fields: [] };
     const selectedModelsAndFields = [...this.state.selectedModelsAndFields];
     const [includesSelectedModel] = selectedModelsAndFields.filter(
@@ -157,26 +159,8 @@ class MakeQuery extends Component {
     });
   };
 
-  // handleSubmit(e) {
-  //   e.preventDefault();
-  //   const query = squel
-  //     .select()
-  //     .from(this.state.from)
-  //     .fields(this.state.fields)
-  //     .toString();
-  // ipcRenderer.send("async-new-query", query);
-  // this.setState({ query });
-  // store.set("query", query);
-  // this.setState({
-  //   from: "",
-  //   fields: []
-  // })
-  // }
-
   selectedSlide(modelName) {
-    const selectedModel = this.state.schema.find(
-      model => model.model_name === modelName
-    );
+    const selectedModel = this.getSelectedModel(modelName);
     this.setState({
       selectedModel,
       nextView: false
@@ -268,7 +252,7 @@ class MakeQuery extends Component {
   render() {
     //one issue: right now, in order to pass selectedData and query as props to RefineQuery and Joins, you need to click Submit - we should change that
     return (
-      <div className="Flex-Container Width-75 Height-75">
+      <div className="Flex-Container Min-width-30 Height-75">
         <div className="Column Center Height-50">
           {this.state.joinModal && (
             <JoinModal toggleJoinModal={this.toggleJoinModal} />
@@ -301,16 +285,6 @@ class MakeQuery extends Component {
           </div>
           <div className="Margin-top-10 Column " />
           <div className="Column Align-self-center  Center ">
-            {/* <div className="Margin-buttons Row"> */}
-            {/* <Button
-                variant="contained"
-                className="Button"
-                component={Link}
-                to="/startQuery"
-              >
-                START OVER
-              </Button> */}
-            {/* </div> */}
             <div className="Row ">
               <div className="Margin-buttons Row">
                 <StartOverButton />

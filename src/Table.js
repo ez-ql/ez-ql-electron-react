@@ -2,10 +2,21 @@ import React from "react";
 import MUIDataTable from "mui-datatables";
 import { formatNames } from "./MakeQuery.js";
 import moment from "moment";
+import Paper from "@material-ui/core/Paper";
+import { withStyles } from "@material-ui/core/styles";
 const electron = window.require("electron");
 
+const styles = theme => ({
+  paper: {
+    height: 350,
+    width: "auto%",
+    marginTop: theme.spacing.unit * 3,
+    overflow: "auto"
+  }
+});
+
 const Table = props => {
-  let { data, preview } = props;
+  const { data, preview, classes } = props;
   let originalColumnNames;
   let prettyColumnNames;
   if (preview) data = data.slice(0, 10);
@@ -50,19 +61,22 @@ const Table = props => {
     sort: false,
     print: false,
     selectableRows: false,
-    pagination: false
+    pagination: false,
+    customFooter: (selectedRows, displayData, setSelectedRows) => {}
   };
 
   return (
-    <MUIDataTable
-      className="table"
-      id="muiDataTable"
-      title={preview ? "Preview results" : "Results"}
-      data={rowValuesOnly}
-      columns={prettyColumnNames}
-      options={options}
-    />
+    <Paper className={classes.paper}>
+      <MUIDataTable
+        className="table"
+        id="muiDataTable"
+        title={preview ? "Preview results" : "Results"}
+        data={rowValuesOnly}
+        columns={prettyColumnNames}
+        options={options}
+      />
+    </Paper>
   );
 };
 
-export default Table;
+export default withStyles(styles)(Table);
