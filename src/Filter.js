@@ -1,5 +1,6 @@
 import React from "react";
 import ScrollMenu from "./ScrollMenu";
+import Button from "@material-ui/core/Button";
 const electron = window.require("electron");
 
 class Filter extends React.Component {
@@ -52,9 +53,9 @@ class Filter extends React.Component {
     )[0];
     const availableFilters =
       fieldToFilter.field_type === "integer" ||
-      fieldToFilter.field_type === "decimal" ||
-      fieldToFilter.field_type === "date" ||
-      fieldToFilter.field_type === "year"
+        fieldToFilter.field_type === "decimal" ||
+        fieldToFilter.field_type === "date" ||
+        fieldToFilter.field_type === "year"
         ? Object.keys(this.state.fieldFilterOptions)
         : ["equals", "does not equal"];
     this.setState({
@@ -67,7 +68,7 @@ class Filter extends React.Component {
   handleFieldFiltering(operator) {
     const fieldToFilter = `${this.state.fieldToFilter} ${
       this.state.fieldFilterOptions[operator]
-    }`;
+      }`;
     this.setState({
       fieldToFilter,
       operator
@@ -88,13 +89,13 @@ class Filter extends React.Component {
     event.preventDefault();
     const fieldToFilter = `${this.state.tableToFilter}.${
       this.state.fieldToFilter
-    } ${
+      } ${
       this.state.fieldToFilterType === "integer" ||
-      this.state.fieldToFilterType === "decimal" ||
-      this.state.fieldToFilterType === "year"
+        this.state.fieldToFilterType === "decimal" ||
+        this.state.fieldToFilterType === "year"
         ? `${this.state.userEntered}`
         : `'${this.state.userEntered}'`
-    }`;
+      }`;
     const filteredFields = [...this.state.filteredFields];
     filteredFields.push(fieldToFilter);
     const where = filteredFields.join(" AND ");
@@ -130,12 +131,12 @@ class Filter extends React.Component {
 
   render() {
     return (
-      <div className="Height-80 Title Column Center Width-50">
-      <div className="Display Column Center">
+      <div className="Min-height-75 Title Column Center Width-50">
+        <div className="Display Column Center">
           {
             //step #1 - select table from tables previously selected - right now, this is only one b/c join feature is not written
           }
-          <h3>Select table to filter</h3>
+          <h3>SELECT TABLE TO FILTER</h3>
           <ScrollMenu
             items={this.state.selectedModels.map(model => model.model_name)}
             handleChange={this.handleSelectedTable}
@@ -144,8 +145,8 @@ class Filter extends React.Component {
             //step #2 - once table has been selected, render all previously selected fields from that table for selection
           }
           {this.state.tableToFilter ? (
-            <div>
-              <h3>Select field from that table to filter</h3>
+            <div className="">
+              <h3>SELECT FIELD TO FILTER</h3>
               <ScrollMenu
                 items={this.state.tableFields}
                 handleChange={this.handleSelectedField}
@@ -158,7 +159,7 @@ class Filter extends React.Component {
             //step #3 - once field has been selected, select field filtering operator
           }
           {this.state.fieldToFilter ? (
-            <div>
+            <div className="Margin-top-3">
               <ScrollMenu
                 items={this.state.availableFilters}
                 handleChange={this.handleFieldFiltering}
@@ -166,19 +167,30 @@ class Filter extends React.Component {
             </div>
           ) : null}
         </div>
-        <div>
+        <div className="Row Align-self-center">
           {
             //step #4 - once operator has been selected, enter and submit user input
           }
           {this.state.operator ? (
-            <div>
+            <div className="Row">
               <form onSubmit={this.handleSubmitQuery}>
+            <div className="Margin-top-5 " >
                 <input
+                  className="Input"
                   onChange={this.handleUserEntry}
                   type="text"
                   value={this.state.userEntered}
-                />
-                <button type="submit">Submit</button>
+                  />
+                  </div>
+                <div className="Margin-top-5">
+                  <Button
+                    className="Button"
+                    variant="contained"
+                    type="submit"
+                  >
+                    Submit
+                </Button>
+                </div>
               </form>
             </div>
           ) : null}
