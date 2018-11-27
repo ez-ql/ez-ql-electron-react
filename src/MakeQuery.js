@@ -59,7 +59,7 @@ class MakeQuery extends Component {
       selectedModelsAndFields: [],
       selectedSlide: 0,
       schema: [],
-      previewExpanded: false,
+      //previewExpanded: false,
       joinModal: false
     };
     this.handleFieldChange = this.handleFieldChange.bind(this);
