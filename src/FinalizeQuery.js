@@ -19,17 +19,15 @@ class FinalizeQuery extends React.Component {
   }
 
   componentDidMount() {
-    ipcRenderer.on("async-query-reply", (event, arg) => {
-      this.setState({
-        data: arg,
-        numFields: Object.keys(arg).length,
-        numRows: arg.length,
-        sqlQuery: electron.remote.getGlobal("sharedObj").sqlQuery
-      });
+    const data = electron.remote.getGlobal("sharedObj").data;
+    this.setState({
+      data: data,
+      numFields: Object.keys(data[0]).length,
+      numRows: data.length,
+      sqlQuery: electron.remote.getGlobal("sharedObj").sqlQuery,
+      selectedModelsAndFields: electron.remote.getGlobal("sharedObj").currQuery
+        .selectedModelsAndFields
     });
-    const selectedModelsAndFields = electron.remote.getGlobal("sharedObj")
-      .currQuery.selectedModelsAndFields;
-    this.setState({ selectedModelsAndFields });
   }
 
   render() {

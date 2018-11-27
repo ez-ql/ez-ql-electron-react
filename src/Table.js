@@ -16,7 +16,8 @@ const styles = theme => ({
 });
 
 const Table = props => {
-  const { data, preview, classes } = props;
+  const { preview, classes } = props;
+  let { data } = props;
   let originalColumnNames;
   let prettyColumnNames;
   if (preview) data = data.slice(0, 10);
