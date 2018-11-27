@@ -49,20 +49,30 @@ class ButtonAppBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false
-    };
+      open: false,
+      user: {},
+      databases: [],
+      projects: [],
+      queries: []
+    }
+
   }
 
   componentDidMount() {
-    console.log("HERE in CDM");
-    // ipcRenderer.send("async-project-query");
-    // ipcRenderer.on("async-project-reply", (event, arg) => {
-    console.log("PROJECTS ARG");
-
-    // this.setState({
-    //   project: arg
-    // });
-    // });
+    const user = electron.remote.getGlobal(
+      "sharedObj"
+    ).user;
+    const databases = electron.remote.getGlobal(
+      "sharedObj"
+    ).databases;
+    const projects =
+      electron.remote.getGlobal(
+        "sharedObj"
+      ).projects;
+    const queries = electron.remote.getGlobal(
+      "sharedObj"
+    ).queries;
+    this.setState({ user, databases, projects, queries })
   }
 
   componentWillUnmount() {
@@ -77,12 +87,13 @@ class ButtonAppBar extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const renderLink = props => <Link to="/Project" {...this.state} />
 
     const sideList = (
       <div className={classes.list}>
         <List>
-          <ListItem key={"Database"}>
-            <ListItemText primary="Bike Stores Database" />
+          <ListItem key={'Database'} >
+            <ListItemText primary='Bike Stores Database' />
           </ListItem>
           {/* <ListItem button key={'List'}>
         <ListItemText primary='Project 2' />
@@ -90,21 +101,30 @@ class ButtonAppBar extends React.Component {
         </List>
         <Divider />
         <List>
-          {}
-
-          <ListItem button key={"List"} component={Link} to="/project1">
-            <ListItemText primary="Project 1" />
-          </ListItem>
-          {/* <ListItem button key={'List'}>
-        <ListItemText primary='Project 2' />
-        </ListItem> */}
+          {
+            this.state.projects[0] &&
+            this.state.projects.map(project => {
+              return (
+                <ListItem button
+                  key={`${project.project_name}`}
+                  component={Link}
+                  to={`/Project/${project.project_id}`}
+                >
+                  <ListItemText primary={`${project.project_name}`} />
+                </ListItem>
+              )
+            })
+          }
         </List>
       </div>
     );
 
     return (
       <div className={classes.root}>
-        <Drawer open={this.state.open} onClose={this.toggleDrawer()}>
+        <Drawer
+          open={this.state.open}
+          onClose={this.toggleDrawer()}
+        >
           <div
             className="White"
             tabIndex={0}
@@ -115,9 +135,8 @@ class ButtonAppBar extends React.Component {
             {sideList}
           </div>
         </Drawer>
-
-        <AppBar position="static">
-          <Toolbar className="Light-blue">
+        <AppBar position="static" >
+          <Toolbar className='Light-blue' >
             <IconButton
               className={classes.menuButton}
               color="inherit"

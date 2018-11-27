@@ -97,7 +97,7 @@
 
 .Height-75 {
   display: flex;
-  height: 75%;
+  height: 85%;
   margin-top: 5%;
 }
 
@@ -106,12 +106,12 @@
 }
 
 .Height-40 {
-  display: flex;
+  /* display: flex; */
   height: 40%;
 }
 
 .Height-20 {
-  display: flex;
+  /* display: flex; */
   height: 20%;
 }
 
@@ -129,6 +129,18 @@
   height: 40%;
   width: 60%;
   margin-top: 15%;
+}
+
+.Max-height {
+  max-height:7rem;
+}
+
+.Min-height-4 {
+  min-height:40%
+}
+
+.Min-height {
+  min-height: 15rem;
 }
 
 .min-Height-8 {
@@ -159,6 +171,10 @@
   width: 8rem;
 }
 
+.Max-width {
+  max-width: 20rem;
+}
+
 .Min-width-30 {
   min-width: 30rem;
   width: 60rem;
@@ -166,6 +182,14 @@
   border-radius: 10%;
   background-color: rgb(181, 228, 228);
   margin-bottom: 3%;
+}
+
+.Min-width {
+  min-width: 25rem;
+}
+
+.Min-width-5 {
+  min-width: 12rem;
 }
 
 .Table-box {
@@ -187,6 +211,16 @@
 
 .Max-height {
   max-height: 1.5rem;
+}
+
+.Margin-top-15 {
+  margin-top: 15%;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.Margin-top-10 {
+  margin-top:10%
 }
 
 .Margin-top-5 {
@@ -260,8 +294,10 @@ h1 {
 }
 
 .Dark-blue {
-  background-color: rgb(41, 17, 17);
+  color: rgb(19, 19, 50);
 }
+
+
 
 .Black {
   color: black;
@@ -336,4 +372,27 @@ h1 {
 .Checkbox {
   height: 1rem;
   width: 1rem;
+}
+
+.Border-solid {
+  border: solid
+}
+
+.Project-button {
+  width: 80%;
+  min-height: 5rem;
+  font-size: 20px;
+  border-radius: 30px;
+  align-self: center;
+  margin-top: 1rem;
+  background-color: rgb(19, 19, 50);
+  color:rgb(105, 186, 186);
+}
+
+.Margin-bottom {
+  margin-bottom: 4rem;
+}
+
+.No-text-decoration {
+  text-decoration: none;
 }

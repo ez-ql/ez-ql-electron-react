@@ -19,7 +19,6 @@ class Visualize extends React.Component {
   }
 
   render() {
-    console.log("STAAATE", this.state);
 
     return (
       <div className="Flex-Container Min-width-30 Height-75">
