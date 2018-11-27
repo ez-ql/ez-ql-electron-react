@@ -3,14 +3,13 @@ import ScrollMenu from "./ScrollMenu";
 import Button from "@material-ui/core/Button";
 const electron = window.require("electron");
 
-
 class Joins extends Component {
   constructor(props) {
     super(props);
     this.state = {
       baseModel: {},
       addedModel: {},
-      joinType: "",
+      joinType: "join",
       allJoinTypes: {
         "I want to see only records that have matching references in BOTH tables (inner join)":
           "join",
@@ -59,7 +58,8 @@ class Joins extends Component {
     let rightRef = `${rightTableName}.${relation.relatedmodel_primary_field}`;
     electron.remote.getGlobal("sharedObj").currQuery.leftRef = leftRef;
     electron.remote.getGlobal("sharedObj").currQuery.rightRef = rightRef;
-    this.props.handleClose()
+    console.log("current selection", this.state.joinType);
+    this.props.handleClose();
   }
 
   componentDidMount() {
@@ -75,32 +75,36 @@ class Joins extends Component {
       sharedObj,
       models,
       currQuery,
-      addedModel,
+      addedModel
     });
   }
 
   render() {
-      return (
-        <div>
-          {
-            <div>
-              <h3>How would you like to combine these tables?</h3>
-              <ScrollMenu
-                items={Object.keys(this.state.allJoinTypes)}
-                handleChange={this.handleSelectedJoinType}
-              />
-              <div className="Margin-top-5">
+    return (
+      <div>
+        {
+          <div>
+            <h3>How would you like to combine these tables?</h3>
+            <ScrollMenu
+              items={Object.keys(this.state.allJoinTypes)}
+              handleChange={this.handleSelectedJoinType}
+              selectedOption={
+                "I want to see only records that have matching references in BOTH tables (inner join)"
+              }
+            />
+            <div className="Margin-top-5">
               <Button
                 variant="contained"
                 type="button"
-                onClick={this.handleSubmitJoin}>
+                onClick={this.handleSubmitJoin}
+              >
                 Submit
               </Button>
-                </div>
             </div>
-          }
-        </div>
-      );
+          </div>
+        }
+      </div>
+    );
   }
 }
 
