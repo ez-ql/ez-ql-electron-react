@@ -119,8 +119,7 @@ global.sharedObj = {
     selectedModel: {}, //e.g. {qualifiedField: customers.last_name", ascending: false} --> DESC, {qualifiedField: "customers.first_name", ascending: true} --> ascending .order("customers.last_name", false)
     // addedModel: [], // array of objects e.g. {model_id: 3 , model_name: '', ...} potentially delete
     // addedModelFields: [], // potentially delete
-    selectedModelsAndFields: [], // array of objects
-    selectedModel: {}
+    selectedModelsAndFields: [] // array of objects
   },
   sqlQuery: "" //sql query string for preview reference
 };

@@ -82,46 +82,47 @@ class Sort extends React.Component {
   render() {
     return (
       <div className="Height-80 Title Column Center Width-50">
-      <div className="Display Column Center">
-        <h3>Select a field to sort by</h3>
-        {this.state.order.length
-          ? `Currently sorted by: ${this.state.order
-              .map(
-                field =>
-                  `${
-                    formatNames([field.qualifiedField.split(".")[1]])[
-                      field.qualifiedField.split(".")[1]
-                    ]
-                  } in ${field.ascending ? "ascending" : "descending"} order`
-              )
-              .join(", ")}`
-          : ""}
-        <ScrollMenu
-          items={this.state.selectedFields
-            .map(field => field.field_name)
-            .filter(field => !this.state.sortedFields.includes(field))}
-          handleChange={this.handleSelectedField}
-        />
-        <div>
-          <label>
-            Sort in Ascending Order?
-            <input
-              type="checkbox"
-              name="ascending"
-              checked={this.state.ascending}
-              onChange={this.handleCheckBox}
-            />
-          </label>
+        <div className="Display Column Center">
+          <h3>Select a field to sort by</h3>
+          {this.state.order.length
+            ? `Currently sorted by: ${this.state.order
+                .map(
+                  field =>
+                    `${
+                      formatNames([field.qualifiedField.split(".")[1]])[
+                        field.qualifiedField.split(".")[1]
+                      ]
+                    } in ${field.ascending ? "ascending" : "descending"} order`
+                )
+                .join(", ")}`
+            : ""}
+          <ScrollMenu
+            items={this.state.selectedFields
+              .map(field => field.field_name)
+              .filter(field => !this.state.sortedFields.includes(field))}
+            handleChange={this.handleSelectedField}
+          />
+          <div>
+            <label>
+              Sort in Ascending Order?
+              <input
+                type="checkbox"
+                name="ascending"
+                checked={this.state.ascending}
+                onChange={this.handleCheckBox}
+              />
+            </label>
+          </div>
+          <div>
+            <Button
+              variant="contained"
+              onClick={this.handleSubmit}
+              type="button"
+            >
+              Submit
+            </Button>
+          </div>
         </div>
-        <div>
-          <Button
-            variant="contained"
-            onClick={this.handleSubmit}
-            type="button">
-            Submit
-          </Button>
-        </div>
-      </div>
       </div>
     );
   }

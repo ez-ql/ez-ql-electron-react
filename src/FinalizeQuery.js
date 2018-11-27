@@ -37,12 +37,16 @@ class FinalizeQuery extends React.Component {
         <div className="Column Center Height-50">
           <h1>COMPLETE YOUR QUERY</h1>
           <div>
-            <Button className="Button" value="save">Save</Button>
-            <Button className="Button" value="export">Visualize</Button>
+            <Button className="Button" value="save">
+              Save
+            </Button>
+            <Button className="Button" value="export">
+              Visualize
+            </Button>
             <StartOverButton />
           </div>
           <div>
-            <PreviewTabs props={{ ...this.state }} />
+            <PreviewTabs props={{ ...this.state }} preview={false} />
           </div>
         </div>
       </div>

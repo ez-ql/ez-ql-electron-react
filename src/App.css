@@ -8,22 +8,20 @@
   height: 40vmin;
 }
 
-table {
+/* table {
   text-align: left;
   justify-content: none;
   font-family: "Roboto", sans-serif;
-  /* border-collapse: separate;
-  background-color: grey; */
-  /* width: 90%; */
-}
+} */
 
-.table tbody {
-  border: grey solid 1px;
+/* .table tbody {
+  border: red solid 1px;
 }
 
 .table th {
   font-weight: 500;
-}
+  width: min-content;
+} */
 
 .App-header {
   background-color: #8f96a3;
@@ -104,7 +102,6 @@ table {
   min-height: 8rem;
 }
 
-
 .Height-22 {
   display: flex;
   height: 20%;
@@ -149,7 +146,6 @@ table {
   background-color: rgb(181, 228, 228);
 }
 
-
 .Width-100 {
   width: 100%;
 }
@@ -168,7 +164,7 @@ table {
 }
 
 .Width-30 {
-  width: 45rem
+  width: 45rem;
 }
 
 .Table-box {
@@ -193,7 +189,7 @@ table {
 }
 
 .Margin-top-5 {
-  margin-top: 5%
+  margin-top: 5%;
 }
 
 .Margin-top-3 {
@@ -246,7 +242,7 @@ h1 {
 }
 
 .Light-green {
-  background-color:rgb(181, 228, 228)
+  background-color: rgb(181, 228, 228);
 }
 
 .Grey {
@@ -255,7 +251,7 @@ h1 {
 
 .Lightgrey {
   background-color: rgb(220, 220, 220);
-  color: white
+  color: white;
 }
 
 .Dark-blue {
@@ -281,30 +277,26 @@ h1 {
 
 .Margin-buttons {
   margin-top: 1rem;
-  padding: .5rem;
+  padding: 0.5rem;
 }
-
-
 
 .Flex-start {
   justify-content: flex-start;
 }
 
 .Display {
-  display: flex
+  display: flex;
 }
 
 .Align-self-end {
-  align-self: flex-end
+  align-self: flex-end;
 }
 
 .Align-self-center {
-  align-self: center
+  align-self: center;
 }
-
-
 
 .Padding-3 {
   padding: 1%;
-  margin-bottom: 3%
+  margin-bottom: 3%;
 }
