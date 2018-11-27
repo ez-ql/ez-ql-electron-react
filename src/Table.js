@@ -1,9 +1,20 @@
 import React from "react";
 import MUIDataTable from "mui-datatables";
 import { formatNames } from "./MakeQuery.js";
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = theme => ({
+  paper: {
+    height: 350,
+    width: 'auto%',
+    marginTop: theme.spacing.unit * 3,
+    overflow: 'auto',
+  },
+});
 
 const Table = props => {
-  const { data } = props;
+  const { data, classes } = props;
   let originalColumnNames;
   let prettyColumnNames;
   if (data.length > 0) {
@@ -12,18 +23,20 @@ const Table = props => {
   }
   const rowValuesOnly = data.map(row => Object.values(row));
 
-  // const options = {
-  //   //tbd
-  // };
+  const options = {
+    customFooter: (selectedRows, displayData, setSelectedRows) => {}
+  };
 
   return (
+    <Paper className={classes.paper}>
     <MUIDataTable
       title={"Preview results"}
       data={rowValuesOnly}
       columns={prettyColumnNames}
-      //options={options}
+      options={options}
     />
+    </Paper>
   );
 };
 
-export default Table;
+export default withStyles(styles)(Table);

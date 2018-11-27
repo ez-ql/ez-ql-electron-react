@@ -85,10 +85,12 @@ class MakeQuery extends Component {
     });
   }
 
+  getSelectedModel(modelName) {
+    return this.state.schema.find(model => model.model_name === modelName);
+  }
+
   handleModelChange(modelName) {
-    const selectedModel = this.state.schema.find(
-      model => model.model_name === modelName
-    );
+    const selectedModel = this.getSelectedModel(modelName);
     const copy = { ...selectedModel, fields: [] };
     const selectedModelsAndFields = [...this.state.selectedModelsAndFields];
     const [includesSelectedModel] = selectedModelsAndFields.filter(
@@ -115,7 +117,9 @@ class MakeQuery extends Component {
 
   handleFieldChange(newField) {
     let { fields } = this.state;
-    let qualifiedFields = [...electron.remote.getGlobal('sharedObj').currQuery.qualifiedFields]
+    let qualifiedFields = [
+      ...electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields
+    ];
     if (!fields.some(field => field === newField)) {
       fields.push(newField);
       let selectedModelsAndFields = this.state.selectedModelsAndFields.map(
@@ -131,8 +135,12 @@ class MakeQuery extends Component {
         "sharedObj"
       ).currQuery.selectedModelsAndFields = selectedModelsAndFields;
       electron.remote.getGlobal("sharedObj").currQuery.fields = fields;
-      qualifiedFields.push(`${this.state.selectedModel.model_name}.${newField}`)
-      electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields = qualifiedFields
+      qualifiedFields.push(
+        `${this.state.selectedModel.model_name}.${newField}`
+      );
+      electron.remote.getGlobal(
+        "sharedObj"
+      ).currQuery.qualifiedFields = qualifiedFields;
       this.setState({
         fields,
         selectedModelsAndFields
@@ -151,26 +159,8 @@ class MakeQuery extends Component {
     });
   };
 
-  // handleSubmit(e) {
-  //   e.preventDefault();
-  //   const query = squel
-  //     .select()
-  //     .from(this.state.from)
-  //     .fields(this.state.fields)
-  //     .toString();
-  // ipcRenderer.send("async-new-query", query);
-  // this.setState({ query });
-  // store.set("query", query);
-  // this.setState({
-  //   from: "",
-  //   fields: []
-  // })
-  // }
-
   selectedSlide(modelName) {
-    const selectedModel = this.state.schema.find(
-      model => model.model_name === modelName
-    );
+    const selectedModel = this.getSelectedModel(modelName);
     this.setState({
       selectedModel,
       nextView: false
@@ -182,7 +172,7 @@ class MakeQuery extends Component {
     //will currently remove field from both tables if it has the same name, not ideal but let's go with it for now
     const fields = this.state.fields.filter(field => field !== fieldName);
     selectedModelsAndFields = selectedModelsAndFields.map(model => {
-      model.fields = model.fields.filter(field => field !== fieldName)
+      model.fields = model.fields.filter(field => field !== fieldName);
       return model;
     });
     electron.remote.getGlobal(
@@ -194,14 +184,18 @@ class MakeQuery extends Component {
     ).currQuery.qualifiedFields = electron.remote
       .getGlobal("sharedObj")
       .currQuery.qualifiedFields.filter(
-        field => field.split('.')[1] !== fieldName
+        field => field.split(".")[1] !== fieldName
       );
     this.setState({ selectedModelsAndFields, fields });
   }
 
   selectAll() {
-    const globalFields = [...electron.remote.getGlobal("sharedObj").currQuery.fields]
-    const globalQualifiedFields = [...electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields]
+    const globalFields = [
+      ...electron.remote.getGlobal("sharedObj").currQuery.fields
+    ];
+    const globalQualifiedFields = [
+      ...electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields
+    ];
     const fields = [...this.state.selectedModel.fields].map(
       field => field.field_name
     );
@@ -210,11 +204,22 @@ class MakeQuery extends Component {
         ? { ...model, fields }
         : model;
     });
-    const qualifiedFields = fields.map(field => `${this.state.selectedModel.model_name}.${field}`)
-    electron.remote.getGlobal("sharedObj").currQuery.fields = globalFields.concat(fields)
-    electron.remote.getGlobal("sharedObj").currQuery.selectedModelsAndFields = updated
-    electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields = globalQualifiedFields.concat(qualifiedFields)
-    this.setState({ selectedModelsAndFields: updated, fields: globalFields.concat(fields) });
+    const qualifiedFields = fields.map(
+      field => `${this.state.selectedModel.model_name}.${field}`
+    );
+    electron.remote.getGlobal(
+      "sharedObj"
+    ).currQuery.fields = globalFields.concat(fields);
+    electron.remote.getGlobal(
+      "sharedObj"
+    ).currQuery.selectedModelsAndFields = updated;
+    electron.remote.getGlobal(
+      "sharedObj"
+    ).currQuery.qualifiedFields = globalQualifiedFields.concat(qualifiedFields);
+    this.setState({
+      selectedModelsAndFields: updated,
+      fields: globalFields.concat(fields)
+    });
   }
 
   joinStep() {
@@ -247,69 +252,59 @@ class MakeQuery extends Component {
   render() {
     //one issue: right now, in order to pass selectedData and query as props to RefineQuery and Joins, you need to click Submit - we should change that
     return (
-        <div className="Flex-Container Width-75 Height-75">
-          <div className="Column Center Height-50">
-            {this.state.joinModal && (
-              <JoinModal toggleJoinModal={this.toggleJoinModal} />
-            )}
-            {this.state.nextView ? (
-              <SelectTable
-                handleModelChange={this.handleModelChange}
-                model={this.state.selectedModel}
-                schema={this.state.schema}
-                formatTableNames={formatNames}
+      <div className="Flex-Container Min-width-30 Height-75">
+        <div className="Column Center Height-50">
+          {this.state.joinModal && (
+            <JoinModal toggleJoinModal={this.toggleJoinModal} />
+          )}
+          {this.state.nextView ? (
+            <SelectTable
+              handleModelChange={this.handleModelChange}
+              model={this.state.selectedModel}
+              schema={this.state.schema}
+              formatTableNames={formatNames}
+            />
+          ) : (
+            <SelectFields
+              handleFieldChange={this.handleFieldChange}
+              fields={this.state.selectedModel.fields}
+              schema={this.state.schema}
+              selectAll={this.selectAll}
+              formatFieldNames={formatNames}
+            />
+          )}
+          <div className="Container">
+            {this.state.selectedModelsAndFields[0] && (
+              <Selector
+                items={this.state.selectedModelsAndFields}
+                selectedModel={this.state.selectedModel}
+                selectedSlide={this.selectedSlide}
+                removeField={this.removeField}
               />
-            ) : (
-              <SelectFields
-                handleFieldChange={this.handleFieldChange}
-                fields={this.state.selectedModel.fields}
-                schema={this.state.schema}
-                selectAll={this.selectAll}
-                formatFieldNames={formatNames}
-              />
             )}
-            <div className="Container">
-              {this.state.selectedModelsAndFields[0] && (
-                <Selector
-                  items={this.state.selectedModelsAndFields}
-                  selectedModel={this.state.selectedModel}
-                  selectedSlide={this.selectedSlide}
-                  removeField={this.removeField}
-                />
-              )}
-            </div>
-            <div className='Margin-top-10 Column '>
-            </div>
-            <div className="Column Align-self-center  Center ">
-            {/* <div className="Margin-buttons Row"> */}
-              {/* <Button
-                variant="contained"
-                className="Button"
-                component={Link}
-                to="/startQuery"
-              >
-                START OVER
-              </Button> */}
- {/* </div> */}
+          </div>
+          <div className="Margin-top-10 Column " />
+          <div className="Column Align-self-center  Center ">
             <div className="Row ">
-            <div className="Margin-buttons Row">
-              <StartOverButton />
-            </div>
-            <div className="Margin-buttons Row">
-              <Button
-                variant="contained"
-                className="Button"
-                component={Link}
-                to="/refineQuery"
-              >
-                REFINE QUERY
-              </Button>
+              <div className="Margin-buttons Row">
+                <StartOverButton />
+              </div>
+              <div className="Margin-buttons Row">
+                <Button
+                  variant="contained"
+                  className="Button"
+                  component={Link}
+                  to="/refineQuery"
+                >
+                  REFINE QUERY
+                </Button>
               </div>
               <div className="Margin-buttons" onClick={this.loadPreview}>
-              <PreviewModal />
+                <PreviewModal />
+              </div>
             </div>
-            </div>
-            {(!this.state.nextView && this.state.selectedModelsAndFields.length < 2) && (
+            {!this.state.nextView &&
+              this.state.selectedModelsAndFields.length < 2 && (
                 <div className="Maring-buttons">
                   <Button
                     variant="contained"

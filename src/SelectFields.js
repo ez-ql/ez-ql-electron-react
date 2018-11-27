@@ -6,7 +6,7 @@
 //   const fields = props.fields || []
 
 //   return (
-//     <div className='Title Height-80'>
+//     <div className='Title Min-height-75'>
 //       <div className='Column Center Height-50' >
 //         <h1 className='Flex-End Column  Grey'
 //         >
@@ -52,7 +52,7 @@ const SelectFields = props => {
   const fieldNames = fields.map(elem => elem.field_name);
   const modFields = props.formatFieldNames(fieldNames);
   return (
-    <div className="Title Height-80">
+    <div className="Title Min-height-75">
       <div className="Column Center Height-50">
         <h1 className="Flex-End Column Grey">SELECT FIELDS</h1>
       </div>
