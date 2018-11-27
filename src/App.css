@@ -281,7 +281,7 @@ h1 {
 }
 
 .Margin-buttons {
-  margin-top: 1rem;
+  margin-top: 2rem;
   padding: 0.5rem;
 }
 
@@ -311,12 +311,15 @@ h1 {
 .Larger-font {
   font-size: 1.25rem;
   margin-bottom: 1%;
+  min-height: 1.75rem;
   border-bottom: solid;
   border-bottom-width: 1px;
+  margin-top: .5rem;
 }
 
 .Smaller-font {
   font-size: 1rem;
+  margin-left: .5rem
 }
 
 .Padding-3 {
