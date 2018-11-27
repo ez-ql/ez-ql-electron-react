@@ -8,14 +8,13 @@ class Visualize extends React.Component {
     super(props);
     this.state = {
       data: []
-    }
+    };
   }
 
   componentDidMount() {
-    ipcRenderer.on("async-query-reply", (event, arg) => {
-      this.setState({
-        data: arg
-      });
+    const data = electron.remote.getGlobal("sharedObj").data;
+    this.setState({
+      data: data
     });
   }
 
@@ -23,12 +22,12 @@ class Visualize extends React.Component {
 
     return (
       <div className="Flex-Container Min-width-30 Height-75">
-      <div className="Column Center Height-50">
-        <h1>YOUR CHART OPTIONS</h1>
+        <div className="Column Center Height-50">
+          <h1>YOUR CHART OPTIONS</h1>
+        </div>
       </div>
-      </div >
-    )
+    );
   }
 }
 
-export default Visualize
+export default Visualize;

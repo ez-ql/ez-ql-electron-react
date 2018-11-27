@@ -8,19 +8,20 @@
   height: 40vmin;
 }
 
-table {
+/* table {
   text-align: left;
   justify-content: none;
   font-family: "Roboto", sans-serif;
 }
 
 .table tbody {
-  border: grey solid 1px;
+  border: red solid 1px;
 }
 
 .table th {
   font-weight: 500;
-}
+  width: min-content;
+} */
 
 .App-header {
   background-color: #8f96a3;
@@ -96,7 +97,7 @@ table {
 
 .Height-75 {
   display: flex;
-  height: 75%;
+  height: 85%;
   margin-top: 5%;
 }
 
@@ -249,7 +250,7 @@ h1 {
   border: 2px;
   height: 40px;
   font-size: 20px;
-  opacity: 0.6;
+  opacity: 0.8;
   border-radius: 15%;
   margin: 3px;
   padding: 1px 7px 2px;
@@ -349,12 +350,12 @@ h1 {
   min-height: 1.75rem;
   border-bottom: solid;
   border-bottom-width: 1px;
-  margin-top: .5rem;
+  margin-top: 0.5rem;
 }
 
 .Smaller-font {
   font-size: 1rem;
-  margin-left: .5rem
+  margin-left: 0.5rem;
 }
 
 .Padding-3 {

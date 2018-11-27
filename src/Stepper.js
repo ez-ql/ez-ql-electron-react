@@ -50,8 +50,7 @@ class HorizontalStepper extends Component {
     return ["Aggregate Fields", "Filter by Field Value", "Sort by Field Value"];
   };
 
-  handleNext = (event) => {
-    ipcRenderer.send('async-new-query')
+  handleNext = event => {
     const { activeStep } = this.state;
     let { skipped } = this.state;
     if (this.isStepSkipped(activeStep)) {
@@ -84,6 +83,10 @@ class HorizontalStepper extends Component {
 
   isStepSkipped = step => {
     return this.state.skipped.has(step);
+  };
+
+  handleSubmit = () => {
+    ipcRenderer.send("async-new-query");
   };
 
   componentDidMount() {
@@ -186,47 +189,26 @@ class HorizontalStepper extends Component {
                         color="primary"
                         component={Link}
                         to="/finalizeQuery"
+                        onClick={this.handleSubmit}
                         className={classes.button}
                       >
                         Finish
                       </Button>
-                    </div>
-                    {/* <div onClick={this.loadPreview}
-                      >
-                        <PreviewModal buttonClass={classes.button}  color="primary"/>
+                      {/* <div>
+                        <PreviewModal
+                          variant="contained"
+                          color="primary"
+                          buttonClass={classes.button}
+                          onClick={this.loadPreview}
+                        />
                       </div> */}
+                    </div>
                   </div>
                 </div>
               )}
             </div>
           </div>
         </div>
-        {/* <div
-          className="Margin-top Light-blue"
-          onClick={event => {
-            console.log("*****SHARED OBJECT******", sharedObject);
-            //only do this if panel is about to expand
-            if (!this.state.previewExpanded) {
-              const [
-                qualifiedFieldsToAdd
-              ] = this.state.selectedModelsAndFields.map(modelAndFields =>
-                modelAndFields.fields.map(
-                  field => `${modelAndFields.model_name}.${field}`
-                )
-              );
-              const newQualifiedFields = [
-                ...sharedObject.currQuery.qualifiedFields,
-                ...qualifiedFieldsToAdd
-              ];
-              sharedObject.currQuery.qualifiedFields = newQualifiedFields;
-            }
-            this.setState(state => ({
-              previewExpanded: !state.previewExpanded
-            }));
-          }}
-        >
-          <PreviewPanel />
-        </div> */}
       </div>
     );
   }

@@ -123,7 +123,8 @@ global.sharedObj = {
     selectedModelsAndFields: [], // array of objects
 
   },
-  sqlQuery: "" //sql query string for preview reference
+  sqlQuery: "", //sql query string for preview reference
+  data: []
 };
 
 // -----DUMMY DATA FOR TESTING------
@@ -247,7 +248,8 @@ ipcMain.on("async-new-query", async (event, arg) => {
     .query(query)
     .then(res => {
       console.log("first row of results", res.rows[0]);
-      event.sender.send("async-query-reply", res.rows);
+      global.sharedObj.data = res.rows;
+      event.sender.send("async-query-reply");
       client.end();
     })
     .catch(err => console.error(err.stack || err));
