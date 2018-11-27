@@ -9,6 +9,7 @@ import Project1 from './Project1'
 import Joins from './Joins'
 import FinalizeQuery from './FinalizeQuery'
 import HorizontalStepper from './Stepper'
+import Visualization from './Visualization'
 
 class App extends Component {
   render() {
@@ -24,6 +25,7 @@ class App extends Component {
             <Route path="/project1" component={Project1} />
             <Route path="/finalizeQuery" component={FinalizeQuery} />
             <Route path="/refineQuery" component={HorizontalStepper} />
+            <Route path="/visualize" component={Visualization} />
             <Route component={StartQuery} />
             {/*ADJUST LAST LINE AS APPLICABLE Default route*/}
           </Switch>
