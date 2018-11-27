@@ -247,7 +247,7 @@ ipcMain.on("async-new-query", async (event, arg) => {
     .then(res => {
       console.log("first row of results", res.rows[0]);
       global.sharedObj.data = res.rows;
-      //event.sender.send("async-query-reply");
+      event.sender.send("async-query-reply");
       client.end();
     })
     .catch(err => console.error(err.stack || err));
