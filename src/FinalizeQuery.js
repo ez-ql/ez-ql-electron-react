@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import PreviewTabs from "./PreviewPanel";
+import PreviewTabs from "./PreviewTabs";
 import StartOverButton from "./StartOverButton";
 const electron = window.require("electron");
 const ipcRenderer = electron.ipcRenderer;
