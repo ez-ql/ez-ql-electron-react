@@ -89,12 +89,14 @@ class Joins extends Component {
                 items={Object.keys(this.state.allJoinTypes)}
                 handleChange={this.handleSelectedJoinType}
               />
+              <div className="Margin-top-5">
               <Button
                 variant="contained"
                 type="button"
                 onClick={this.handleSubmitJoin}>
                 Submit
               </Button>
+                </div>
             </div>
           }
         </div>

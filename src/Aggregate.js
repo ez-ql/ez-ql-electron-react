@@ -142,7 +142,7 @@ class Aggregate extends Component {
 
   render() {
     return (
-      <div className="Height-80 Title Column Center Width-50">
+      <div className="Min-height-75 Title Column Center Width-50">
       <div className="Display Column Center">
         <h3>SELECT AGGREGATOR</h3>
         <ScrollMenu
@@ -170,10 +170,14 @@ class Aggregate extends Component {
           </div>
         ) : null}
         {this.state.selectNextAggregator ? (
-          <div className='Row-buttons'>
-            <button onClick={this.handleNextAggregator} type="submit">
-              Select Another Aggregator
-            </button>
+          <div className="Margin-top-3" >
+            <Button
+              onClick={this.handleNextAggregator}
+              variant="contained"
+              type="submit"
+            >
+              SELECT ANOTHER
+            </Button>
           </div>
         ) : null}
       </div>

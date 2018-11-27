@@ -81,9 +81,9 @@ class Sort extends React.Component {
 
   render() {
     return (
-      <div className="Height-80 Title Column Center Width-50">
+      <div className="Min-height-75 Title Column Center Width-50">
       <div className="Display Column Center">
-        <h3>Select a field to sort by</h3>
+        <h3>SELECT A FIELD TO SORT BY</h3>
         {this.state.order.length
           ? `Currently sorted by: ${this.state.order
               .map(
@@ -102,10 +102,11 @@ class Sort extends React.Component {
             .filter(field => !this.state.sortedFields.includes(field))}
           handleChange={this.handleSelectedField}
         />
-        <div>
-          <label>
-            Sort in Ascending Order?
+        <div className="Padding-3">
+          <label >
+            {`Sort in Ascending Order?    `}
             <input
+              className="Checkbox"
               type="checkbox"
               name="ascending"
               checked={this.state.ascending}
