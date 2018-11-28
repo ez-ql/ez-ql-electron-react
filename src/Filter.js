@@ -54,6 +54,7 @@ class Filter extends React.Component {
   }
 
   handleSelectedTable(table) {
+    console.log("THIS.STATE.HANDLETABLE", this.state);
     let tableFields = [];
     this.state.selectedModels.forEach(model => {
       if (table === model.model_name) {
@@ -62,7 +63,8 @@ class Filter extends React.Component {
     });
     this.setState({
       tableToFilter: table,
-      tableFields
+      tableFields,
+      fieldToFilter: ""
     });
   }
 
