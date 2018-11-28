@@ -20,6 +20,7 @@ class FinalizeQuery extends React.Component {
 
   componentDidMount() {
     ipcRenderer.on("async-query-reply", () => {
+      console.log('HEEEERE')
       const data = electron.remote.getGlobal("sharedObj").data;
       this.setState({
         data: data,
@@ -41,33 +42,36 @@ class FinalizeQuery extends React.Component {
     console.log("DATA", this.state.data);
 
     return (
-      <div className="Flex-Container Min-width-30 Height-75">
-        <div className="Column Center Height-50">
-          <div>
-            <h1>YOUR DATA</h1>
-          </div>
-          <div className="Row self-align-center">
-            <div className="">
-              <Button variant="contained" className="Button" value="save">
+      <div className="Column Title Min-height-50 Align-self-center Margin-top-3">
+      <div className="Column Displauy Center Height-50">
+          <div className="Align-self-center Width-30" >
+            <h1>
+            <div className="Row Flex-space-around ">
+            <div className="Larger-font">
+              {/* <Button
+                className="Button"
+                value="save">
                 Save
-              </Button>
+              </Button> */}
             </div>
-            <div>
-              <Button
-                variant="contained"
+            <div className="Larger-font">
+              {/* <Button
                 component={Link}
                 to="/visualize"
                 className="Button"
                 value="export"
               >
                 Visualize
-              </Button>
+              </Button> */}
               {/* <Visualization data={this.state.data} */}
             </div>
-            <div>
+            <div className="Larger-font">
               <StartOverButton />
             </div>
           </div>
+              </h1>
+          </div>
+
           <div>
             <PreviewTabs props={{ ...this.state }} preview={false} />
           </div>
