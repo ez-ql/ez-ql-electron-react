@@ -47,7 +47,7 @@ class Aggregate extends Component {
         ? this.state.selectedFields
             .filter(
               field =>
-                field.field_type === "integer" || field.type === "decimal"
+                field.field_type === "integer" || field.field_type === "decimal"
             )
             .map(field => field.field_name)
         : this.state.selectedFields //all other aggregator types, e.g. MAX, MIN

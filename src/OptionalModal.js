@@ -52,20 +52,20 @@ class OptionalModal extends React.Component {
     const { classes } = this.props;
     const stepNarratives = [
       {
-        primary: "Select Data from an Additional Table",
-        secondary: "(e.g. Add Customers in Addition to Orders)"
+        primary: "Select data from an additional table",
+        secondary: "(e.g. See data from the Customers table in addition to the Orders table)"
       },
       {
-        primary: "Aggregate Fields",
-        secondary: "(e.g. SUM, COUNT, MAX, MIN)"
+        primary: "Aggregate fields",
+        secondary: "(e.g. Count the number of orders for each customer)"
       },
       {
-        primary: "Filter by Field Value",
-        secondary: " (e.g Order Date after 1/1/2016)"
+        primary: "Filter by field value",
+        secondary: " (e.g See only orders with an order date after 1/1/2016)"
       },
       {
-        primary: "Sort by Field Value",
-        secondary: "(e.g. Last Name in Ascending Order)"
+        primary: "Sort by field value",
+        secondary: "(e.g. Order your customer list by last name)"
       }
     ];
     return (
@@ -81,7 +81,7 @@ class OptionalModal extends React.Component {
               <Grid container spacing={16}>
                 <Grid item xs={12} md={6}>
                   <Typography variant="h6" className={classes.title}>
-                    The following steps are optional:
+                    The following next steps are optional:
                   </Typography>
                   <div className={classes.demo}>
                     <List>
