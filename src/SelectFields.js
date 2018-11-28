@@ -1,6 +1,11 @@
 // import React from 'react';
 // import Button from '@material-ui/core/Button';
 
+import React from "react";
+import FieldButtons from "./FieldButtons";
+const electron = window.require("electron");
+
+
 // const SelectFields = props => {
 //   const { handleFieldChange } = props;
 //   const fields = props.fields || []
@@ -43,18 +48,29 @@
 //           </Button>
 //         </div>
 
-import React from "react";
-import FieldButtons from "./FieldButtons";
+const formatModelName = (name) => {
+  if (name.includes('_')) {
+    return (`${name.split('_')[0]} ${name.split('_')[1]}`).toUpperCase()
+  } else {
+    return name.toUpperCase()
+  }
+}
+
 
 const SelectFields = props => {
+  console.log('MODEL.MODEL_NAME', props.model.model_name, [props.model.model_name])
   const handleFieldChange = props.handleFieldChange;
   const fields = props.fields || [];
   const fieldNames = fields.map(elem => elem.field_name);
   const modFields = props.formatFieldNames(fieldNames);
+  const modelName = formatModelName(electron.remote.getGlobal('sharedObj').currQuery.from)
+
   return (
     <div className="Title Min-height-50 Align-self-center Margin-top-3">
       <div className="Column Center Height-50">
-        <h1 className="Flex-End Column Grey">SELECT FIELDS</h1>
+        {/* <h1 className="Flex-End Column Grey">{`Which fields from ${Object.values(props.formatTableNames([model.model_name]))[0]} do you want to see?`}</h1> */}
+        <h1 className="Flex-End Column Grey">{`WHICH FIELDS FROM THE ${modelName} TABLE?`}</h1>
+
       </div>
       <div>
       <FieldButtons

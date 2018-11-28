@@ -70,7 +70,7 @@ class StartQuery extends Component {
       <div className="Height-40 Title Column Center Width-50">
         <div className="Column Center Height-20">
           <div className="Flex-End Column ">
-            <h1 className=" Height-50">SELECT A TABLE</h1>
+            <h1 className=" Height-50">CHOOSE A DATA SET TO BEGIN</h1>
           </div>
         </div>
         <div className="Row-buttons Flex-Wrap">

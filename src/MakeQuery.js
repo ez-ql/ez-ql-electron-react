@@ -301,6 +301,8 @@ class MakeQuery extends Component {
               handleFieldChange={this.handleFieldChange}
               fields={this.state.selectedModel.fields}
               schema={this.state.schema}
+              model={this.state.selectedModel}
+              formatTableNames={formatNames}
               selectAll={this.selectAll}
               formatFieldNames={formatNames}
             />
