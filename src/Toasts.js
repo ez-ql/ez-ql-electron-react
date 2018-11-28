@@ -12,7 +12,7 @@ const styles = theme => ({
   }
 });
 
-const withToast = Component => {
+const withToast = (Component, message) => {
   class Toasts extends React.Component {
     constructor(props) {
       super(props);
@@ -37,7 +37,9 @@ const withToast = Component => {
       const { classes } = this.props;
       return (
         <div>
-            <span onClick={this.handleClick}><Component /></span>
+          <span onClick={this.handleClick}>
+            <Component />
+          </span>
           {/* <Button >Submit</Button> */}
           <Snackbar
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
@@ -45,7 +47,7 @@ const withToast = Component => {
             autoHideDuration={3000}
             onClose={this.handleClose}
             ContentProps={{ "aria-describedby": "message-id" }}
-            message={<span id="message-id">Success!</span>}
+            message={<span id="message-id">{message}</span>}
             action={[
               <IconButton
                 key="close"

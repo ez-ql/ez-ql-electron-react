@@ -1,8 +1,21 @@
 import React, { Component } from "react";
 import ScrollMenu from "./ScrollMenu";
 import Button from "@material-ui/core/Button";
-
+import withToast from "./Toasts";
 const electron = window.require("electron");
+
+const SubmitButton = props => {
+  return (
+    <Button variant="contained" onClick={props.handleSubmit} type="submit">
+      Submit
+    </Button>
+  );
+};
+
+const SubmitButtonWithToast = withToast(
+  SubmitButton,
+  "Your aggregator has been registered!"
+);
 
 class Aggregate extends Component {
   constructor(props) {
@@ -127,12 +140,14 @@ class Aggregate extends Component {
     const selectedModels = currQuery.selectedModelsAndFields;
     let selectedFields = [];
     currQuery.selectedModelsAndFields.forEach(model => {
-      const modelDetail = models.filter(globalModel => globalModel.model_name === model.model_name)
+      const modelDetail = models.filter(
+        globalModel => globalModel.model_name === model.model_name
+      );
       modelDetail[0].fields.forEach(globalField => {
-        if(model.fields.includes(globalField.field_name)) {
-        selectedFields.push(globalField)
+        if (model.fields.includes(globalField.field_name)) {
+          selectedFields.push(globalField);
         }
-      })
+      });
     });
     this.setState({
       selectedFields,
@@ -144,44 +159,26 @@ class Aggregate extends Component {
     console.log('THIS.STATE - AGG', this.state)
     return (
       <div className="Min-height-75 Title Column Center Width-50">
-      <div className="Display Column Center">
-        <h3>SELECT AGGREGATOR</h3>
-        <ScrollMenu
-          items={this.state.availableAggregators}
-          handleChange={this.handleSelectedAggregator}
-        />
-        {this.state.selectedAggregator !== "" ? (
-          <div className="Margin-top-5">
-            <div >
-              <h3>SELECT FIELD FOR {this.state.selectedAggregator}</h3>
-              <ScrollMenu
-                items={this.state.availableFields}
-                handleChange={this.handleSelectedField}
-              />
+        <div className="Display Column Center">
+          <h3>SELECT AGGREGATOR</h3>
+          <ScrollMenu
+            items={this.state.availableAggregators}
+            handleChange={this.handleSelectedAggregator}
+          />
+          {this.state.selectedAggregator !== "" ? (
+            <div className="Margin-top-5">
+              <div>
+                <h3>SELECT FIELD FOR {this.state.selectedAggregator}</h3>
+                <ScrollMenu
+                  items={this.state.availableFields}
+                  handleChange={this.handleSelectedField}
+                />
+              </div>
+              <div className="Margin-top-3">
+                <SubmitButtonWithToast handleSubmit={this.handleSubmit} />
+              </div>
             </div>
-            <div className="Margin-top-3">
-              <Button
-                variant="contained"
-                onClick={this.handleSubmit}
-                type="submit"
-                disabled={this.state.selectedAggregator.length}
-              >
-                Submit
-              </Button>
-            </div>
-          </div>
-        ) : null}
-        {/* {this.state.selectNextAggregator ? (
-          <div className="Margin-top-3" >
-            <Button
-              onClick={this.handleNextAggregator}
-              variant="contained"
-              type="submit"
-            >
-              SELECT ANOTHER
-            </Button>
-          </div>
-        ) : null} */}
+          ) : null}
       </div>
       </div>
     );
