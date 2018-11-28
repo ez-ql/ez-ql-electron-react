@@ -34,7 +34,8 @@ class Aggregate extends Component {
       having: "",
       selectedAggregator: "",
       availableFields: [],
-      aggregatedFields: []
+      aggregatedFields: [],
+      readyToSubmit: false
     };
   }
 
@@ -86,7 +87,8 @@ class Aggregate extends Component {
     this.setState({
       aggregatedFields,
       aggregates,
-      groupBy
+      groupBy,
+      readyToSubmit: true
     });
   };
 
@@ -121,7 +123,8 @@ class Aggregate extends Component {
       ? group
       : "";
     this.setState({
-      selectedAggregator: ""
+      selectedAggregator: "",
+      readyToSubmit: false,
     });
   };
 
@@ -186,7 +189,7 @@ class Aggregate extends Component {
           <div className="Margin-top-3">
             <SubmitButtonWithToast
               handleSubmit={this.handleSubmit}
-              isDisabled={!this.state.aggregatedFields.length}
+              isDisabled={!this.state.readyToSubmit}
             />
           </div>
         </div>
