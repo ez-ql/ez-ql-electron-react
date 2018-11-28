@@ -79,27 +79,33 @@ class Project extends React.Component {
 
   render() {
     return (
-      <div className="Display Height-50 Title Column Center Width-70">
-        <div className="Display Center Height-50">
-          <div className="Column ">
-            <h1 className="Grey Height-20 Align-self-center Padding-3 Border-bottom">
+      <div className="Display Column Center Width-60">
+        <div className="Display Center Column Width-30 Height-50-fixed Margin-top-5 Self-align-center" >
+          <div className="Column Center Display Margin-top-5 Width-60">
+            <h1 className=" Grey Center Align-self-center Padding-3 ">
               {this.state.selectedProject.project_name &&
                 this.state.selectedProject.project_name.toUpperCase()}
             </h1>
           </div>
-          <div className="Row Display Flex-wrap Grey Height-100">
+
+          <div className="Flex-wrap Center Margin-top-5 Display Grey Height-100
+          ">
+
             {this.state.selectedProject.queries &&
               this.state.selectedProject.queries.map(query => {
                 return (
-                  <div className="Width-50 Flex-wrap Height-20 Border-solid">
-                    <div className="Margin-top Query-name-box">
+
+                  <div className="Height-11-fixed  lighter-background lightest-grey  effect1 Width-50 Center Column Display Border-solid Min-width-25 Query-name-box">
+                    <div className="Inner-query-name-box Column Flex-wrap">
+                      <div className="">
                       <Typography variant="subtitle1">
                         {query.query_name.toUpperCase()}
                       </Typography>
                       <br />
+                      </div>
                     </div>
                     <div className="Row">
-                    <div className=" Button Margin-buttons Padding-3">
+                    <div className=" Button Margin-buttons ">
                       <Button
                         variant="contained"
                         onClick={this.handleClickOpen}
@@ -112,7 +118,7 @@ class Project extends React.Component {
                         onClose={this.handleClose}
                       />
                     </div>
-                    <div className=" Button Margin-buttons Padding-3">
+                    <div className=" Button Margin-buttons ">
                       <Button
                         variant="contained"
                         onClick={() => this.setGlobalWithData(query.query_text)}

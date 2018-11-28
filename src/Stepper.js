@@ -15,7 +15,7 @@ import MakeQuery from "./MakeQuery";
 import FinalizeQuery from "./FinalizeQuery";
 import StartQuery from "./StartQuery";
 import OptionalModal from "./OptionalModal";
-import FiberManualRecord from '@material-ui/icons'
+import FiberManualRecord from "@material-ui/icons";
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
 const ipcRenderer = electron.ipcRenderer;
@@ -143,106 +143,107 @@ class HorizontalStepper extends Component {
         {/* <div className="Column Height-50 Display Center "> */}
         {/* <div> */}
         <div>
-          <div>
-            <div>
-              {activeStep === steps.length ? null : (
-                // <div>
-                /* <Button value="finalize" component={Link} to="/finalizeQuery">
+          {activeStep === steps.length ? null : (
+            // <div>
+            /* <Button value="finalize" component={Link} to="/finalizeQuery">
                   Review Query Results
                 </Button>
                 <Button value="finalize" component={Link} to="/makeQuery">
                   Revise Table Selection
                 </Button> */
-                // </div>
-                // <div className="Column Display Width-60 ">
-                //   <div className="Align-self-center Width-30 Column Min-height-30 ">
-                <div>
+            // </div>
+            // <div className="Column Display Width-60 ">
+            //   <div className="Align-self-center Width-30 Column Min-height-30 ">
+            <div>
+              <div className="Column Height-30-fixed">
+                {activeStep === 0 &&
+                  (this.state.startQuery ? <StartQuery /> : <MakeQuery />)}
+                {activeStep === 1 && (
                   <div>
-                    {activeStep === 0 &&
-                      (this.state.startQuery ? <StartQuery /> : <MakeQuery />)}
-                    {activeStep === 1 && (
-                      <div>
-                        {this.state.optionalModal && (
-                          <OptionalModal
-                            toggleOptionalModal={this.toggleOptionalModal}
-                          />
-                        )}
-                        <MakeQuery nextView="true" />
-                      </div>
+                    {this.state.optionalModal && (
+                      <OptionalModal
+                        toggleOptionalModal={this.toggleOptionalModal}
+                      />
                     )}
-                    {activeStep === 2 && <Aggregate />}
-                    {activeStep === 3 && <Filter />}
-                    {activeStep === 4 && <Sort />}
-                    {activeStep === 5 && <FinalizeQuery />}
+                    <MakeQuery nextView="true" />
                   </div>
-                  <div className="Display Margin-top-5 Column Width-100 Center Align-self-end ">
-                    <div className={classes.root}>
-                      <Stepper
-                        className={classes.stepperColor}
-                        activeStep={activeStep}
-                        orientation="horizontal"
-                      >
-                        {steps.map((label, index) => {
-                          const props = {};
-                          const labelProps = {};
-                          // labelProps.optional = (
-                          //   <Typography variant="caption">Optional</Typography>
-                          // );
-                          if (this.isStepSkipped(index)) {
-                            props.completed = false;
-                          }
-                          return (
-                            <Step key={label} {...props}>
-                              <StepLabel
-                                {...labelProps}
-                                classes={{
-                                  iconContainer: classes.iconContainer
-                                }}
-                              >
-                                {label}
-                              </StepLabel>
-                            </Step>
-                          );
-                        })}
-                      </Stepper>
-                    </div>
-                  </div>
-                  <div className="Row-buttons Margin-top-1">
-                    <div>
-                      <Button
-                        disabled={activeStep === 0}
-                        variant="contained"
-                        color="primary"
-                        onClick={this.handleBack}
-                        className={classes.button}
-                      >
-                        Back
-                      </Button>
-                    </div>
-                    <div>
-                      <Button
-                        disabled={activeStep === 5}
-                        variant="contained"
-                        color="primary"
-                        onClick={this.handleNext}
-                        className={classes.button}
-                      >
-                        Next
-                      </Button>
-                    </div>
-                    <div>
-                      <Button
-                        // disabled={activeStep === 0}
-                        variant="contained"
-                        color="primary"
-                        component={Link}
-                        to="/finalizeQuery"
-                        onClick={this.handleSubmit}
-                        className={classes.button}
-                      >
-                        Finish
-                      </Button>
-                      {/* <div>
+                )}
+                {activeStep === 2 && <Aggregate />}
+                {activeStep === 3 && <Filter />}
+                {activeStep === 4 && <Sort />}
+                {activeStep === 5 && <FinalizeQuery />}
+              </div>
+              <div className="Display Margin-top-5 Column Width-100 Center Align-self-end ">
+                <div className={classes.root}>
+                  <Stepper
+                    className={classes.stepperColor}
+                    activeStep={activeStep}
+                    orientation="horizontal"
+                  >
+                    {steps.map((label, index) => {
+                      const props = {};
+                      const labelProps = {};
+                      // labelProps.optional = (
+                      //   <Typography variant="caption">Optional</Typography>
+                      // );
+                      if (this.isStepSkipped(index)) {
+                        props.completed = false;
+                      }
+                      return (
+                        <Step key={label} {...props}>
+                          <StepLabel
+                            {...labelProps}
+                            classes={{
+                              iconContainer: classes.iconContainer
+                            }}
+                          >
+                            {label}
+                          </StepLabel>
+                        </Step>
+                      );
+                    })}
+                  </Stepper>
+                </div>
+              </div>
+              <div className="Row-buttons Margin-top-1">
+                <div>
+                  <Button
+                    disabled={activeStep === 0}
+                    variant="contained"
+                    color="primary"
+                    onClick={this.handleBack}
+                    className={classes.button}
+                  >
+                    Back
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    disabled={
+                      activeStep === 5 ||
+                      !electron.remote.getGlobal("sharedObj").currQuery.from
+                    }
+                    variant="contained"
+                    color="primary"
+                    onClick={this.handleNext}
+                    className={classes.button}
+                  >
+                    Next
+                  </Button>
+                </div>
+                <div>
+                  <Button
+                    // disabled={activeStep === 0}
+                    variant="contained"
+                    color="primary"
+                    component={Link}
+                    to="/finalizeQuery"
+                    onClick={this.handleSubmit}
+                    className={classes.button}
+                  >
+                    Finish
+                  </Button>
+                  {/* <div>
                         <PreviewModal
                           variant="contained"
                           color="primary"
@@ -250,12 +251,10 @@ class HorizontalStepper extends Component {
                           onClick={this.loadPreview}
                         />
                       </div> */}
-                    </div>
-                  </div>
                 </div>
-              )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     );
