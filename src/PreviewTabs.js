@@ -62,10 +62,12 @@ class PreviewTabs extends React.Component {
 
   render() {
     const { data, numFields, numRows, sqlQuery, preview } = this.props;
-    console.log("*****props.props ----PREVIEW -----------  ****", this.props);
+    console.log(
+      "***** data, numFields, numRows, sqlQuery, preview ----PREVIEW -----------  ****",
+      this.props
+    );
     const { classes } = this.props;
     const { selectedTab } = this.state;
-    console.log("DATA", data);
     return (
       <Paper elevation={0} className={classes.root}>
         <Tabs
@@ -89,8 +91,10 @@ class PreviewTabs extends React.Component {
                 Please submit your request to receive the complete result.
               </Typography>
             )}
-            <Typography component="div" id="redBorder">
-              {data.length > 0 ? (
+            <Typography component="div">
+              {sqlQuery ? (
+                "There was no query submitted."
+              ) : data ? (
                 <Table data={data} preview={preview} className="table" />
               ) : (
                 "Loading..."

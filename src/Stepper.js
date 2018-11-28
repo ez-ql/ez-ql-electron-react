@@ -11,6 +11,10 @@ import Sort from "./Sort";
 import { Link } from "react-router-dom";
 import StepConnector from "@material-ui/core/StepConnector";
 import PreviewModal from "./PreviewModal";
+import MakeQuery from './MakeQuery'
+import FinalizeQuery from './FinalizeQuery'
+import StartQuery from './StartQuery'
+
 
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
@@ -18,7 +22,7 @@ const ipcRenderer = electron.ipcRenderer;
 
 const styles = theme => ({
   root: {
-    width: "90%",
+    width: "100%",
     backgroundColor: "rgb(181, 228, 228)"
   },
   button: {
@@ -42,12 +46,19 @@ class HorizontalStepper extends Component {
       steps: [],
       skipped: new Set(),
       previewExpanded: false,
-      selectedModelsAndFields: []
+      selectedModelsAndFields: [],
+      startQuery: true,
     };
   }
 
+  componentDidUpdate(prevProps){
+    if(prevProps.location.state !== this.props.location.state){
+      this.setState({startQuery : false})
+    }
+  }
+
   getSteps = () => {
-    return ["Aggregate Fields", "Filter by Field Value", "Sort by Field Value"];
+    return ["Select Table and Fields", "Connect a Table", "Aggregate Fields", "Filter by Field Value", "Sort by Field Value", "Finish"];
   };
 
   handleNext = event => {
@@ -102,12 +113,14 @@ class HorizontalStepper extends Component {
   render() {
     const { activeStep, steps } = this.state;
     const { classes } = this.props;
-
+    console.log('stepper props', this.props)
     return (
-      <div className="Flex-Container Min-width-30 Height-75 Column Center ">
-        <div className="Column Height-50 Display Center ">
-          <div>
+      <div className="Flex-Container Width-100vw Height-50-fixed  ">
+        {/* <div className="Column Height-50 Display Center "> */}
+           {/* <div> */}
             <div>
+              <div>
+              <div>
               {activeStep === steps.length ? null : (
                 // <div>
                 /* <Button value="finalize" component={Link} to="/finalizeQuery">
@@ -117,17 +130,41 @@ class HorizontalStepper extends Component {
                   Revise Table Selection
                 </Button> */
                 // </div>
-                <div className="Column Display Width-60 ">
-                  <div className="Align-self-center Width-30 Column Min-height-30 ">
-                    {activeStep === 0 ? (
-                      <Aggregate />
-                    ) : activeStep === 1 ? (
-                      <Filter />
-                    ) : (
-                      <Sort />
-                    )}
+                // <div className="Column Display Width-60 ">
+                //   <div className="Align-self-center Width-30 Column Min-height-30 ">
+                  <div>
+                    <div>
+                    {
+                      activeStep === 0 &&
+                      (
+                        this.state.startQuery ?
+                         <StartQuery /> :
+                         <MakeQuery />
+
+                      )
+                    }
+                    {
+                      activeStep === 1 &&
+                        <MakeQuery  nextView='true' />
+                    }
+                    {
+                      activeStep === 2 &&
+                        <Aggregate />
+                    }
+                    {
+                      activeStep === 3 &&
+                        <Filter />
+                    }
+                    {
+                      activeStep === 4 &&
+                        <Sort />
+                    }
+                    {
+                      activeStep === 5 &&
+                        <FinalizeQuery />
+                    }
                   </div>
-                  <div className="Column Width-30 Align-self-center ">
+                  <div className="Display Margin-top-5 Column Width-100 Center Align-self-end ">
                     <div className={classes.root}>
                       <Stepper
                         className={classes.stepperColor}
@@ -137,9 +174,9 @@ class HorizontalStepper extends Component {
                         {steps.map((label, index) => {
                           const props = {};
                           const labelProps = {};
-                          labelProps.optional = (
-                            <Typography variant="caption">Optional</Typography>
-                          );
+                          // labelProps.optional = (
+                          //   <Typography variant="caption">Optional</Typography>
+                          // );
                           if (this.isStepSkipped(index)) {
                             props.completed = false;
                           }
@@ -173,7 +210,7 @@ class HorizontalStepper extends Component {
                     </div>
                     <div>
                       <Button
-                        disabled={activeStep === 2}
+                        disabled={activeStep === 5}
                         variant="contained"
                         color="primary"
                         onClick={this.handleNext}

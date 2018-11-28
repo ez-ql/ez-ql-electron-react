@@ -69,15 +69,15 @@ class Visualize extends React.Component {
     const { classes } = this.props;
     console.log('STATE', this.state.projectQueries)
     return (
-      <div className="Flex-Container Min-width-30 Height-75">
-        <div className="Column Center Height-40">
-          {/* <h1 className=" Height-50">HOMEPAGE</h1> */}
-          <div>
-            <h2 className="Margin-top-15 Grey Height-20 Align-self-end Padding-3" >
-              YOUR SAVED QUERIES
+<div className="Height-50 Title Column Center Width-70">
+        <div className="Column Height-50">
+          <div className="">
+            <h2 className="Margin-top-15 Grey  Height-40 Center " >
+              YOUR SAVED PROJECTS
           </h2>
           </div>
-          <Link className="No-text-decoration Project-button White" to="/Project/1" >
+          <div className="Project-button"  >
+          <Link className="No-text-decoration Project-button " to="/project/1">
             <h4>
               {
                 this.state.projectQueries[0] &&
@@ -85,7 +85,9 @@ class Visualize extends React.Component {
               }
             </h4>
           </Link>
-          <Link className="No-text-decoration Project-button White" to="/Project/1">
+              </div>
+              <div className="No-text-decoration Project-button ">
+          <Link className="No-text-decoration Project-button " to="/project/2">
             <h4>
               {
                 this.state.projectQueries[0] &&
@@ -93,14 +95,15 @@ class Visualize extends React.Component {
               }
             </h4>
           </Link>
-          <Link className="No-text-decoration" to="/startQuery">
+              </div>
+          <Link className="No-text-decoration" to="/refineQuery">
             <div className="Margin-top-10" >
               <Icon className={classes.iconHover} color="action" style={{ fontSize: 60 }}>
                 add_circle
               </Icon>
             </div>
             <div className="No-text-decoration Grey Height-50 Align-self-end  ">
-              <h3 className="No-text-decoration" >CREATE A NEW QUERY</h3>
+              <h3 className="No-text-decoration" >CREATE QUERY</h3>
             </div>
           </Link>
         </div>

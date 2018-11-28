@@ -67,7 +67,7 @@ const Table = props => {
     sort: false,
     print: false,
     selectableRows: false,
-    pagination: false,
+    pagination: true,
     customFooter: (selectedRows, displayData, setSelectedRows) => {}
   };
 
