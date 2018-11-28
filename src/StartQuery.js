@@ -67,10 +67,10 @@ class StartQuery extends Component {
       electron.remote.getGlobal("sharedObj")
     );
     return (
-      <div className="Height-40 Title Column Center Width-50">
-        <div className="Column Center Height-20">
-          <div className="Flex-End Column ">
-            <h1 className=" Height-50">SELECT A TABLE</h1>
+<div className="Title Min-height-50 Align-self-center Margin-top-3">
+      <div className="Column Center Height-50 ">
+          <div className="Column Center Height-50">
+            <h1 className=" Flex-End Column">SELECT A TABLE</h1>
           </div>
         </div>
         <div className="Row-buttons Flex-Wrap">

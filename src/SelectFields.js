@@ -54,7 +54,7 @@ const SelectFields = props => {
   return (
     <div className="Title Min-height-50 Align-self-center Margin-top-3">
       <div className="Column Center Height-50">
-        <h1 className="Flex-End Column Grey">SELECT FIELDS</h1>
+        <h1 className="Flex-End Column ">SELECT FIELDS</h1>
       </div>
       <div>
       <FieldButtons

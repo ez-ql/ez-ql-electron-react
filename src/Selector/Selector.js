@@ -11,7 +11,8 @@ const itemStyle = {
   borderRadius: "10px",
   margin: "10px",
   backgroundColor: "rgb(105, 186, 186)",
-  border: "rgb(92, 92, 92)"
+  border: "rgb(92, 92, 92)",
+  boxShadow: "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)"
 };
 
 const styles = theme => ({
