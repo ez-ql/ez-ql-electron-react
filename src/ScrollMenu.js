@@ -17,10 +17,8 @@ class ScrollMenu extends React.Component {
         }
       : null;
 
-    console.log("selectedOption", selectedOption);
-    console.log("items", items);
     this.state = {
-      selectedOption: selectedOption
+      selectedOption
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -28,11 +26,9 @@ class ScrollMenu extends React.Component {
 
   handleChange(selectedOption) {
     this.setState({
-      selectedOption: selectedOption
+      selectedOption
     });
     this.props.handleChange(selectedOption.value);
-    console.log(`Option selected:`, selectedOption);
-    console.log(`Option selected VALUE:`, selectedOption.value);
   }
 
   render() {
