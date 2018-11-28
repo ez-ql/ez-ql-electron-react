@@ -11,11 +11,11 @@ import Sort from "./Sort";
 import { Link } from "react-router-dom";
 import StepConnector from "@material-ui/core/StepConnector";
 import PreviewModal from "./PreviewModal";
-import MakeQuery from './MakeQuery'
-import FinalizeQuery from './FinalizeQuery'
-import StartQuery from './StartQuery'
-
-
+import MakeQuery from "./MakeQuery";
+import FinalizeQuery from "./FinalizeQuery";
+import StartQuery from "./StartQuery";
+import OptionalModal from "./OptionalModal";
+import FiberManualRecord from '@material-ui/icons'
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
 const ipcRenderer = electron.ipcRenderer;
@@ -48,30 +48,48 @@ class HorizontalStepper extends Component {
       previewExpanded: false,
       selectedModelsAndFields: [],
       startQuery: true,
+      optionalModal: false,
+      optionalModalViewed: false
     };
   }
 
-  componentDidUpdate(prevProps){
-    if(prevProps.location.state !== this.props.location.state){
-      this.setState({startQuery : false})
+  componentDidUpdate(prevProps) {
+    if (prevProps.location.state !== this.props.location.state) {
+      this.setState({ startQuery: false });
     }
   }
 
   getSteps = () => {
-    return ["Select Table and Fields", "Connect a Table", "Aggregate Fields", "Filter by Field Value", "Sort by Field Value", "Finish"];
+    return [
+      "Select Table and Fields",
+      "Connect a Table",
+      "Aggregate Fields",
+      "Filter by Field Value",
+      "Sort by Field Value",
+      "Finish"
+    ];
   };
 
   handleNext = event => {
-    const { activeStep } = this.state;
+    const { activeStep, optionalModalViewed } = this.state;
     let { skipped } = this.state;
     if (this.isStepSkipped(activeStep)) {
       skipped = new Set(skipped.values());
       skipped.delete(activeStep);
     }
-    this.setState({
-      activeStep: activeStep + 1,
-      skipped
-    });
+    if (activeStep === 0 && optionalModalViewed === false) {
+      this.setState({
+        activeStep: activeStep + 1,
+        optionalModal: true,
+        optionalModalViewed: true,
+        skipped
+      });
+    } else {
+      this.setState({
+        activeStep: activeStep + 1,
+        skipped
+      });
+    }
   };
 
   handleBack = () => {
@@ -100,6 +118,12 @@ class HorizontalStepper extends Component {
     ipcRenderer.send("async-new-query");
   };
 
+  toggleOptionalModal = () => {
+    this.setState({
+      optionalModal: false
+    });
+  };
+
   componentDidMount() {
     const steps = this.getSteps();
     const selectedModelsAndFields = electron.remote.getGlobal("sharedObj")
@@ -113,14 +137,14 @@ class HorizontalStepper extends Component {
   render() {
     const { activeStep, steps } = this.state;
     const { classes } = this.props;
-    console.log('stepper props', this.props)
+    console.log("stepper props", this.props);
     return (
       <div className="Flex-Container Width-100vw Height-50-fixed  ">
         {/* <div className="Column Height-50 Display Center "> */}
-           {/* <div> */}
+        {/* <div> */}
+        <div>
+          <div>
             <div>
-              <div>
-              <div>
               {activeStep === steps.length ? null : (
                 // <div>
                 /* <Button value="finalize" component={Link} to="/finalizeQuery">
@@ -132,37 +156,24 @@ class HorizontalStepper extends Component {
                 // </div>
                 // <div className="Column Display Width-60 ">
                 //   <div className="Align-self-center Width-30 Column Min-height-30 ">
+                <div>
                   <div>
-                    <div>
-                    {
-                      activeStep === 0 &&
-                      (
-                        this.state.startQuery ?
-                         <StartQuery /> :
-                         <MakeQuery />
-
-                      )
-                    }
-                    {
-                      activeStep === 1 &&
-                        <MakeQuery  nextView='true' />
-                    }
-                    {
-                      activeStep === 2 &&
-                        <Aggregate />
-                    }
-                    {
-                      activeStep === 3 &&
-                        <Filter />
-                    }
-                    {
-                      activeStep === 4 &&
-                        <Sort />
-                    }
-                    {
-                      activeStep === 5 &&
-                        <FinalizeQuery />
-                    }
+                    {activeStep === 0 &&
+                      (this.state.startQuery ? <StartQuery /> : <MakeQuery />)}
+                    {activeStep === 1 && (
+                      <div>
+                        {this.state.optionalModal && (
+                          <OptionalModal
+                            toggleOptionalModal={this.toggleOptionalModal}
+                          />
+                        )}
+                        <MakeQuery nextView="true" />
+                      </div>
+                    )}
+                    {activeStep === 2 && <Aggregate />}
+                    {activeStep === 3 && <Filter />}
+                    {activeStep === 4 && <Sort />}
+                    {activeStep === 5 && <FinalizeQuery />}
                   </div>
                   <div className="Display Margin-top-5 Column Width-100 Center Align-self-end ">
                     <div className={classes.root}>
