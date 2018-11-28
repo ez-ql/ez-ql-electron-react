@@ -6,7 +6,12 @@ const electron = window.require("electron");
 
 const SubmitButton = props => {
   return (
-    <Button className="Button" variant="contained" type="submit">
+    <Button
+      className="Button"
+      variant="contained"
+      type="submit"
+      disabled={props.isDisabled}
+    >
       Submit
     </Button>
   );
@@ -144,6 +149,7 @@ class Filter extends React.Component {
   }
 
   render() {
+    console.log("STATE", this.state);
     return (
       <div className="Min-height-75 Title Column Center Width-50">
         <div className="Display Column Center">
@@ -197,7 +203,7 @@ class Filter extends React.Component {
                   />
                 </div>
                 <div className="Margin-top-5">
-                  <SubmitButtonWithToast />
+                  <SubmitButtonWithToast isDisabled={!this.state.userEntered} />
                 </div>
               </form>
             </div>

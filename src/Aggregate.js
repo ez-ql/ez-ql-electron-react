@@ -5,10 +5,13 @@ import withToast from "./Toasts";
 const electron = window.require("electron");
 
 const SubmitButton = props => {
-  console.log('PROPS', props)
-  console.log("PROPS.DISABLED", `${props.isDisabled}`)
   return (
-    <Button variant="contained" type="submit" >
+    <Button
+      variant="contained"
+      handleSubmit={props.handleSubmit}
+      type="submit"
+      disabled={props.isDisabled}
+    >
       Submit
     </Button>
   );
@@ -158,8 +161,6 @@ class Aggregate extends Component {
   }
 
   render() {
-    console.log('THIS.STATE - AGG', this.state)
-    console.log('!!!!!!!!!', !this.state.aggregatedFields.length)
     return (
       <div className="Min-height-75 Title Column Center Width-50">
         <div className="Display Column Center">
@@ -177,13 +178,15 @@ class Aggregate extends Component {
                   handleChange={this.handleSelectedField}
                 />
               </div>
-              <div className="Margin-top-3" onClick={this.handleSubmit}>
-              {console.log(!this.state.aggregatedFields.length, '%%%%%%%%%%%%%%%%%%%%%%%%%%%%')}
-                <SubmitButtonWithToast />
+              <div className="Margin-top-3">
+                <SubmitButtonWithToast
+                  onClick={this.handleSubmit}
+                  isDisabled={!this.state.aggregatedFields.length}
+                />
               </div>
             </div>
           ) : null}
-      </div>
+        </div>
       </div>
     );
   }
