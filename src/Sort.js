@@ -8,7 +8,12 @@ const electron = window.require("electron");
 
 const SubmitButton = props => {
   return (
-    <Button variant="contained" onClick={props.handleSubmit} type="button">
+    <Button
+      variant="contained"
+      onClick={props.handleSubmit}
+      type="button"
+      disabled={props.isDisabled}
+    >
       Submit
     </Button>
   );
@@ -128,7 +133,10 @@ class Sort extends React.Component {
               />
             </label>
           </div>
-          <SubmitButtonWithToast handleSubmit={this.handleSubmit} />
+          <SubmitButtonWithToast
+            handleSubmit={this.handleSubmit}
+            isDisabled={!this.state.currentField}
+          />
           <div />
         </div>
       </div>
