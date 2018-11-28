@@ -8,7 +8,7 @@ const SubmitButton = props => {
   return (
     <Button
       variant="contained"
-      handleSubmit={props.handleSubmit}
+      onClick={props.handleSubmit}
       type="submit"
       disabled={props.isDisabled}
     >
@@ -180,7 +180,7 @@ class Aggregate extends Component {
               </div>
               <div className="Margin-top-3">
                 <SubmitButtonWithToast
-                  onClick={this.handleSubmit}
+                  handleSubmit={this.handleSubmit}
                   isDisabled={!this.state.aggregatedFields.length}
                 />
               </div>
