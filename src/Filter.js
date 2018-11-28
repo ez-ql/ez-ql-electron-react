@@ -1,7 +1,21 @@
 import React from "react";
 import ScrollMenu from "./ScrollMenu";
 import Button from "@material-ui/core/Button";
+import withToast from "./Toasts";
 const electron = window.require("electron");
+
+const SubmitButton = props => {
+  return (
+    <Button className="Button" variant="contained" type="submit">
+      Submit
+    </Button>
+  );
+};
+
+const SubmitButtonWithToast = withToast(
+  SubmitButton,
+  "Your filter has been registered!"
+);
 
 class Filter extends React.Component {
   constructor(props) {
@@ -184,9 +198,7 @@ class Filter extends React.Component {
                   />
                 </div>
                 <div className="Margin-top-5">
-                  <Button className="Button" variant="contained" type="submit">
-                    Submit
-                  </Button>
+                  <SubmitButtonWithToast />
                 </div>
               </form>
             </div>

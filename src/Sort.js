@@ -2,8 +2,22 @@ import React from "react";
 import ScrollMenu from "./ScrollMenu";
 import { formatNames } from "./MakeQuery";
 import Button from "@material-ui/core/Button";
+import withToast from "./Toasts";
 
 const electron = window.require("electron");
+
+const SubmitButton = props => {
+  return (
+    <Button variant="contained" onClick={props.handleSubmit} type="button">
+      Submit
+    </Button>
+  );
+};
+
+const SubmitButtonWithToast = withToast(
+  SubmitButton,
+  "Your sort order has been registered!"
+);
 
 class Sort extends React.Component {
   constructor(props) {
@@ -114,15 +128,8 @@ class Sort extends React.Component {
               />
             </label>
           </div>
-          <div>
-            <Button
-              variant="contained"
-              onClick={this.handleSubmit}
-              type="button"
-            >
-              Submit
-            </Button>
-          </div>
+          <SubmitButtonWithToast handleSubmit={this.handleSubmit} />
+          <div />
         </div>
       </div>
     );
