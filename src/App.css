@@ -8,21 +8,6 @@
   height: 40vmin;
 }
 
-/* table {
-  text-align: left;
-  justify-content: none;
-  font-family: "Roboto", sans-serif;
-}
-
-.table tbody {
-  border: red solid 1px;
-}
-
-.table th {
-  font-weight: 500;
-  width: min-content;
-} */
-
 .App-header {
   background-color: #8f96a3;
   min-height: 8%;
@@ -132,11 +117,11 @@
 }
 
 .Max-height {
-  max-height:7rem;
+  max-height: 7rem;
 }
 
 .Min-height-4 {
-  min-height:40%
+  min-height: 40%;
 }
 
 .Min-height {
@@ -220,7 +205,7 @@
 }
 
 .Margin-top-10 {
-  margin-top:10%
+  margin-top: 10%;
 }
 
 .Margin-top-5 {
@@ -296,8 +281,6 @@ h1 {
 .Dark-blue {
   color: rgb(19, 19, 50);
 }
-
-
 
 .Black {
   color: black;
@@ -375,7 +358,7 @@ h1 {
 }
 
 .Border-solid {
-  border: solid
+  border: solid;
 }
 
 .Project-button {
@@ -386,7 +369,7 @@ h1 {
   align-self: center;
   margin-top: 1rem;
   background-color: rgb(19, 19, 50);
-  color:rgb(105, 186, 186);
+  color: rgb(105, 186, 186);
 }
 
 .Margin-bottom {
