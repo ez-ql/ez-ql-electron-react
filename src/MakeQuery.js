@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import StartOverButton from "./StartOverButton";
 import PreviewModal from "./PreviewModal";
 import JoinModal from "./JoinModal";
+import OptionalModal from "./OptionalModal";
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
 const ipcRenderer = electron.ipcRenderer;
@@ -46,7 +47,8 @@ class MakeQuery extends Component {
       selectedSlide: 0,
       schema: [],
       //previewExpanded: false,
-      joinModal: false
+      joinModal: false,
+      optionalModal: false
     };
     this.handleFieldChange = this.handleFieldChange.bind(this);
     this.handleModelChange = this.handleModelChange.bind(this);
@@ -142,6 +144,18 @@ class MakeQuery extends Component {
   toggleJoinModal = () => {
     this.setState({
       joinModal: false
+    });
+  };
+
+  toggleOptionalModal = () => {
+    this.setState({
+      optionalModal: false
+    });
+  };
+
+  handleOptionalClick = () => {
+    this.setState({
+      optionalModal: true
     });
   };
 
@@ -259,6 +273,9 @@ class MakeQuery extends Component {
           {this.state.joinModal && (
             <JoinModal toggleJoinModal={this.toggleJoinModal} />
           )}
+          {this.state.optionalModal && (
+            <OptionalModal toggleOptionalModal={this.toggleOptionalModal} />
+          )}
           {this.state.nextView ? (
             <SelectTable
               handleModelChange={this.handleModelChange}
@@ -315,6 +332,14 @@ class MakeQuery extends Component {
                     onClick={this.toggleView}
                   >
                     connect another table
+                  </Button>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    className="Button"
+                    onClick={this.handleOptionalClick}
+                  >
+                    view optional modal
                   </Button>
                 </div>
               )}
