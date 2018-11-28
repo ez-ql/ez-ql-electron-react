@@ -141,6 +141,7 @@ class Aggregate extends Component {
   }
 
   render() {
+    console.log('THIS.STATE - AGG', this.state)
     return (
       <div className="Min-height-75 Title Column Center Width-50">
       <div className="Display Column Center">
@@ -163,13 +164,14 @@ class Aggregate extends Component {
                 variant="contained"
                 onClick={this.handleSubmit}
                 type="submit"
+                disabled={this.state.selectedAggregator.length}
               >
                 Submit
               </Button>
             </div>
           </div>
         ) : null}
-        {this.state.selectNextAggregator ? (
+        {/* {this.state.selectNextAggregator ? (
           <div className="Margin-top-3" >
             <Button
               onClick={this.handleNextAggregator}
@@ -179,7 +181,7 @@ class Aggregate extends Component {
               SELECT ANOTHER
             </Button>
           </div>
-        ) : null}
+        ) : null} */}
       </div>
       </div>
     );
