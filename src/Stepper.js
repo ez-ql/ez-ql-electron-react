@@ -63,6 +63,11 @@ class HorizontalStepper extends Component {
 
   handleNext = event => {
     const { activeStep } = this.state;
+    console.log('activeStep', activeStep)
+    if (activeStep === 4){
+      this.handleSubmit();
+    }
+
     let { skipped } = this.state;
     if (this.isStepSkipped(activeStep)) {
       skipped = new Set(skipped.values());
@@ -98,6 +103,7 @@ class HorizontalStepper extends Component {
 
   handleSubmit = () => {
     ipcRenderer.send("async-new-query");
+    this.setState({activeStep: 5})
   };
 
   componentDidMount() {
@@ -218,11 +224,11 @@ class HorizontalStepper extends Component {
                     </div>
                     <div>
                       <Button
-                        // disabled={activeStep === 0}
+                        disabled={activeStep === 0 && activeStep === 4}
                         variant="contained"
                         color="primary"
-                        component={Link}
-                        to="/finalizeQuery"
+                        // component={Link}
+                        // to="/finalizeQuery"
                         onClick={this.handleSubmit}
                         className={classes.button}
                       >

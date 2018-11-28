@@ -41,6 +41,7 @@ class PreviewModal extends React.Component {
 
   componentDidMount() {
     ipcRenderer.on("async-query-reply", () => {
+      // console.log('here')
       const data = electron.remote.getGlobal("sharedObj").data;
       this.setState({
         data: data,
