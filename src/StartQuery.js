@@ -18,11 +18,20 @@ class StartQuery extends Component {
   }
 
   addModel(modelName) {
+    console.log("modelName", modelName)
+    electron.remote.getGlobal("sharedObj").currQuery.selectedModelsAndFields = []
+    console.log('SELECTEDMF in CDM', electron.remote.getGlobal("sharedObj").currQuery.selectedModelsAndFields)
     const selectedModel = electron.remote
       .getGlobal("sharedObj")
       .models.find(model => model.model_name === modelName);
-    sharedObject.currQuery.selectedModel = selectedModel;
-    sharedObject.currQuery.from = modelName;
+
+      electron.remote
+      .getGlobal("sharedObj").currQuery.selectedModel = selectedModel;
+      electron.remote
+      .getGlobal("sharedObj").currQuery.from = modelName;
+
+      console.log("selectedModel", electron.remote
+      .getGlobal("sharedObj").currQuery.selectedModel = selectedModel)
   }
 
   //func to format field and table names @start of query builder
@@ -58,7 +67,7 @@ class StartQuery extends Component {
       <div className="Height-40 Title Column Center Width-50">
         <div className="Column Center Height-20">
           <div className="Flex-End Column ">
-            <h1 className="Grey Height-50">SELECT A TABLE</h1>
+            <h1 className=" Height-50">SELECT A TABLE</h1>
           </div>
         </div>
         <div className="Row-buttons Flex-Wrap">
@@ -71,7 +80,10 @@ class StartQuery extends Component {
                       onClick={() => this.addModel(model)}
                       className="Row-buttons Button"
                       component={Link}
-                      to="/makeQuery"
+                      to={{
+                        pathname:"/refineQuery",
+                        state:'false'
+                        }}
                     >
                       {modModels[model]}
                     </Button>

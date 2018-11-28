@@ -5,8 +5,8 @@ import { withStyles } from '@material-ui/core/styles';
 
 
 const itemStyle = {
-  width: "200px",
-  height: "300px",
+  width: "300px",
+  height: "350px",
   background: "lightgrey",
   borderRadius: "10px",
   margin: "10px",
@@ -71,9 +71,9 @@ const styles = theme => ({
       contain: false,
       initialIndex: idx,
       accessibility: false,
-      pageDots: true,
+      pageDots: false,
       wrapAround: false,
-      prevNextButtons: true
+      prevNextButtons: false
     };
 
     this.flkty = new Flickity(this.wrapper, options);
@@ -187,9 +187,12 @@ const styles = theme => ({
   //func to format name of selected table in carousel
   //takes str, not array, like in rest of query-builder
   formatTableAndFieldNames = str => {
+    console.log('str', str)
+    console.log( )
     let mod;
-    if (!str) return str;
-    if (str.includes("_")) {
+    if (!str){
+       return str;
+    } else if (str.includes("_")) {
       let [first, second] = str.split("_");
       mod = `${first.charAt(0).toUpperCase()}${first.slice(1)} ${second
         .charAt(0)
@@ -202,7 +205,7 @@ const styles = theme => ({
 
   render() {
     const { items, classes } = this.props;
-    console.log("SelectedIDX", this.state.selectedIndex);
+    console.log("SELECTOR PROPS", this.props);
     return (
       <div>
         {/* <div ref={ch => this.wrapper = ch} >

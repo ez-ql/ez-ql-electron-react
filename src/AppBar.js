@@ -37,7 +37,7 @@ const styles = {
 
 const HomeButton = props => {
   return (
-    <Button color="inherit" component={Link} to="/startQuery">
+    <Button color="inherit" component={Link} to="/homepage">
       Home
     </Button>
   );
@@ -87,7 +87,7 @@ class ButtonAppBar extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const renderLink = props => <Link to="/Project" {...this.state} />
+    console.log('projects', this.state.projects)
 
     const sideList = (
       <div className={classes.list}>
@@ -108,7 +108,7 @@ class ButtonAppBar extends React.Component {
                 <ListItem button
                   key={`${project.project_name}`}
                   component={Link}
-                  to={`/Project/${project.project_id}`}
+                  to={`/project/${project.project_id}`}
                 >
                   <ListItemText primary={`${project.project_name}`} />
                 </ListItem>
@@ -136,7 +136,7 @@ class ButtonAppBar extends React.Component {
           </div>
         </Drawer>
         <AppBar position="static" >
-          <Toolbar className='Light-blue' >
+          <Toolbar className='Navy' >
             <IconButton
               className={classes.menuButton}
               color="inherit"

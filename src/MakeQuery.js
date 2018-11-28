@@ -59,15 +59,25 @@ class MakeQuery extends Component {
   }
 
   componentDidMount() {
+    const nextView = this.props.nextView
+      ? this.props.nextView
+      : false;
     const selectedModel = electron.remote.getGlobal("sharedObj").currQuery
       .selectedModel;
-    const copy = { ...selectedModel };
-    copy.fields = [];
+    console.log('selectedModel ing',selectedModel)
+    let selectedModelsAndFields = electron.remote.getGlobal("sharedObj").currQuery.selectedModelsAndFields
+    console.log('SELECTEDMF in CDM', selectedModelsAndFields)
+    if(!selectedModelsAndFields[0]){
+      const copy = { ...selectedModel };
+      copy.fields = [];
+      selectedModelsAndFields = [ copy ]
+    }
     const schema = electron.remote.getGlobal("sharedObj").models;
     this.setState({
       schema,
       selectedModel,
-      selectedModelsAndFields: [copy]
+      selectedModelsAndFields,
+      nextView
     });
   }
 
@@ -236,10 +246,13 @@ class MakeQuery extends Component {
   };
 
   render() {
+    console.log('make query props', this.props, this.state)
     //one issue: right now, in order to pass selectedData and query as props to RefineQuery and Joins, you need to click Submit - we should change that
     return (
-      <div className="Flex-Container Min-width-30 Height-75">
-        <div className="Column Center Height-50">
+      // <div className="Flex-Container Min-width-30 Height-75">
+      //   <div className="Column Center Height-50">
+        <div>
+          <div className="Column">
           {this.state.joinModal && (
             <JoinModal toggleJoinModal={this.toggleJoinModal} />
           )}
@@ -269,12 +282,13 @@ class MakeQuery extends Component {
               />
             )}
           </div>
-          <div className="Margin-top-10 Column " />
+          {/* <div className="Margin-buttons Row">
+            <StartOverButton />
+          </div> */}
+
+          {/* <div className=" Column " />
           <div className="Column Align-self-center  Center ">
             <div className="Row ">
-              <div className="Margin-buttons Row">
-                <StartOverButton />
-              </div>
               <div className="Margin-buttons Row">
                 <Button
                   variant="contained"
@@ -291,7 +305,7 @@ class MakeQuery extends Component {
             </div>
             {!this.state.nextView &&
               this.state.selectedModelsAndFields.length < 2 && (
-                <div className="Maring-buttons">
+                <div className="Margin-buttons">
                   <Button
                     variant="contained"
                     type="submit"
@@ -302,7 +316,7 @@ class MakeQuery extends Component {
                   </Button>
                 </div>
               )}
-          </div>
+          </div> */}
         </div>
       </div>
     );

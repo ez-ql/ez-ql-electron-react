@@ -23,10 +23,11 @@ class App extends Component {
           <Switch>
             <Route path="/startQuery" component={StartQuery} />
             <Route path="/makeQuery" component={MakeQuery} />
-            <Route path="/Project" component={Project} />
+            <Route path="/project" component={Project} />
             <Route path="/finalizeQuery" component={FinalizeQuery} />
             <Route path="/refineQuery" component={HorizontalStepper} />
             <Route path="/visualize" component={Visualization} />
+            <Route path="/homepage" component={Homepage} />
             <Route component={Homepage} />
             {/*ADJUST LAST LINE AS APPLICABLE Default route*/}
           </Switch>

@@ -24,7 +24,7 @@
 } */
 
 .App-header {
-  background-color: #8f96a3;
+  /* background-color: #8f96a3; */
   min-height: 8%;
   display: flex;
   flex-direction: row;
@@ -41,7 +41,7 @@
 .App-body {
   display: flex;
   justify-content: center;
-  background-color: rgb(19, 19, 50);
+  background-color: rgb(181, 228, 228);
   height: 100vh;
   z-index: -2;
 }
@@ -95,10 +95,21 @@
   min-height: 5rem;
 }
 
+.Height-100 {
+  height:40rem
+}
+
 .Height-75 {
   display: flex;
   height: 85%;
-  margin-top: 5%;
+  margin-top: 1%;
+}
+
+.Height-50-fixed {
+  display: flex;
+  min-height: 60rem;
+  max-height: 60rem;
+  margin-top: 1%;
 }
 
 .Height-50 {
@@ -140,7 +151,7 @@
 }
 
 .Min-height {
-  min-height: 15rem;
+  min-height: 1.5rem;
 }
 
 .min-Height-8 {
@@ -148,8 +159,27 @@
 }
 
 .Width-100 {
-  width: 100%;
+  margin-left:5%;
+  margin-right:5%;
+  width: 90%;
 }
+
+.Width-100vw {
+  width: 95vw;
+  max-width: 95vw;
+  min-width: 95vw;
+  border-radius: 4%;
+  background-color: rgb(181, 228, 228);
+}
+
+.Width-70 {
+  width: 60rem;
+  max-width: 50rem;
+  min-width: 50rem;
+  border-radius: 10%;
+  background-color: rgb(181, 228, 228);
+}
+
 
 .Width-60 {
   width: 60rem;
@@ -249,7 +279,7 @@ h1 {
   box-sizing: border-box;
   border: 2px;
   height: 40px;
-  font-size: 20px;
+  font-size: 25px;
   opacity: 0.8;
   border-radius: 15%;
   margin: 3px;
@@ -297,7 +327,9 @@ h1 {
   color: rgb(19, 19, 50);
 }
 
-
+.Navy {
+  background-color: rgb(19, 19, 50);
+}
 
 .Black {
   color: black;
@@ -344,8 +376,12 @@ h1 {
   align-self: center;
 }
 
+.Border-bottom {
+  border-bottom: solid;
+}
+
 .Larger-font {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   margin-bottom: 1%;
   min-height: 1.75rem;
   border-bottom: solid;
@@ -353,8 +389,17 @@ h1 {
   margin-top: 0.5rem;
 }
 
+.Query-name-box {
+  font-size: 1.25rem;
+  margin-bottom: 1%;
+  min-height: 2rem;
+  border-bottom: solid;
+  border-bottom-width: 1px;
+  margin-top: 0.5rem;
+}
+
 .Smaller-font {
-  font-size: 1rem;
+  font-size: 1.15rem;
   margin-left: 0.5rem;
 }
 
@@ -388,6 +433,7 @@ h1 {
   background-color: rgb(19, 19, 50);
   color:rgb(105, 186, 186);
 }
+
 
 .Margin-bottom {
   margin-bottom: 4rem;
