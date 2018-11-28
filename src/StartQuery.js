@@ -53,7 +53,10 @@ class StartQuery extends Component {
           models.map(elem => elem.model_name)
         ))
       : console.log("no models yet");
-
+    console.log(
+      " ************    SHARED OBJECT **************",
+      electron.remote.getGlobal("sharedObj")
+    );
     return (
       <div className="Height-40 Title Column Center Width-50">
         <div className="Column Center Height-20">

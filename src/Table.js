@@ -49,7 +49,9 @@ const Table = props => {
 
   data.forEach(row => {
     dateColumns.forEach(dateColumn => {
-      const newFormat = moment(row[dateColumn]).format("l");
+      const newFormat = moment(row[dateColumn])
+        .format("l")
+        .toString();
       row[dateColumn] = newFormat;
     });
   });

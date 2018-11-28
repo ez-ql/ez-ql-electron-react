@@ -190,9 +190,15 @@ class MakeQuery extends Component {
         ? { ...model, fields }
         : model;
     });
-    const qualifiedFields = fields.map(
+    const qualifiedFieldsToAdd = fields.map(
       field => `${this.state.selectedModel.model_name}.${field}`
     );
+
+    qualifiedFieldsToAdd.forEach(fieldToAdd => {
+      if (!globalQualifiedFields.includes(fieldToAdd)) {
+        globalQualifiedFields.push(fieldToAdd);
+      }
+    });
     electron.remote.getGlobal(
       "sharedObj"
     ).currQuery.fields = globalFields.concat(fields);
@@ -201,7 +207,7 @@ class MakeQuery extends Component {
     ).currQuery.selectedModelsAndFields = updated;
     electron.remote.getGlobal(
       "sharedObj"
-    ).currQuery.qualifiedFields = globalQualifiedFields.concat(qualifiedFields);
+    ).currQuery.qualifiedFields = globalQualifiedFields;
     this.setState({
       selectedModelsAndFields: updated,
       fields: globalFields.concat(fields)
@@ -216,21 +222,31 @@ class MakeQuery extends Component {
   }
 
   loadPreview = event => {
-    console.log("*****SHARED OBJECT******", sharedObject);
-    const [qualifiedFieldsToAdd] = this.state.selectedModelsAndFields.map(
-      modelAndFields =>
-        modelAndFields.fields.map(
-          field => `${modelAndFields.model_name}.${field}`
-        )
+    console.log(
+      " ************    SHARED OBJECT **************",
+      electron.remote.getGlobal("sharedObj")
     );
-    const newQualifiedFields = [
-      ...electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields,
-      ...qualifiedFieldsToAdd
-    ];
 
-    electron.remote.getGlobal(
-      "sharedObj"
-    ).currQuery.qualifiedFields = newQualifiedFields;
+    // const globalQualifiedFields = [
+    //   ...electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields
+    // ];
+
+    // const [qualifiedFieldsToAdd] = this.state.selectedModelsAndFields.map(
+    //   modelAndFields =>
+    //     modelAndFields.fields.map(
+    //       field => `${modelAndFields.model_name}.${field}`
+    //     )
+    // );
+
+    // qualifiedFieldsToAdd.forEach(fieldToAdd => {
+    //   if (!globalQualifiedFields.includes(fieldToAdd)) {
+    //     globalQualifiedFields.push(fieldToAdd);
+    //   }
+    // });
+
+    // electron.remote.getGlobal(
+    //   "sharedObj"
+    // ).currQuery.qualifiedFields = globalQualifiedFields;
 
     ipcRenderer.send("async-new-query");
   };
