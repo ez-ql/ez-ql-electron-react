@@ -33,13 +33,33 @@ class PreviewPanel extends Component {
   }
 
   componentDidMount() {
-    const data = electron.remote.getGlobal("sharedObj").data;
-    this.setState({
-      data: data,
-      numFields: Object.keys(data[0]).length,
-      numRows: data.length,
-      sqlQuery: electron.remote.getGlobal("sharedObj").sqlQuery
+    ipcRenderer.on("async-query-reply", () => {
+      const data = electron.remote.getGlobal("sharedObj").data;
+      this.setState({
+        data: data,
+        numFields: electron.remote.getGlobal("sharedObj").currQuery
+          .qualifiedFields.length,
+        numRows: data.length,
+        sqlQuery: electron.remote.getGlobal("sharedObj").sqlQuery
+      });
     });
+  }
+
+  componentDidMount() {
+    ipcRenderer.on("async-query-reply", () => {
+      const data = electron.remote.getGlobal("sharedObj").data;
+      this.setState({
+        data: data,
+        numFields: electron.remote.getGlobal("sharedObj").currQuery
+          .qualifiedFields.length,
+        numRows: data.length,
+        sqlQuery: electron.remote.getGlobal("sharedObj").sqlQuery
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    ipcRenderer.removeAllListeners();
   }
 
   render() {
