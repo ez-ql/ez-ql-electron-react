@@ -178,7 +178,7 @@ class Aggregate extends Component {
               </div>
             </div>
           ) : null}
-          {/* {this.state.selectNextAggregator ? (
+          {this.state.selectNextAggregator ? (
             <div className="Margin-top-3">
               <Button
                 onClick={this.handleNextAggregator}
@@ -188,7 +188,7 @@ class Aggregate extends Component {
                 SELECT ANOTHER
               </Button>
             </div>
-          ) : null} */}
+          ) : null}
         </div>
       </div>
     );
