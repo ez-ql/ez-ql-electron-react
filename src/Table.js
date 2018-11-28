@@ -18,8 +18,11 @@ const styles = theme => ({
 const Table = props => {
   const { preview, classes } = props;
   let { data } = props;
+
   let originalColumnNames;
   let prettyColumnNames;
+
+  console.log("******preview*****", preview);
   if (preview) data = data.slice(0, 10);
   if (data.length > 0) {
     originalColumnNames = Object.keys(data[0]);

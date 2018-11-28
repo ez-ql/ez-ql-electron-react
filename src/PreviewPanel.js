@@ -71,7 +71,7 @@ class PreviewPanel extends Component {
             <Button className={classes.heading}>Preview</Button>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            <PreviewTabs props={{ ...this.state }} preview={true} />
+            <PreviewTabs {...this.state} preview={true} />
           </ExpansionPanelDetails>
         </ExpansionPanel>
       </div>

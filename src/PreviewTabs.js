@@ -61,8 +61,8 @@ class PreviewTabs extends React.Component {
   }
 
   render() {
-    const { data, numFields, numRows, sqlQuery } = this.props.props;
-    console.log("*****props.props****", this.props.props);
+    const { data, numFields, numRows, sqlQuery, preview } = this.props;
+    console.log("*****props.props ----PREVIEW -----------  ****", this.props);
     const { classes } = this.props;
     const { selectedTab } = this.state;
     console.log("DATA", data);
@@ -82,7 +82,7 @@ class PreviewTabs extends React.Component {
         </Tabs>
         {selectedTab === 0 && (
           <TabContainer>
-            {this.props.preview && (
+            {preview && (
               <Typography variant="caption" style={{ marginBottom: 15 }}>
                 This is a preview - only up to the first 10 rows of your current
                 request are shown. <br />
@@ -91,11 +91,7 @@ class PreviewTabs extends React.Component {
             )}
             <Typography component="div" id="redBorder">
               {data.length > 0 ? (
-                <Table
-                  data={data}
-                  preview={this.props.preview}
-                  className="table"
-                />
+                <Table data={data} preview={preview} className="table" />
               ) : (
                 "Loading..."
               )}
