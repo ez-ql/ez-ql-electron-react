@@ -39,6 +39,30 @@ class Project extends React.Component {
     this.setState({ projectId, selectedProject });
   }
 
+  componentDidUpdate(prevProps) {
+    if (
+      Number(prevProps.location.pathname.slice(-1)) !==
+      Number(this.props.location.pathname.slice(-1))
+    ) {
+      const projectId = Number(this.props.location.pathname.slice(-1));
+      const projects = electron.remote.getGlobal("sharedObj").projects;
+      const allQueries = electron.remote.getGlobal("sharedObj").queries;
+
+      const [selectedProject] = projects
+        .map(project => {
+          const queries = allQueries.filter(query => {
+            if (query.project_id === project.project_id) {
+              return query;
+            }
+          });
+          return { ...project, queries };
+        })
+        .filter(project => project.project_id === projectId);
+
+      this.setState({ projectId, selectedProject });
+    }
+  }
+
   handleClickOpen = () => {
     this.setState({
       open: true
@@ -49,55 +73,60 @@ class Project extends React.Component {
     this.setState({ selectedValue: value, open: false });
   };
 
-  setGlobalWithData(sql){
-    ipcRenderer.send('async-new-query', sql)
+  setGlobalWithData(sql) {
+    ipcRenderer.send("async-new-query", sql);
   }
 
   render() {
-    console.log("state", this.state);
     return (
-      <div className="Flex-Container Min-width-30 Height-75">
-        <div className="Column Center Height-50">
-          <div>
-            <h2 className="Margin-top-15 Grey Height-20 Align-self-end Padding-3 ">
-              {this.state.selectedProject.project_name}
-            </h2>
+      <div className="Display Height-50 Title Column Center Width-70">
+        <div className="Display Center Height-50">
+          <div className="Column ">
+            <h1 className="Grey Height-20 Align-self-center Padding-3 Border-bottom">
+              {this.state.selectedProject.project_name &&
+                this.state.selectedProject.project_name.toUpperCase()}
+            </h1>
           </div>
-          <div className="Row Min-height Flex-space-around Flex-wrap ">
-        {
-          this.state.selectedProject.queries &&
-          this.state.selectedProject.queries.map(query => {
-            return (
-              <div className="Flex-wrap Border-solid Max-height-8 Min-width-5 Grey">
-              <div className="Margin-top Larger-font Min-height ">
-              <Typography variant="subtitle1">
-                {query.query_name.toUpperCase()}
-              </Typography>
-              <br />
-              </div>
-              <div className=" Button Margin-buttons Padding-3">
-              <Button variant="contained" onClick={this.handleClickOpen}>VIEW SQL QUERY</Button>
-              <SimpleDialogWrapped
-                selectedValue={query.query_text}
-                open={this.state.open}
-                onClose={this.handleClose}
-              />
-              </div>
-              <div className=" Button Margin-buttons Padding-3">
-              <Button
-                variant="contained"
-                onClick={() => this.setGlobalWithData(query.query_text)}
-                component={Link}
-                to="/finalizeQuery"
-              >
-                View Data
-              </Button>
-              </div>
-            </div>
-            )
-          })
-        }
-        </div>
+          <div className="Row Display Flex-wrap Grey Height-100">
+            {this.state.selectedProject.queries &&
+              this.state.selectedProject.queries.map(query => {
+                return (
+                  <div className="Width-50 Flex-wrap Height-20 Border-solid">
+                    <div className="Margin-top Query-name-box">
+                      <Typography variant="subtitle1">
+                        {query.query_name.toUpperCase()}
+                      </Typography>
+                      <br />
+                    </div>
+                    <div className="Row">
+                    <div className=" Button Margin-buttons Padding-3">
+                      <Button
+                        variant="contained"
+                        onClick={this.handleClickOpen}
+                      >
+                        VIEW SQL QUERY
+                      </Button>
+                      <SimpleDialogWrapped
+                        selectedValue={query.query_text}
+                        open={this.state.open}
+                        onClose={this.handleClose}
+                      />
+                    </div>
+                    <div className=" Button Margin-buttons Padding-3">
+                      <Button
+                        variant="contained"
+                        onClick={() => this.setGlobalWithData(query.query_text)}
+                        component={Link}
+                        to="/finalizeQuery"
+                      >
+                        View Data
+                      </Button>
+                    </div>
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
         </div>
       </div>
       // </div>
