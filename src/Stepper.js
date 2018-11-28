@@ -113,14 +113,11 @@ class HorizontalStepper extends Component {
   render() {
     const { activeStep, steps } = this.state;
     const { classes } = this.props;
+    console.log('FROOM', electron.remote.getGlobal("sharedObj").currQuery.from)
     console.log('stepper props', this.props)
     return (
       <div className="Flex-Container Width-100vw Height-50-fixed  ">
-        {/* <div className="Column Height-50 Display Center "> */}
-           {/* <div> */}
             <div>
-              <div>
-              <div>
               {activeStep === steps.length ? null : (
                 // <div>
                 /* <Button value="finalize" component={Link} to="/finalizeQuery">
@@ -133,7 +130,7 @@ class HorizontalStepper extends Component {
                 // <div className="Column Display Width-60 ">
                 //   <div className="Align-self-center Width-30 Column Min-height-30 ">
                   <div>
-                    <div>
+                    <div className="Column Height-30-fixed">
                     {
                       activeStep === 0 &&
                       (
@@ -199,7 +196,7 @@ class HorizontalStepper extends Component {
                   <div className="Row-buttons Margin-top-1">
                     <div>
                       <Button
-                        disabled={activeStep === 0}
+                        disabled={activeStep === 0 }
                         variant="contained"
                         color="primary"
                         onClick={this.handleBack}
@@ -210,7 +207,7 @@ class HorizontalStepper extends Component {
                     </div>
                     <div>
                       <Button
-                        disabled={activeStep === 5}
+                        disabled={activeStep === 5 || !electron.remote.getGlobal("sharedObj").currQuery.from}
                         variant="contained"
                         color="primary"
                         onClick={this.handleNext}
@@ -245,8 +242,6 @@ class HorizontalStepper extends Component {
               )}
             </div>
           </div>
-        </div>
-      </div>
     );
   }
 }

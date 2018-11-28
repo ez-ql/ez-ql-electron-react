@@ -9,7 +9,7 @@ const SubmitButton = props => {
     <Button
       variant="contained"
       onClick={props.handleSubmit}
-      type="submit"
+      type="button"
       disabled={props.isDisabled}
     >
       Submit
@@ -34,7 +34,8 @@ class Aggregate extends Component {
       having: "",
       selectedAggregator: "",
       availableFields: [],
-      aggregatedFields: []
+      aggregatedFields: [],
+      readyToSubmit: false
     };
   }
 
@@ -86,7 +87,8 @@ class Aggregate extends Component {
     this.setState({
       aggregatedFields,
       aggregates,
-      groupBy
+      groupBy,
+      readyToSubmit: true
     });
   };
 
@@ -121,7 +123,8 @@ class Aggregate extends Component {
       ? group
       : "";
     this.setState({
-      selectedAggregator: ""
+      selectedAggregator: "",
+      readyToSubmit: false,
     });
   };
 
@@ -181,14 +184,14 @@ class Aggregate extends Component {
                   handleChange={this.handleSelectedField}
                 />
               </div>
-              <div className="Margin-top-3">
-                <SubmitButtonWithToast
-                  handleSubmit={this.handleSubmit}
-                  isDisabled={!this.state.aggregatedFields.length}
-                />
-              </div>
             </div>
           ) : null}
+          <div className="Margin-top-3">
+            <SubmitButtonWithToast
+              handleSubmit={this.handleSubmit}
+              isDisabled={!this.state.readyToSubmit}
+            />
+          </div>
         </div>
       </div>
     );

@@ -39,9 +39,10 @@ const SelectTable = props => {
     console.log('modRelatedModels', modRelatedModels)
 
   return Object.keys(modRelatedModels).length ? (
-    <div className="Title Min-height-75">
-      <div className="Column Center Height-50">
-        <h1 className="Flex-End Column Grey">SELECT RELATED TABLE</h1>
+
+    <div className="Column Title Min-height-50 Align-self-center Margin-top-3">
+    <div className="Column Center Height-50">
+        <h1 className="Flex-End Column ">SELECT RELATED TABLE</h1>
       </div>
       <div className="Row-buttons">
         {relatedModels[0]

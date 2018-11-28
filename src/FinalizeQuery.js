@@ -44,7 +44,7 @@ class FinalizeQuery extends React.Component {
       <div className="Flex-Container Min-width-30 Height-75">
         <div className="Column Center Height-50">
           <div>
-            <h1>COMPLETE YOUR QUERY</h1>
+            <h1>YOUR DATA</h1>
           </div>
           <div className="Row self-align-center">
             <div className="">
