@@ -34,8 +34,7 @@ class Aggregate extends Component {
       having: "",
       selectedAggregator: "",
       availableFields: [],
-      aggregatedFields: [],
-      selectNextAggregator: false
+      aggregatedFields: []
     };
   }
 
@@ -43,14 +42,14 @@ class Aggregate extends Component {
     const availableFields =
       aggregator === "COUNT"
         ? this.state.selectedFields.map(field => field.field_name)
-        : aggregator === "SUM"
+        : aggregator === "SUM" || aggregator === "AVG"
         ? this.state.selectedFields
             .filter(
               field =>
                 field.field_type === "integer" || field.type === "decimal"
             )
             .map(field => field.field_name)
-        : this.state.selectedFields //all other aggregator types, e.g. MAX, MIN, AVG
+        : this.state.selectedFields //all other aggregator types, e.g. MAX, MIN
             .filter(
               field =>
                 field.field_type === "integer" ||
@@ -116,25 +115,13 @@ class Aggregate extends Component {
         return `${parentModel}.${field}`;
       })
       .join(", ");
-    const availableAggregators = this.state.availableAggregators.filter(
-      aggregator => aggregator !== this.state.selectedAggregator
-    );
     electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields = fields;
     electron.remote.getGlobal("sharedObj").currQuery.group = this.state.groupBy
       .length
       ? group
       : "";
     this.setState({
-      availableAggregators,
-      selectNextAggregator: true
-    });
-  };
-
-  handleNextAggregator = event => {
-    event.preventDefault();
-    this.setState({
-      selectedAggregator: "",
-      selectNextAggregator: false
+      selectedAggregator: ""
     });
   };
 
@@ -154,9 +141,25 @@ class Aggregate extends Component {
         }
       });
     });
+    let availableAggregators = ["COUNT"];
+    selectedFields.forEach(field => {
+      if (field.field_type === "integer" || field.field_type === "decimal") {
+        if (!availableAggregators.includes("AVG")) {
+          availableAggregators = availableAggregators.concat(["AVG", "SUM"]);
+          if (!availableAggregators.includes("MAX")) {
+            availableAggregators = availableAggregators.concat(["MAX", "MIN"]);
+          }
+        }
+      } else if (field.filed_type === "date" || field.field_type === "year") {
+        if (!availableAggregators.includes("MAX")) {
+          availableAggregators = availableAggregators.concat(["MAX", "MIN"]);
+        }
+      }
+    });
     this.setState({
       selectedFields,
-      selectedModels
+      selectedModels,
+      availableAggregators
     });
   }
 
