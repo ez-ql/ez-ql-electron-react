@@ -97,8 +97,23 @@ class Filter extends React.Component {
   //it is not ideal that we would have a user entry field, but I wasn't sure how to handle this right now
   //hopefully we can get rid of this eventually (or replace with predictive searching!)
   //a few choices (show all distinct values, for example), but dependent on data type - does not appear that it's possible to identify data type of column using squel.js
+
+  validateUserInput(input, fieldType) {
+    return (fieldType === "integer" ||
+      fieldType === "decimal" ||
+      fieldType === "year" ||
+      fieldType === "id") &&
+      isNaN(Number(input))
+      ? ""
+      : input;
+  }
+
   handleUserEntry(event) {
-    const userEntered = event.target.value;
+    let userEntered = event.target.value;
+    userEntered = this.validateUserInput(
+      userEntered,
+      this.state.fieldToFilterType
+    );
     this.setState({
       userEntered
     });
@@ -149,7 +164,6 @@ class Filter extends React.Component {
   }
 
   render() {
-    console.log("STATE", this.state);
     return (
       <div className="Min-height-75 Title Column Center Width-50">
         <div className="Display Column Center">
