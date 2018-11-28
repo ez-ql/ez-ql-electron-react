@@ -226,7 +226,7 @@ class HorizontalStepper extends Component {
                 </div>
                 <div>
                   <Button
-                    disabled={activeStep === 0 || activeStep === 5}
+                    disabled={this.state.startQuery || activeStep === 5}
                     variant="contained"
                     color="primary"
                     onClick={this.handleSubmit}
