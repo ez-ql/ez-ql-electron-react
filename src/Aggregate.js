@@ -6,7 +6,12 @@ const electron = window.require("electron");
 
 const SubmitButton = props => {
   return (
-    <Button variant="contained" onClick={props.handleSubmit} type="submit">
+    <Button
+      variant="contained"
+      handleSubmit={props.handleSubmit}
+      type="submit"
+      disabled={props.isDisabled}
+    >
       Submit
     </Button>
   );
@@ -174,19 +179,11 @@ class Aggregate extends Component {
                 />
               </div>
               <div className="Margin-top-3">
-                <SubmitButtonWithToast handleSubmit={this.handleSubmit} />
+                <SubmitButtonWithToast
+                  onClick={this.handleSubmit}
+                  isDisabled={!this.state.aggregatedFields.length}
+                />
               </div>
-            </div>
-          ) : null}
-          {this.state.selectNextAggregator ? (
-            <div className="Margin-top-3">
-              <Button
-                onClick={this.handleNextAggregator}
-                variant="contained"
-                type="submit"
-              >
-                SELECT ANOTHER
-              </Button>
             </div>
           ) : null}
         </div>

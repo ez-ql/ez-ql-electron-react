@@ -38,7 +38,7 @@ const withToast = (Component, message) => {
       return (
         <div>
           <span onClick={this.handleClick}>
-            <Component />
+            <Component {...this.props} />
           </span>
           {/* <Button >Submit</Button> */}
           <Snackbar
