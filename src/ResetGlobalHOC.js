@@ -23,12 +23,14 @@ const initialCurrQuery = {
 const withResetGlobal = Component => {
   const WrappedComponent = props => {
     return (
-      <Component
+      <span
         onClick={() => {
           electron.remote.getGlobal("sharedObj").currQuery = initialCurrQuery;
           electron.remote.getGlobal("sharedObj").sqlQuery = "";
         }}
-      />
+      >
+        <Component {...props} />
+      </span>
     );
   };
   return WrappedComponent;
