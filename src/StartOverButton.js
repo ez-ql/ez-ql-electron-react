@@ -3,7 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import withResetGlobal from "./ResetGlobalHOC";
 
-const StartOverButton = () => {
+const StartOverButton = props => {
   return (
     <Button
       variant="contained"

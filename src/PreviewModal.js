@@ -42,16 +42,19 @@ class PreviewModal extends React.Component {
   componentDidMount() {
     ipcRenderer.on("async-query-reply", () => {
       const data = electron.remote.getGlobal("sharedObj").data;
-      if (data[0]) {
-        this.setState({
-          data: data,
-          numFields: Object.keys(data).length,
-          numRows: data.length,
-          sqlQuery: electron.remote.getGlobal("sharedObj").sqlQuery
-        });
-      }
+      this.setState({
+        data: data,
+        numFields: electron.remote.getGlobal("sharedObj").currQuery
+          .qualifiedFields.length,
+        numRows: data.length,
+        sqlQuery: electron.remote.getGlobal("sharedObj").sqlQuery
+      });
     });
   }
+
+  // componentWillUnmount() {
+  //   ipcRenderer.removeAllListeners();
+  // }
 
   handleOpen = () => {
     this.setState({ open: true });
@@ -63,7 +66,6 @@ class PreviewModal extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { data, numFields, numRows, sqlQuery } = this.state;
 
     return (
       <div>

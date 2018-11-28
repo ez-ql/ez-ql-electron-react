@@ -33,7 +33,7 @@ class Joins extends Component {
   }
 
   handleSelectedJoinType(type) {
-    let joinType = this.state.allJoinTypes[type];
+    let joinType = !type ? this.state.joinType : this.state.allJoinTypes[type];
     electron.remote.getGlobal("sharedObj").currQuery.joinType = joinType;
     this.setState({ joinType });
   }
@@ -58,7 +58,9 @@ class Joins extends Component {
     let rightRef = `${rightTableName}.${relation.relatedmodel_primary_field}`;
     electron.remote.getGlobal("sharedObj").currQuery.leftRef = leftRef;
     electron.remote.getGlobal("sharedObj").currQuery.rightRef = rightRef;
-    console.log("current selection", this.state.joinType);
+    electron.remote.getGlobal(
+      "sharedObj"
+    ).currQuery.joinType = this.state.joinType;
     this.props.handleClose();
   }
 

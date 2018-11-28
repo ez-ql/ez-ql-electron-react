@@ -2,8 +2,27 @@ import React from "react";
 import ScrollMenu from "./ScrollMenu";
 import { formatNames } from "./MakeQuery";
 import Button from "@material-ui/core/Button";
+import withToast from "./Toasts";
 
 const electron = window.require("electron");
+
+const SubmitButton = props => {
+  return (
+    <Button
+      variant="contained"
+      onClick={props.handleSubmit}
+      type="button"
+      disabled={props.isDisabled}
+    >
+      Submit
+    </Button>
+  );
+};
+
+const SubmitButtonWithToast = withToast(
+  SubmitButton,
+  "Your sort order has been registered!"
+);
 
 class Sort extends React.Component {
   constructor(props) {
@@ -84,7 +103,7 @@ class Sort extends React.Component {
       <div className="Min-height-75 Title Column Center Width-50">
         <div className="Display Column Center">
           <h3>SELECT A FIELD TO SORT BY</h3>
-          {this.state.order.length
+          {/* {this.state.order.length
             ? `Currently sorted by: ${this.state.order
                 .map(
                   field =>
@@ -95,7 +114,7 @@ class Sort extends React.Component {
                     } in ${field.ascending ? "ascending" : "descending"} order`
                 )
                 .join(", ")}`
-            : ""}
+            : ""} */}
           <ScrollMenu
             items={this.state.selectedFields
               .map(field => field.field_name)
@@ -114,15 +133,11 @@ class Sort extends React.Component {
               />
             </label>
           </div>
-          <div>
-            <Button
-              variant="contained"
-              onClick={this.handleSubmit}
-              type="button"
-            >
-              Submit
-            </Button>
-          </div>
+          <SubmitButtonWithToast
+            handleSubmit={this.handleSubmit}
+            isDisabled={!this.state.currentField}
+          />
+          <div />
         </div>
       </div>
     );

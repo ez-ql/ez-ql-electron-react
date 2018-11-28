@@ -1,7 +1,26 @@
 import React from "react";
 import ScrollMenu from "./ScrollMenu";
 import Button from "@material-ui/core/Button";
+import withToast from "./Toasts";
 const electron = window.require("electron");
+
+const SubmitButton = props => {
+  return (
+    <Button
+      className="Button"
+      variant="contained"
+      type="submit"
+      disabled={props.isDisabled}
+    >
+      Submit
+    </Button>
+  );
+};
+
+const SubmitButtonWithToast = withToast(
+  SubmitButton,
+  "Your filter has been registered!"
+);
 
 class Filter extends React.Component {
   constructor(props) {
@@ -53,10 +72,11 @@ class Filter extends React.Component {
     )[0];
     const availableFilters =
       fieldToFilter.field_type === "integer" ||
-        fieldToFilter.field_type === "decimal" ||
-        fieldToFilter.field_type === "date" ||
-        fieldToFilter.field_type === "year"
-        ? Object.keys(this.state.fieldFilterOptions)
+      fieldToFilter.field_type === "decimal"
+        ? ["equals", "does not equal", "is less than", "is greater than"]
+        : fieldToFilter.field_type === "date" ||
+          fieldToFilter.field_type === "year"
+        ? ["equals", "does not equal", "is before", "is after"]
         : ["equals", "does not equal"];
     this.setState({
       availableFilters,
@@ -68,7 +88,7 @@ class Filter extends React.Component {
   handleFieldFiltering(operator) {
     const fieldToFilter = `${this.state.fieldToFilter} ${
       this.state.fieldFilterOptions[operator]
-      }`;
+    }`;
     this.setState({
       fieldToFilter,
       operator
@@ -78,8 +98,23 @@ class Filter extends React.Component {
   //it is not ideal that we would have a user entry field, but I wasn't sure how to handle this right now
   //hopefully we can get rid of this eventually (or replace with predictive searching!)
   //a few choices (show all distinct values, for example), but dependent on data type - does not appear that it's possible to identify data type of column using squel.js
+
+  validateUserInput(input, fieldType) {
+    return (fieldType === "integer" ||
+      fieldType === "decimal" ||
+      fieldType === "year" ||
+      fieldType === "id") &&
+      isNaN(Number(input))
+      ? ""
+      : input;
+  }
+
   handleUserEntry(event) {
-    const userEntered = event.target.value;
+    let userEntered = event.target.value;
+    userEntered = this.validateUserInput(
+      userEntered,
+      this.state.fieldToFilterType
+    );
     this.setState({
       userEntered
     });
@@ -89,13 +124,13 @@ class Filter extends React.Component {
     event.preventDefault();
     const fieldToFilter = `${this.state.tableToFilter}.${
       this.state.fieldToFilter
-      } ${
+    } ${
       this.state.fieldToFilterType === "integer" ||
-        this.state.fieldToFilterType === "decimal" ||
-        this.state.fieldToFilterType === "year"
+      this.state.fieldToFilterType === "decimal" ||
+      this.state.fieldToFilterType === "year"
         ? `${this.state.userEntered}`
         : `'${this.state.userEntered}'`
-      }`;
+    }`;
     const filteredFields = [...this.state.filteredFields];
     filteredFields.push(fieldToFilter);
     const where = filteredFields.join(" AND ");
@@ -174,22 +209,16 @@ class Filter extends React.Component {
           {this.state.operator ? (
             <div className="Row">
               <form onSubmit={this.handleSubmitQuery}>
-            <div className="Margin-top-5 " >
-                <input
-                  className="Input"
-                  onChange={this.handleUserEntry}
-                  type="text"
-                  value={this.state.userEntered}
+                <div className="Margin-top-5 ">
+                  <input
+                    className="Input"
+                    onChange={this.handleUserEntry}
+                    type="text"
+                    value={this.state.userEntered}
                   />
-                  </div>
+                </div>
                 <div className="Margin-top-5">
-                  <Button
-                    className="Button"
-                    variant="contained"
-                    type="submit"
-                  >
-                    Submit
-                </Button>
+                  <SubmitButtonWithToast isDisabled={!this.state.userEntered} />
                 </div>
               </form>
             </div>

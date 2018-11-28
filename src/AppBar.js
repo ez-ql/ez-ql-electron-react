@@ -54,25 +54,15 @@ class ButtonAppBar extends React.Component {
       databases: [],
       projects: [],
       queries: []
-    }
-
+    };
   }
 
   componentDidMount() {
-    const user = electron.remote.getGlobal(
-      "sharedObj"
-    ).user;
-    const databases = electron.remote.getGlobal(
-      "sharedObj"
-    ).databases;
-    const projects =
-      electron.remote.getGlobal(
-        "sharedObj"
-      ).projects;
-    const queries = electron.remote.getGlobal(
-      "sharedObj"
-    ).queries;
-    this.setState({ user, databases, projects, queries })
+    const user = electron.remote.getGlobal("sharedObj").user;
+    const databases = electron.remote.getGlobal("sharedObj").databases;
+    const projects = electron.remote.getGlobal("sharedObj").projects;
+    const queries = electron.remote.getGlobal("sharedObj").queries;
+    this.setState({ user, databases, projects, queries });
   }
 
   componentWillUnmount() {
@@ -87,13 +77,13 @@ class ButtonAppBar extends React.Component {
 
   render() {
     const { classes } = this.props;
-    console.log('projects', this.state.projects)
+    const renderLink = props => <Link to="/Project" {...this.state} />;
 
     const sideList = (
       <div className={classes.list}>
         <List>
-          <ListItem key={'Database'} >
-            <ListItemText primary='Bike Stores Database' />
+          <ListItem key={"Database"}>
+            <ListItemText primary="Bike Stores Database" />
           </ListItem>
           {/* <ListItem button key={'List'}>
         <ListItemText primary='Project 2' />
@@ -101,30 +91,26 @@ class ButtonAppBar extends React.Component {
         </List>
         <Divider />
         <List>
-          {
-            this.state.projects[0] &&
+          {this.state.projects[0] &&
             this.state.projects.map(project => {
               return (
-                <ListItem button
+                <ListItem
+                  button
                   key={`${project.project_name}`}
                   component={Link}
                   to={`/project/${project.project_id}`}
                 >
                   <ListItemText primary={`${project.project_name}`} />
                 </ListItem>
-              )
-            })
-          }
+              );
+            })}
         </List>
       </div>
     );
 
     return (
       <div className={classes.root}>
-        <Drawer
-          open={this.state.open}
-          onClose={this.toggleDrawer()}
-        >
+        <Drawer open={this.state.open} onClose={this.toggleDrawer()}>
           <div
             className="White"
             tabIndex={0}

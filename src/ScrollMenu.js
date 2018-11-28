@@ -16,6 +16,9 @@ class ScrollMenu extends React.Component {
           label: itemsWithLabels[this.props.selectedOption]
         }
       : null;
+
+    console.log("selectedOption", selectedOption);
+    console.log("items", items);
     this.state = {
       selectedOption: selectedOption
     };
@@ -29,6 +32,7 @@ class ScrollMenu extends React.Component {
     });
     this.props.handleChange(selectedOption.value);
     console.log(`Option selected:`, selectedOption);
+    console.log(`Option selected VALUE:`, selectedOption.value);
   }
 
   render() {

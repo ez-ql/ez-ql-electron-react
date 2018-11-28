@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import StartOverButton from "./StartOverButton";
 import PreviewModal from "./PreviewModal";
 import JoinModal from "./JoinModal";
+import OptionalModal from "./OptionalModal";
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
 const ipcRenderer = electron.ipcRenderer;
@@ -46,7 +47,8 @@ class MakeQuery extends Component {
       selectedSlide: 0,
       schema: [],
       //previewExpanded: false,
-      joinModal: false
+      joinModal: false,
+      optionalModal: false
     };
     this.handleFieldChange = this.handleFieldChange.bind(this);
     this.handleModelChange = this.handleModelChange.bind(this);
@@ -155,6 +157,18 @@ class MakeQuery extends Component {
     });
   };
 
+  toggleOptionalModal = () => {
+    this.setState({
+      optionalModal: false
+    });
+  };
+
+  handleOptionalClick = () => {
+    this.setState({
+      optionalModal: true
+    });
+  };
+
   selectedSlide(modelName) {
     const selectedModel = this.getSelectedModel(modelName);
     this.setState({
@@ -200,9 +214,15 @@ class MakeQuery extends Component {
         ? { ...model, fields }
         : model;
     });
-    const qualifiedFields = fields.map(
+    const qualifiedFieldsToAdd = fields.map(
       field => `${this.state.selectedModel.model_name}.${field}`
     );
+
+    qualifiedFieldsToAdd.forEach(fieldToAdd => {
+      if (!globalQualifiedFields.includes(fieldToAdd)) {
+        globalQualifiedFields.push(fieldToAdd);
+      }
+    });
     electron.remote.getGlobal(
       "sharedObj"
     ).currQuery.fields = globalFields.concat(fields);
@@ -211,7 +231,7 @@ class MakeQuery extends Component {
     ).currQuery.selectedModelsAndFields = updated;
     electron.remote.getGlobal(
       "sharedObj"
-    ).currQuery.qualifiedFields = globalQualifiedFields.concat(qualifiedFields);
+    ).currQuery.qualifiedFields = globalQualifiedFields;
     this.setState({
       selectedModelsAndFields: updated,
       fields: globalFields.concat(fields)
@@ -226,21 +246,31 @@ class MakeQuery extends Component {
   }
 
   loadPreview = event => {
-    console.log("*****SHARED OBJECT******", sharedObject);
-    const [qualifiedFieldsToAdd] = this.state.selectedModelsAndFields.map(
-      modelAndFields =>
-        modelAndFields.fields.map(
-          field => `${modelAndFields.model_name}.${field}`
-        )
+    console.log(
+      " ************    SHARED OBJECT **************",
+      electron.remote.getGlobal("sharedObj")
     );
-    const newQualifiedFields = [
-      ...electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields,
-      ...qualifiedFieldsToAdd
-    ];
 
-    electron.remote.getGlobal(
-      "sharedObj"
-    ).currQuery.qualifiedFields = newQualifiedFields;
+    // const globalQualifiedFields = [
+    //   ...electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields
+    // ];
+
+    // const [qualifiedFieldsToAdd] = this.state.selectedModelsAndFields.map(
+    //   modelAndFields =>
+    //     modelAndFields.fields.map(
+    //       field => `${modelAndFields.model_name}.${field}`
+    //     )
+    // );
+
+    // qualifiedFieldsToAdd.forEach(fieldToAdd => {
+    //   if (!globalQualifiedFields.includes(fieldToAdd)) {
+    //     globalQualifiedFields.push(fieldToAdd);
+    //   }
+    // });
+
+    // electron.remote.getGlobal(
+    //   "sharedObj"
+    // ).currQuery.qualifiedFields = globalQualifiedFields;
 
     ipcRenderer.send("async-new-query");
   };
@@ -255,6 +285,9 @@ class MakeQuery extends Component {
           <div className="Column">
           {this.state.joinModal && (
             <JoinModal toggleJoinModal={this.toggleJoinModal} />
+          )}
+          {this.state.optionalModal && (
+            <OptionalModal toggleOptionalModal={this.toggleOptionalModal} />
           )}
           {this.state.nextView ? (
             <SelectTable
@@ -313,6 +346,14 @@ class MakeQuery extends Component {
                     onClick={this.toggleView}
                   >
                     connect another table
+                  </Button>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    className="Button"
+                    onClick={this.handleOptionalClick}
+                  >
+                    view optional modal
                   </Button>
                 </div>
               )}
