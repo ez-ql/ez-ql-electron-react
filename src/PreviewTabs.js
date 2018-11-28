@@ -61,11 +61,13 @@ class PreviewTabs extends React.Component {
   }
 
   render() {
-    const { data, numFields, numRows, sqlQuery, preview } = this.props;
-    console.log(
-      "***** data, numFields, numRows, sqlQuery, preview ----PREVIEW -----------  ****",
-      this.props
-    );
+    let { data, numFields, numRows, sqlQuery } = this.props.props;
+
+    if (!sqlQuery) {
+      sqlQuery = electron.remote.getGlobal("sharedObj").sqlQuery;
+      console.log("sqlQery", sqlQuery);
+    }
+    console.log("*****props.props****", this.props.props);
     const { classes } = this.props;
     const { selectedTab } = this.state;
     return (

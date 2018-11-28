@@ -34,6 +34,7 @@ class PreviewPanel extends Component {
 
   componentDidMount() {
     ipcRenderer.on("async-query-reply", () => {
+      
       const data = electron.remote.getGlobal("sharedObj").data;
       this.setState({
         data: data,

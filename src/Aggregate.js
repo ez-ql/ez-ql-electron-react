@@ -33,6 +33,7 @@ class Aggregate extends Component {
       groupBy: [],
       having: "",
       selectedAggregator: "",
+      selectedField: "",
       availableFields: [],
       aggregatedFields: [],
       readyToSubmit: false
@@ -47,7 +48,7 @@ class Aggregate extends Component {
         ? this.state.selectedFields
             .filter(
               field =>
-                field.field_type === "integer" || field.type === "decimal"
+                field.field_type === "integer" || field.field_type === "decimal"
             )
             .map(field => field.field_name)
         : this.state.selectedFields //all other aggregator types, e.g. MAX, MIN
@@ -61,7 +62,8 @@ class Aggregate extends Component {
             .map(field => field.field_name);
     this.setState({
       selectedAggregator: aggregator,
-      availableFields
+      availableFields,
+      selectedField: ""
     });
   };
 
@@ -85,10 +87,11 @@ class Aggregate extends Component {
             this.state.selectedAggregator
           }(${parentModel}.${field})`;
     this.setState({
+      selectedField: field,
+      readyToSubmit: true,
       aggregatedFields,
       aggregates,
-      groupBy,
-      readyToSubmit: true
+      groupBy
     });
   };
 
@@ -118,13 +121,13 @@ class Aggregate extends Component {
       })
       .join(", ");
     electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields = fields;
-    electron.remote.getGlobal("sharedObj").currQuery.group = this.state.groupBy
-      .length
+    electron.remote.getGlobal("sharedObj").currQuery.group = group.length
       ? group
       : "";
     this.setState({
       selectedAggregator: "",
-      readyToSubmit: false,
+      selectedField: "",
+      readyToSubmit: false
     });
   };
 
