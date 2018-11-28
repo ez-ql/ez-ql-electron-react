@@ -29,7 +29,7 @@ const withResetGlobal = Component => {
           electron.remote.getGlobal("sharedObj").sqlQuery = "";
         }}
       >
-        <Component />
+        <Component {...props} />
       </span>
     );
   };
