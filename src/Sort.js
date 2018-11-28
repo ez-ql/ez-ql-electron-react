@@ -3,7 +3,6 @@ import ScrollMenu from "./ScrollMenu";
 import { formatNames } from "./MakeQuery";
 import Button from "@material-ui/core/Button";
 import withToast from "./Toasts";
-
 const electron = window.require("electron");
 
 const SubmitButton = props => {
