@@ -1,8 +1,21 @@
 import React, { Component } from "react";
 import ScrollMenu from "./ScrollMenu";
 import Button from "@material-ui/core/Button";
-
+import withToast from "./Toasts";
 const electron = window.require("electron");
+
+const SubmitButton = props => {
+  return (
+    <Button variant="contained" onClick={props.handleSubmit} type="submit">
+      Submit
+    </Button>
+  );
+};
+
+const SubmitButtonWithToast = withToast(
+  SubmitButton,
+  "Your aggregator has been registered!"
+);
 
 class Aggregate extends Component {
   constructor(props) {
@@ -166,13 +179,7 @@ class Aggregate extends Component {
                 />
               </div>
               <div className="Margin-top-3">
-                <Button
-                  variant="contained"
-                  onClick={this.handleSubmit}
-                  type="submit"
-                >
-                  Submit
-                </Button>
+                <SubmitButtonWithToast handleSubmit={this.handleSubmit} />
               </div>
             </div>
           ) : null}
