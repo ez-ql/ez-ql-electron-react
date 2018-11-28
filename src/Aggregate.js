@@ -68,37 +68,6 @@ class Aggregate extends Component {
   };
 
   handleSelectedField = field => {
-    // let parentModel = "";
-    // this.state.selectedModels.forEach(model => {
-    //   const filteredFields = model.fields.filter(
-    //     globalField => globalField === field
-    //   );
-    //   filteredFields.length && (parentModel = model.model_name);
-    // });
-    // const aggregatedFields = [...this.state.aggregatedFields];
-    // aggregatedFields.push(field);
-    // const groupBy = this.state.selectedFields
-    //   .filter(field => !aggregatedFields.includes(field.field_name))
-    //   .map(field => field.field_name);
-    // const aggregates =
-    //   this.state.aggregates === ""
-    //     ? `${this.state.selectedAggregator}(${parentModel}.${field})`
-    //     : `${this.state.aggregates}, ${
-    //         this.state.selectedAggregator
-    //       }(${parentModel}.${field})`;
-    this.setState({
-      selectedField: field,
-      readyToSubmit: true
-      // aggregatedFields,
-      // aggregates,
-      // groupBy
-    });
-  };
-
-  handleSubmit = event => {
-    event.preventDefault();
-    const field = this.state.selectedField;
-
     let parentModel = "";
     this.state.selectedModels.forEach(model => {
       const filteredFields = model.fields.filter(
@@ -117,7 +86,17 @@ class Aggregate extends Component {
         : `${this.state.aggregates}, ${
             this.state.selectedAggregator
           }(${parentModel}.${field})`;
+    this.setState({
+      selectedField: field,
+      readyToSubmit: true,
+      aggregatedFields,
+      aggregates,
+      groupBy
+    });
+  };
 
+  handleSubmit = event => {
+    event.preventDefault();
     const fields = [...this.state.groupBy].map(field => {
       let parentModel = "";
       this.state.selectedModels.forEach(model => {
@@ -142,13 +121,10 @@ class Aggregate extends Component {
       })
       .join(", ");
     electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields = fields;
-    electron.remote.getGlobal("sharedObj").currQuery.group = groupBy.length
+    electron.remote.getGlobal("sharedObj").currQuery.group = group.length
       ? group
       : "";
     this.setState({
-      aggregatedFields,
-      aggregates,
-      groupBy,
       selectedAggregator: "",
       selectedField: "",
       readyToSubmit: false
@@ -216,7 +192,6 @@ class Aggregate extends Component {
           <div className="Margin-top-3">
             <SubmitButtonWithToast
               handleSubmit={this.handleSubmit}
-              // isDisabled={!this.state.selectedField}
               isDisabled={!this.state.readyToSubmit}
             />
           </div>

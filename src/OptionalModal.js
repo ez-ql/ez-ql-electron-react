@@ -30,11 +30,25 @@ const styles = theme => ({
     height: theme.spacing.unit * 60,
     backgroundColor: "white",
     padding: theme.spacing.unit * 4,
-    borderRadius: 40
+    borderRadius: 40,
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center"
   },
   button: {
     marginRight: theme.spacing.unit,
-    marginTop: theme.spacing.unit
+    marginTop: theme.spacing.unit,
+    height: "40px"
+  },
+  title: {
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  grid: {
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
 
@@ -53,7 +67,8 @@ class OptionalModal extends React.Component {
     const stepNarratives = [
       {
         primary: "Select data from an additional table",
-        secondary: "(e.g. See data from the Customers table in addition to the Orders table)"
+        secondary:
+          "(e.g. See data from the Customers table in addition to the Orders table)"
       },
       {
         primary: "Aggregate fields",
@@ -78,12 +93,12 @@ class OptionalModal extends React.Component {
         >
           <div style={getModalStyle()} className={classes.paper}>
             <Typography variant="subtitle1" id="simple-modal-description">
-              <Grid container spacing={16}>
+              <Grid container spacing={16} className={classes.grid}>
                 <Grid item xs={12} md={6}>
                   <Typography variant="h6" className={classes.title}>
                     The following next steps are optional:
                   </Typography>
-                  <div className={classes.demo}>
+                  <div>
                     <List>
                       {stepNarratives.map(elem => {
                         return (
@@ -103,12 +118,13 @@ class OptionalModal extends React.Component {
                 </Grid>
               </Grid>
               <Typography>
-                If you have the data you need, click finish to view your
-                finalized query. If you would like to add another data table or
-                aggregate, filter, and sort any of your selected fields, please
-                click continue.
+                If you have the data you need, click <strong>finish</strong> to
+                view your finalized query.
+                <br />
+                If you would like to complete any of the above steps, please
+                click <strong>continue.</strong>
               </Typography>
-              <div>
+              <div className="Row-buttons">
                 <Button
                   variant="contained"
                   color="primary"
@@ -117,8 +133,6 @@ class OptionalModal extends React.Component {
                 >
                   Continue
                 </Button>
-              </div>
-              <div>
                 <Button
                   variant="contained"
                   color="primary"
