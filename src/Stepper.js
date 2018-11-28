@@ -71,7 +71,12 @@ class HorizontalStepper extends Component {
   };
 
   handleNext = event => {
-    const { activeStep, optionalModalViewed } = this.state;
+    const { activeStep, optionalModalViewed} = this.state;
+    console.log('activeStep', activeStep)
+    if (activeStep === 4){
+      this.handleSubmit();
+    }
+
     let { skipped } = this.state;
     if (this.isStepSkipped(activeStep)) {
       skipped = new Set(skipped.values());
@@ -116,6 +121,7 @@ class HorizontalStepper extends Component {
 
   handleSubmit = () => {
     ipcRenderer.send("async-new-query");
+    this.setState({activeStep: 5})
   };
 
   toggleOptionalModal = () => {
@@ -137,23 +143,10 @@ class HorizontalStepper extends Component {
   render() {
     const { activeStep, steps } = this.state;
     const { classes } = this.props;
-    console.log("stepper props", this.props);
     return (
       <div className="Flex-Container Width-100vw Height-50-fixed  ">
-        {/* <div className="Column Height-50 Display Center "> */}
-        {/* <div> */}
         <div>
           {activeStep === steps.length ? null : (
-            // <div>
-            /* <Button value="finalize" component={Link} to="/finalizeQuery">
-                  Review Query Results
-                </Button>
-                <Button value="finalize" component={Link} to="/makeQuery">
-                  Revise Table Selection
-                </Button> */
-            // </div>
-            // <div className="Column Display Width-60 ">
-            //   <div className="Align-self-center Width-30 Column Min-height-30 ">
             <div>
               <div className="Column Height-30-fixed">
                 {activeStep === 0 &&
@@ -233,24 +226,14 @@ class HorizontalStepper extends Component {
                 </div>
                 <div>
                   <Button
-                    // disabled={activeStep === 0}
+                    disabled={activeStep === 0 || activeStep === 4}
                     variant="contained"
                     color="primary"
-                    component={Link}
-                    to="/finalizeQuery"
                     onClick={this.handleSubmit}
                     className={classes.button}
                   >
                     Finish
                   </Button>
-                  {/* <div>
-                        <PreviewModal
-                          variant="contained"
-                          color="primary"
-                          buttonClass={classes.button}
-                          onClick={this.loadPreview}
-                        />
-                      </div> */}
                 </div>
               </div>
             </div>
