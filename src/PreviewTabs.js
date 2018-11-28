@@ -5,6 +5,10 @@ import Tab from "@material-ui/core/Tab";
 import Table from "./Table";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
+import { formatNames } from "./MakeQuery";
+
+const electron = window.require("electron");
+const sharedObject = electron.remote.getGlobal("sharedObj");
 
 function TabContainer(props) {
   return (
@@ -30,12 +34,31 @@ const styles = theme => ({
 
 class PreviewTabs extends React.Component {
   state = {
-    selectedTab: 0
+    selectedTab: 0,
+    selectedModelsAndFields: [],
+    qualifiedFields: [],
+    where: "",
+    order: []
   };
 
   handleChange = (event, selectedTab) => {
     this.setState({ selectedTab });
   };
+
+  componentDidMount() {
+    const selectedModelsAndFields =
+      sharedObject.currQuery.selectedModelsAndFields;
+    const qualifiedFields = sharedObject.currQuery.qualifiedFields;
+    const where = sharedObject.currQuery.where;
+    const order = sharedObject.currQuery.order;
+    console.log("currQuery", sharedObject.currQuery);
+    this.setState({
+      selectedModelsAndFields,
+      qualifiedFields,
+      where,
+      order
+    });
+  }
 
   render() {
     const { data, numFields, numRows, sqlQuery } = this.props.props;
@@ -85,11 +108,75 @@ class PreviewTabs extends React.Component {
               Your current request will result in this many rows and columns:
             </Typography>
             {data.length > 0 ? (
-              <Typography>
-                Instances (rows): {numRows}
-                <br />
-                Fields (columns): {numFields}
-              </Typography>
+              <div>
+                <Typography>
+                  Instances (rows): {numRows}
+                  <br />
+                  Fields (columns): {numFields}
+                </Typography>
+                <Typography
+                  variant="caption"
+                  style={{ marginBottom: 15, marginTop: 30 }}
+                >
+                  Selected Tables and Fields:
+                </Typography>
+                {this.state.selectedModelsAndFields.length > 0
+                  ? this.state.selectedModelsAndFields.map(model => {
+                      return (
+                        <Typography>
+                          {model.model_name}: {model.fields.join(", ")}
+                        </Typography>
+                      );
+                    })
+                  : "None Selected"}
+                <Typography
+                  variant="caption"
+                  style={{ marginBottom: 15, marginTop: 30 }}
+                >
+                  Selected Aggregators:
+                </Typography>
+                {this.state.qualifiedFields.filter(field => field.includes("("))
+                  .length > 0 ? (
+                  <Typography>
+                    {
+                      this.state.qualifiedFields.filter(field =>
+                        field.includes("(")
+                      )[0]
+                    }
+                  </Typography>
+                ) : (
+                  "None Selected"
+                )}
+                <Typography
+                  variant="caption"
+                  style={{ marginBottom: 15, marginTop: 30 }}
+                >
+                  Selected Filters:
+                </Typography>
+                {this.state.where !== "" ? (
+                  <Typography>{this.state.where}</Typography>
+                ) : (
+                  "None Selected"
+                )}
+                <Typography
+                  variant="caption"
+                  style={{ marginBottom: 15, marginTop: 30 }}
+                >
+                  Sorted By:
+                </Typography>
+                {this.state.order.length > 0
+                  ? this.state.order.map(field => {
+                      return (
+                        <Typography>
+                          {field.qualifiedField}{" "}
+                          {field.ascending
+                            ? "in ascending order"
+                            : "in descending order"}
+                        </Typography>
+                      );
+                    })
+                  : "None Selected"}
+              </div>
             ) : (
               "Loading..."
             )}
