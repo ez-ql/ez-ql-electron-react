@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ScrollMenu from "./ScrollMenu";
 import Button from "@material-ui/core/Button";
+import { formatNames } from "./MakeQuery";
 const electron = window.require("electron");
 
 class Joins extends Component {
@@ -8,18 +9,11 @@ class Joins extends Component {
     super(props);
     this.state = {
       baseModel: {},
+      baseModelHumanName: "",
       addedModel: {},
+      addedModelHumanName: "",
       joinType: "join",
-      allJoinTypes: {
-        "I want to see only records that have matching references in BOTH tables (inner join)":
-          "join",
-        "I want to see all records in BOTH tables whether or not there are matching references (outer join)":
-          "outer_join",
-        "I want to see all records in my initial selection that also have a reference in this new table (left join)":
-          "left_join",
-        "I want to see all records in this new table and their matching references in my initial selection, if any (right join)":
-          "right_join"
-      },
+      allJoinTypes: {},
       refLeft: "",
       refRight: "",
       sharedObj: {},
@@ -61,6 +55,10 @@ class Joins extends Component {
     electron.remote.getGlobal(
       "sharedObj"
     ).currQuery.joinType = this.state.joinType;
+    console.log(
+      "current selection",
+      this.state.joinType ? this.state.joinType : "join"
+    );
     this.props.handleClose();
   }
 
@@ -71,13 +69,25 @@ class Joins extends Component {
     let selectedModelsAndFields = currQuery.selectedModelsAndFields.reverse();
     let baseModel = selectedModelsAndFields[0];
     let addedModel = selectedModelsAndFields[1];
+    let [baseModelHumanName, addedModelHumanName] = Object.values(
+      formatNames([baseModel.model_name, addedModel.model_name])
+    );
+    let allJoinTypes = {
+      [`Only show me data with entries in both ${baseModelHumanName} and ${addedModelHumanName}. No empty cells, please.`]: "join",
+      [`Show me everything. Empty cells in either ${baseModelHumanName} or ${addedModelHumanName} are okay.`]: "outer_join",
+      [`Show me everything from ${baseModelHumanName}. Empty cells in ${addedModelHumanName} are okay.`]: "left_join",
+      [`Show me everything from ${addedModelHumanName}. Empty cells in ${baseModelHumanName} are okay.`]: "right_join"
+    };
 
     this.setState({
       baseModel,
       sharedObj,
       models,
       currQuery,
-      addedModel
+      addedModel,
+      baseModelHumanName,
+      addedModelHumanName,
+      allJoinTypes
     });
   }
 
@@ -86,13 +96,13 @@ class Joins extends Component {
       <div>
         {
           <div>
-            <h3>How would you like to combine these tables?</h3>
+            <h3>What data would you like to see from these two tables?</h3>
             <ScrollMenu
               items={Object.keys(this.state.allJoinTypes)}
               handleChange={this.handleSelectedJoinType}
-              selectedOption={
-                "I want to see only records that have matching references in BOTH tables (inner join)"
-              }
+              selectedOption={`Only show me data with entries in both ${
+                this.state.baseModelHumanName
+              } and ${this.state.addedModelHumanName}. No empty cells, please.`}
             />
             <div className="Margin-top-5">
               <Button
