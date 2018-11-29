@@ -55,7 +55,7 @@ const SelectTable = props => {
     <div className="Column Title Min-height-50 Align-self-center Margin-top-3">
       <div className="Column Center Height-50">
         <h1 className="Flex-End Column">
-          {`ADD A TABLE RELATED TO THE ${modelName} TABLE`}
+          {`ADD A TABLE RELATED TO ${modelName}`}
         </h1>
       </div>
       <div className="Row-buttons">
