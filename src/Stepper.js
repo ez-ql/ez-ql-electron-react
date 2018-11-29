@@ -140,6 +140,7 @@ class HorizontalStepper extends Component {
     console.log("shared object", electron.remote.getGlobal("sharedObj"));
     ipcRenderer.send("async-new-query");
   };
+
   toggleStartModal = () => {
     this.setState({
       startModal: false,
