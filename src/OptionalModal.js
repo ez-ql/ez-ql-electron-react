@@ -27,7 +27,7 @@ const styles = theme => ({
   paper: {
     position: "absolute",
     width: theme.spacing.unit * 80,
-    height: theme.spacing.unit * 48,
+    height: theme.spacing.unit * 55,
     backgroundColor: "white",
     padding: theme.spacing.unit * 4,
     borderRadius: 40,
@@ -120,9 +120,9 @@ class OptionalModal extends React.Component {
               <Typography>
                 If you have the data you need, click <strong>finish</strong> to
                 view your finalized query.
-                <br />
+                {/* <br />
                 If you would like to complete any of the above steps, please
-                click <strong>continue.</strong>
+                click <strong>continue.</strong> */}
               </Typography>
               <div className="Row-buttons">
                 <Button
@@ -133,7 +133,7 @@ class OptionalModal extends React.Component {
                 >
                   Continue
                 </Button>
-                <Button
+                {/* <Button
                   variant="contained"
                   color="primary"
                   component={Link}
@@ -141,7 +141,7 @@ class OptionalModal extends React.Component {
                   className={classes.button}
                 >
                   Finish
-                </Button>
+                </Button> */}
               </div>
             </Typography>
           </div>

@@ -21,7 +21,7 @@ const styles = theme => ({
   paper: {
     position: "absolute",
     width: theme.spacing.unit * 50,
-    height: theme.spacing.unit * 20,
+    height: theme.spacing.unit * 30,
     backgroundColor: "white",
     padding: theme.spacing.unit * 4,
     borderRadius: 40,
