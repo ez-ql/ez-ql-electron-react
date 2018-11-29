@@ -178,7 +178,7 @@ class HorizontalStepper extends Component {
     console.log("infoModal", this.state.infoModal);
     console.log("startModal", this.state.startModal);
     return (
-      <div className="Flex-Container Width-100vw Height-50-fixed">
+      <div className="Flex-Container Width-75  Height-50-fixed Margin-top-5 ">
         <div>
           {activeStep === steps.length ? null : (
             <div>
@@ -242,11 +242,10 @@ class HorizontalStepper extends Component {
                 </div>
               </div>
               <div className="Row-buttons Margin-top-1">
-                <div />
-                <div>
+                <div className="">
                   <Button
                     disabled={activeStep === 0}
-                    variant="contained"
+                    // variant="contained"
                     color="primary"
                     onClick={this.handleBack}
                     className={classes.button}
@@ -260,7 +259,7 @@ class HorizontalStepper extends Component {
                       activeStep === 5 ||
                       !electron.remote.getGlobal("sharedObj").currQuery.from
                     }
-                    variant="contained"
+                    // variant="contained"
                     color="primary"
                     onClick={this.handleNext}
                     className={classes.button}
@@ -270,8 +269,8 @@ class HorizontalStepper extends Component {
                 </div>
                 <div>
                   <Button
-                    disabled={activeStep === 0 || activeStep === 5}
-                    variant="contained"
+                    disabled={this.state.startQuery || activeStep === 5}
+                    // variant="contained"
                     color="primary"
                     onClick={this.handleSubmit}
                     className={classes.button}
@@ -295,7 +294,11 @@ class HorizontalStepper extends Component {
               closeInfoModal={this.closeInfoModal}
             />
           )}
-          <FaQuestionCircle id="info-icon" onClick={this.openInfoModal} />
+          <FaQuestionCircle
+            id="info-icon"
+            className="info-icon"
+            onClick={this.openInfoModal}
+          />
         </div>
       </div>
     );

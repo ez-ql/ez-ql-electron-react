@@ -11,13 +11,15 @@ import FinalizeQuery from './FinalizeQuery'
 import HorizontalStepper from './Stepper'
 import Visualization from './Visualization'
 import Homepage from './Homepage'
+import Drawer from './Drawer'
 
 class App extends Component {
   render() {
     return (
       <div className="App">
         <header className="App-header Flex-Container">
-          <AppBar />
+          {/* <AppBar /> */}
+          <Drawer />
         </header>
         <div className="App-body">
           <Switch>
