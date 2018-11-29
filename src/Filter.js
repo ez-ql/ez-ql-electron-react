@@ -173,7 +173,7 @@ class Filter extends React.Component {
           {
             //step #1 - select table from tables previously selected - right now, this is only one b/c join feature is not written
           }
-          <h3>SELECT TABLE TO FILTER</h3>
+          <h3>SELECT A TABLE TO FILTER</h3>
           <ScrollMenu
             items={this.state.selectedModels.map(model => model.model_name)}
             handleChange={this.handleSelectedTable}
@@ -183,7 +183,7 @@ class Filter extends React.Component {
           }
           {this.state.tableToFilter ? (
             <div className="">
-              <h3>SELECT FIELD TO FILTER</h3>
+              <h3>SELECT A FIELD TO FILTER</h3>
               <ScrollMenu
                 items={this.state.tableFields}
                 handleChange={this.handleSelectedField}
