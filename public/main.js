@@ -15,7 +15,7 @@ let mainWindow;
 // let global = { sharedObj: { models: [], currQuery: {selectedModelsAndFields: [], from: '', fields: []} } };
 
 async function createWindow() {
-  mainWindow = new BrowserWindow({ width: 1600, height: 1000 });
+  mainWindow = new BrowserWindow({ width: 1600, height: 1200 });
   mainWindow.loadURL(
     isDev
       ? "http://localhost:3000"

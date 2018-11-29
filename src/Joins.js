@@ -107,6 +107,7 @@ class Joins extends Component {
             <div className="Margin-top-5">
               <Button
                 variant="contained"
+                color="primary"
                 type="button"
                 onClick={this.handleSubmitJoin}
               >
