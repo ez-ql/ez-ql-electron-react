@@ -6,6 +6,7 @@ import Table from "./Table";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import { formatNames } from "./MakeQuery";
+import teal from "@material-ui/core/colors/teal";
 
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
@@ -22,7 +23,7 @@ const styles = theme => ({
   root: {
     flexGrow: 1,
     width: "100%",
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: teal[200],
     textAlign: "left",
     height: "100%",
     maxHeight: "100%"

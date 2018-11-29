@@ -1,143 +1,190 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Drawer from "@material-ui/core/Drawer";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import List from "@material-ui/core/List";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
+import MailIcon from "@material-ui/icons/Mail";
+import { Link } from "react-router-dom";
+import Button from "@material-ui/core/Button";
+import withResetGlobal from "./ResetGlobalHOC";
+import teal from "@material-ui/core/colors/teal";
 
-const styles = {
+import cyan from "@material-ui/core/colors/cyan";
+
+import IconButton from "@material-ui/core/IconButton";
+// import AppBar from './AppBar'
+
+const electron = window.require("electron");
+
+const drawerWidth = 240;
+
+const styles = theme => ({
+  root: {
+    display: "flex"
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1
+  },
+  grow: {
+    flexGrow: 1
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0
+  },
+  drawerPaper: {
+    width: drawerWidth
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing.unit * 3
+  },
   list: {
-    width: 250,
+    marginTop: "4rem",
+    width: 350,
+    height: "100vh",
+    backgroundColor: teal[50]
   },
-  fullList: {
-    width: 'auto',
-  },
-};
+  toolbar: theme.mixins.toolbar
+});
 
-class TemporaryDrawer extends React.Component {
-  state = {
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  };
+class PermanentDrawerLeft extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+      user: {},
+      databases: [],
+      projects: []
+    };
+  }
 
-  toggleDrawer = (side, open) => () => {
-    this.setState({
-      [side]: open,
-    });
-  };
+  componentDidMount() {
+    const user = electron.remote.getGlobal("sharedObj").user;
+    const databases = electron.remote.getGlobal("sharedObj").databases;
+    const projects = electron.remote.getGlobal("sharedObj").projects;
+    const allQueries = electron.remote.getGlobal("sharedObj").queries;
+    // const databaseProjects = projects.map(project => {
+    //   const queries = allQueries.filter(query => {
+    //     if (query.project_id === project.project_id) {
+    //       return query
+    //     }
+    //   })
+    //   return { ...project, queries, databaseProjects }
+    // })
+
+    this.setState({ user, databases, projects });
+  }
 
   render() {
+    console.log("state!!!!!!!", this.state);
     const { classes } = this.props;
-
+    const HomeButton = props => {
+      return (
+        <Button color="inherit" component={Link} to="/homepage">
+          Home
+        </Button>
+      );
+    };
+    const HomeButtonWithReset = withResetGlobal(HomeButton);
     const sideList = (
       <div className={classes.list}>
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text} >
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-      </div>
-    );
-
-    const fullList = (
-      <div className={classes.fullList}>
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
+        {/* <List>
+          <ListItem key={"Database"} color="inherit">
+            <ListItemText primary="Your Projects" />
+          </ListItem>
+        </List> */}
+        {this.state.databases[0] &&
+          this.state.databases.map(database => {
+            return (
+              <div className="Margin-top-5">
+                <List>
+                  <ListItem key={"Database"} color="inherit">
+                    <ListItemText
+                      primary={database.database_name.toUpperCase()}
+                      color="#00838F"
+                    />
+                  </ListItem>
+                </List>
+                <Divider />
+                <List>
+                  {this.state.projects[0] &&
+                    this.state.projects.map(project => {
+                      if (database.database_id === project.database_id) {
+                        return (
+                          <ListItem
+                            button
+                            key={`${project.project_name}`}
+                            component={Link}
+                            to={`/project/${project.project_id}`}
+                          >
+                            <ListItemText primary={`${project.project_name}`} />
+                          </ListItem>
+                        );
+                      }
+                    })}
+                </List>
+              </div>
+            );
+          })}
       </div>
     );
 
     return (
-      <div>
-        <Button onClick={this.toggleDrawer('left', true)}>Open Left</Button>
-        <Button onClick={this.toggleDrawer('right', true)}>Open Right</Button>
-        <Button onClick={this.toggleDrawer('top', true)}>Open Top</Button>
-        <Button onClick={this.toggleDrawer('bottom', true)}>Open Bottom</Button>
-        <Drawer open={this.state.left} onClose={this.toggleDrawer('left', false)}>
-          <div
-            tabIndex={0}
-            role="button"
-            onClick={this.toggleDrawer('left', false)}
-            onKeyDown={this.toggleDrawer('left', false)}
-          >
-            {sideList}
-          </div>
-        </Drawer>
-        <Drawer anchor="top" open={this.state.top} onClose={this.toggleDrawer('top', false)}>
-          <div
-            tabIndex={0}
-            role="button"
-            onClick={this.toggleDrawer('top', false)}
-            onKeyDown={this.toggleDrawer('top', false)}
-          >
-            {fullList}
-          </div>
-        </Drawer>
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppBar position="fixed" className={classes.appBar}>
+          <Toolbar className="Navy">
+            <Typography variant="h6" color="inherit" className={classes.grow}>
+              ez*ql
+            </Typography>
+            <HomeButtonWithReset />
+          </Toolbar>
+        </AppBar>
         <Drawer
-          anchor="bottom"
-          open={this.state.bottom}
-          onClose={this.toggleDrawer('bottom', false)}
+          className={classes.drawer}
+          variant="permanent"
+          classes={{
+            paper: classes.drawerPaper
+          }}
         >
-          <div
-            tabIndex={0}
-            role="button"
-            onClick={this.toggleDrawer('bottom', false)}
-            onKeyDown={this.toggleDrawer('bottom', false)}
-          >
-            {fullList}
-          </div>
-        </Drawer>
-        <Drawer anchor="right" open={this.state.right} onClose={this.toggleDrawer('right', false)}>
-          <div
-            tabIndex={0}
-            role="button"
-            onClick={this.toggleDrawer('right', false)}
-            onKeyDown={this.toggleDrawer('right', false)}
-          >
-            {sideList}
-          </div>
+          {sideList}
+          {/* <div className={classes.toolbar} />
+        <Divider />
+        <List>
+          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List> */}
+          {/* <Divider />
+        <List>
+          {['All mail', 'Trash', 'Spam'].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List> */}
         </Drawer>
       </div>
     );
   }
 }
 
-TemporaryDrawer.propTypes = {
-  classes: PropTypes.object.isRequired,
+PermanentDrawerLeft.propTypes = {
+  classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(TemporaryDrawer);
+export default withStyles(styles)(PermanentDrawerLeft);

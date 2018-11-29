@@ -65,9 +65,9 @@ class FinalizeQuery extends React.Component {
               </Button> */}
               {/* <Visualization data={this.state.data} */}
             </div>
-            <div className="Larger-font">
+            {/* <div className="Larger-font">
               <StartOverButton />
-            </div>
+            </div> */}
           </div>
               </h1>
           </div>

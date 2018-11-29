@@ -62,8 +62,9 @@ const SelectTable = props => {
         {relatedModels[0]
           ? Object.keys(modRelatedModels).map(model => {
               return (
-                <div>
+                <div >
                   <Button
+                    color="action"
                     className="Button"
                     type="submit"
                     name="selectedModel"

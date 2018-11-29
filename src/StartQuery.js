@@ -97,8 +97,10 @@ class StartQuery extends Component {
             ? Object.keys(modModels).map(model => {
                 console.log("MODEL IN START QUERY", modModels[model]);
                 return (
-                  <div>
+                  <div className="">
                     <Button
+                      color="primary"
+                      variant="contained"
                       onClick={() => this.addModel(model)}
                       className={classes.button}
                       component={Link}
