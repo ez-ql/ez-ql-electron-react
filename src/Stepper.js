@@ -16,6 +16,10 @@ import FinalizeQuery from "./FinalizeQuery";
 import StartQuery from "./StartQuery";
 import OptionalModal from "./OptionalModal";
 import FiberManualRecord from "@material-ui/icons";
+import StartModal from "./StartModal";
+import {FaQuestionCircle} from 'react-icons/fa'
+import InfoModal from './InfoModal'
+
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
 const ipcRenderer = electron.ipcRenderer;
@@ -49,7 +53,11 @@ class HorizontalStepper extends Component {
       selectedModelsAndFields: [],
       startQuery: true,
       optionalModal: false,
-      optionalModalViewed: false
+      optionalModalViewed: false,
+      startModal: true,
+      startModalViewed: false,
+      infoModal: false,
+      shake: false
     };
   }
 
@@ -71,18 +79,16 @@ class HorizontalStepper extends Component {
   };
 
   handleNext = event => {
-    const { activeStep, optionalModalViewed} = this.state;
-    console.log('activeStep', activeStep)
-    if (activeStep === 4){
+    const { activeStep, optionalModalViewed } = this.state;
+    console.log("activeStep", activeStep);
+    if (activeStep === 4) {
       this.handleSubmit();
     }
-
     let { skipped } = this.state;
     if (this.isStepSkipped(activeStep)) {
       skipped = new Set(skipped.values());
       skipped.delete(activeStep);
-    }
-    if (activeStep === 0 && optionalModalViewed === false) {
+    } else if (activeStep === 0 && optionalModalViewed === false) {
       this.setState({
         activeStep: activeStep + 1,
         optionalModal: true,
@@ -121,7 +127,7 @@ class HorizontalStepper extends Component {
 
   handleSubmit = () => {
     ipcRenderer.send("async-new-query");
-    this.setState({activeStep: 5})
+    this.setState({ activeStep: 5 });
   };
 
   toggleOptionalModal = () => {
@@ -129,6 +135,27 @@ class HorizontalStepper extends Component {
       optionalModal: false
     });
   };
+
+  toggleStartModal = () => {
+    this.setState({
+      startModal: false,
+      startModalViewed: true,
+      shake: true
+    });
+  };
+  
+  openInfoModal = () => {
+    this.setState({
+      infoModal: true
+    })
+  }
+
+  closeInfoModal = () => {
+    console.log('here in closeInfoModal')
+    this.setState({
+      infoModal: false
+    })
+  }
 
   componentDidMount() {
     const steps = this.getSteps();
@@ -143,14 +170,25 @@ class HorizontalStepper extends Component {
   render() {
     const { activeStep, steps } = this.state;
     const { classes } = this.props;
+    console.log('infoModal', this.state.infoModal)
+    console.log('startModal', this.state.startModal)
     return (
-      <div className="Flex-Container Width-100vw Height-50-fixed  ">
+      <div className="Flex-Container Width-100vw Height-50-fixed">
         <div>
           {activeStep === steps.length ? null : (
             <div>
               <div className="Column Height-30-fixed">
                 {activeStep === 0 &&
-                  (this.state.startQuery ? <StartQuery /> : <MakeQuery />)}
+                  (this.state.startQuery ? (
+                    <div className="Column Height-30-fixed">
+                      {this.state.startModal && (
+                        <StartModal toggleStartModal={this.toggleStartModal} />
+                      )}
+                      <StartQuery shake={this.state.shake}/>
+                    </div>
+                  ) : (
+                    <MakeQuery />
+                  ))}
                 {activeStep === 1 && (
                   <div>
                     {this.state.optionalModal && (
@@ -238,6 +276,10 @@ class HorizontalStepper extends Component {
               </div>
             </div>
           )}
+        </div>
+        <div className="info">
+            {this.state.infoModal && <InfoModal activeStep={this.state.activeStep} closeInfoModal={this.closeInfoModal}/>}      
+          <FaQuestionCircle id="info-icon" onClick={this.openInfoModal}/>
         </div>
       </div>
     );

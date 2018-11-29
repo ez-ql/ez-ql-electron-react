@@ -1,13 +1,24 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import { withStyles } from "@material-ui/core/styles";
 
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
 
+const styles = theme => ({
+  button: {
+    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
+    marginTop: theme.spacing.unit
+  }
+});
+
 class StartQuery extends Component {
   state = {
-    models: []
+    models: [],
+    shake: false
   };
 
   componentDidMount() {
@@ -18,20 +29,29 @@ class StartQuery extends Component {
   }
 
   addModel(modelName) {
-    console.log("modelName", modelName)
-    electron.remote.getGlobal("sharedObj").currQuery.selectedModelsAndFields = []
-    console.log('SELECTEDMF in CDM', electron.remote.getGlobal("sharedObj").currQuery.selectedModelsAndFields)
+    console.log("modelName", modelName);
+    electron.remote.getGlobal(
+      "sharedObj"
+    ).currQuery.selectedModelsAndFields = [];
+    console.log(
+      "SELECTEDMF in CDM",
+      electron.remote.getGlobal("sharedObj").currQuery.selectedModelsAndFields
+    );
     const selectedModel = electron.remote
       .getGlobal("sharedObj")
       .models.find(model => model.model_name === modelName);
 
-      electron.remote
-      .getGlobal("sharedObj").currQuery.selectedModel = selectedModel;
-      electron.remote
-      .getGlobal("sharedObj").currQuery.from = modelName;
+    electron.remote.getGlobal(
+      "sharedObj"
+    ).currQuery.selectedModel = selectedModel;
+    electron.remote.getGlobal("sharedObj").currQuery.from = modelName;
 
-      console.log("selectedModel", electron.remote
-      .getGlobal("sharedObj").currQuery.selectedModel = selectedModel)
+    console.log(
+      "selectedModel",
+      (electron.remote.getGlobal(
+        "sharedObj"
+      ).currQuery.selectedModel = selectedModel)
+    );
   }
 
   //func to format field and table names @start of query builder
@@ -56,6 +76,7 @@ class StartQuery extends Component {
 
   render() {
     const models = this.state.models;
+    const { classes } = this.props;
     let modModels;
     models.length
       ? (modModels = this.formatModelAndFieldNames(
@@ -67,13 +88,11 @@ class StartQuery extends Component {
       electron.remote.getGlobal("sharedObj")
     );
     return (
-<div className="Title Min-height-50 Align-self-center Margin-top-3">
-      <div className="Column Center Height-50 ">
-          <div className="Column Center Height-50">
-            <h1 className=" Flex-End Column">SELECT A TABLE TO BEGIN</h1>
-          </div>
+      <div className="Column Title Min-height-50 Align-self-center Margin-top-3">
+        <div className="Column Center Height-50">
+          <h1 className="Flex-End Column">SELECT A TABLE</h1>
         </div>
-        <div className="Row-buttons Flex-Wrap">
+        <div className={this.props.shake ? "Start-button Row-buttons Flex-Wrap Center-buttons": "Row-buttons Flex-Wrap Center-buttons"}>
           {models.length > 0
             ? Object.keys(modModels).map(model => {
                 console.log("MODEL IN START QUERY", modModels[model]);
@@ -81,12 +100,12 @@ class StartQuery extends Component {
                   <div>
                     <Button
                       onClick={() => this.addModel(model)}
-                      className="Row-buttons Button"
+                      className={classes.button}
                       component={Link}
                       to={{
-                        pathname:"/refineQuery",
-                        state:'false'
-                        }}
+                        pathname: "/refineQuery",
+                        state: "false"
+                      }}
                     >
                       {modModels[model]}
                     </Button>
@@ -100,4 +119,4 @@ class StartQuery extends Component {
   }
 }
 
-export default StartQuery;
+export default withStyles(styles)(StartQuery);
