@@ -4,12 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
-import Check from "@material-ui/icons/Check";
-import Grid from "@material-ui/core/Grid";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ListItemText from "@material-ui/core/ListItemText";
+import {FaQuestionCircle} from 'react-icons/fa';
 
 function getModalStyle() {
   const top = 50;
@@ -25,8 +20,8 @@ function getModalStyle() {
 const styles = theme => ({
   paper: {
     position: "absolute",
-    width: theme.spacing.unit * 80,
-    height: theme.spacing.unit * 48,
+    width: theme.spacing.unit * 50,
+    height: theme.spacing.unit * 30,
     backgroundColor: "white",
     padding: theme.spacing.unit * 4,
     borderRadius: 40,
@@ -51,29 +46,33 @@ const styles = theme => ({
   }
 });
 
-class StartModal extends React.Component {
+class InfoModal extends React.Component {
   state = {
     open: true
   };
 
   handleClose = () => {
-    this.props.toggleStartModal();
+    this.props.closeInfoModal();
     this.setState({ open: false });
+  };
+
+  getInfo = () => {
+    return [
+      {
+        title: "Start Your Query",
+        message:
+          "In this step you can start your query by selecting a table from which to see data and then selecting the specific data fields you would like to see"
+      },
+      { title: "TBD", message: "TBD" },
+      { title: "TBD", message: "TBD" },
+      { title: "TBD", message: "TBD" },
+      { title: "TBD", message: "TBD" },
+      { title: "TBD", message: "TBD" }
+    ];
   };
 
   render() {
     const { classes } = this.props;
-    const stepNarratives = [
-      {
-        primary: "Selecting a table you want to see",
-        secondary:
-          "(e.g. Start with the customers table if you are looking for customer information)"
-      },
-      {
-        primary: "Selecting fields from that table",
-        secondary: "(e.g. Select first name, last name, and email to see data for your email campaign)"
-      }
-    ];
     return (
       <div>
         <Modal
@@ -84,30 +83,13 @@ class StartModal extends React.Component {
         >
           <div style={getModalStyle()} className={classes.paper}>
             <Typography variant="subtitle1" id="simple-modal-description">
-              <Grid container spacing={16} className={classes.grid}>
-                <Grid item xs={12} md={6}>
-                  <Typography variant="h6" className={classes.title}>
-                    Start your query by:
-                  </Typography>
-                  <div>
-                    <List>
-                      {stepNarratives.map(elem => {
-                        return (
-                          <ListItem>
-                            <ListItemAvatar>
-                              <Check />
-                            </ListItemAvatar>
-                            <ListItemText
-                              primary={elem.primary}
-                              secondary={elem.secondary}
-                            />
-                          </ListItem>
-                        );
-                      })}
-                    </List>
-                  </div>
-                </Grid>
-              </Grid>
+                <FaQuestionCircle id="large-info-icon"/>
+              <Typography variant="h6" className={classes.title}>
+                {this.getInfo()[this.props.activeStep].title}
+              </Typography>
+              <Typography>
+              {this.getInfo()[this.props.activeStep].message}
+              </Typography>
               <div className="Row-buttons">
                 <Button
                   variant="contained"
@@ -115,7 +97,7 @@ class StartModal extends React.Component {
                   onClick={this.handleClose}
                   className={classes.button}
                 >
-                  Continue
+                  Close
                 </Button>
               </div>
             </Typography>
@@ -126,9 +108,9 @@ class StartModal extends React.Component {
   }
 }
 
-StartModal.propTypes = {
+InfoModal.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
 // We need an intermediary variable for handling the recursive nesting.
-export default withStyles(styles)(StartModal);
+export default withStyles(styles)(InfoModal);

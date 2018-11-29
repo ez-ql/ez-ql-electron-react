@@ -17,7 +17,8 @@ import StartQuery from "./StartQuery";
 import OptionalModal from "./OptionalModal";
 import FiberManualRecord from "@material-ui/icons";
 import StartModal from "./StartModal";
-import Info from "@material-ui/icons/Info";
+import {FaQuestionCircle} from 'react-icons/fa'
+import InfoModal from './InfoModal'
 
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
@@ -54,7 +55,8 @@ class HorizontalStepper extends Component {
       optionalModal: false,
       optionalModalViewed: false,
       startModal: true,
-      startModalViewed: false
+      startModalViewed: false,
+      infoModal: false
     };
   }
 
@@ -139,6 +141,18 @@ class HorizontalStepper extends Component {
       startModalViewed: true
     });
   };
+  
+  openInfoModal = () => {
+    this.setState({
+      infoModal: true
+    })
+  }
+
+  closeInfoModal = () => {
+    this.setState({
+      infoModal: false
+    })
+  }
 
   componentDidMount() {
     const steps = this.getSteps();
@@ -258,9 +272,10 @@ class HorizontalStepper extends Component {
             </div>
           )}
         </div>
-        {/* <div className="info-icon">
-          <Info />
-        </div> */}
+        <div className="info" onClick={this.openInfoModal}>
+            {this.state.infoModal && <InfoModal activeStep={this.state.activeStep} closeInfoModal={this.closeInfoModal}/>}      
+          <FaQuestionCircle id="info-icon"/>
+        </div>
       </div>
     );
   }

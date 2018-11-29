@@ -482,3 +482,18 @@ h1 {
   margin-right: 30%;
   margin-top: 5%
 }
+
+.info {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+#info-icon:hover {
+  opacity: 0.5;
+}
+
+#large-info-icon {
+  height: 20px;
+  width: 20px;
+}
