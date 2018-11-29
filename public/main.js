@@ -15,13 +15,13 @@ let mainWindow;
 // let global = { sharedObj: { models: [], currQuery: {selectedModelsAndFields: [], from: '', fields: []} } };
 
 async function createWindow() {
-  mainWindow = new BrowserWindow({ width: 900, height: 680 });
+  mainWindow = new BrowserWindow({ width: 1600, height: 1000 });
   mainWindow.loadURL(
     isDev
       ? "http://localhost:3000"
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   mainWindow.on("closed", () => (mainWindow = null));
 

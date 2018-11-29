@@ -42,14 +42,15 @@ const SelectTable = props => {
 
     <div className="Column Title Min-height-50 Align-self-center Margin-top-3">
     <div className="Column Center Height-50">
-        <h1 className="Flex-End Column ">SELECT RELATED TABLE</h1>
+        <h1 className="Flex-End Column ">ADD ANOTHER TABLE</h1>
       </div>
       <div className="Row-buttons">
         {relatedModels[0]
           ? Object.keys(modRelatedModels).map(model => {
               return (
-                <div>
+                <div >
                   <Button
+                    color="action"
                     className="Button"
                     type="submit"
                     name="selectedModel"

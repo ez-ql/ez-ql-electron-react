@@ -144,7 +144,7 @@ class HorizontalStepper extends Component {
     const { activeStep, steps } = this.state;
     const { classes } = this.props;
     return (
-      <div className="Flex-Container Width-100vw Height-50-fixed  ">
+      <div className="Flex-Container Width-75  Height-50-fixed Margin-top-5 ">
         <div>
           {activeStep === steps.length ? null : (
             <div>
@@ -199,10 +199,10 @@ class HorizontalStepper extends Component {
                 </div>
               </div>
               <div className="Row-buttons Margin-top-1">
-                <div>
+                <div className="">
                   <Button
                     disabled={activeStep === 0}
-                    variant="contained"
+                    // variant="contained"
                     color="primary"
                     onClick={this.handleBack}
                     className={classes.button}
@@ -216,7 +216,7 @@ class HorizontalStepper extends Component {
                       activeStep === 5 ||
                       !electron.remote.getGlobal("sharedObj").currQuery.from
                     }
-                    variant="contained"
+                    // variant="contained"
                     color="primary"
                     onClick={this.handleNext}
                     className={classes.button}
@@ -227,7 +227,7 @@ class HorizontalStepper extends Component {
                 <div>
                   <Button
                     disabled={this.state.startQuery || activeStep === 5}
-                    variant="contained"
+                    // variant="contained"
                     color="primary"
                     onClick={this.handleSubmit}
                     className={classes.button}

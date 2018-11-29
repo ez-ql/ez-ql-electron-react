@@ -8,6 +8,8 @@ import Typography from "@material-ui/core/Typography";
 import blue from '@material-ui/core/colors/blue';
 import { withStyles } from '@material-ui/core/styles';
 
+import cyan from '@material-ui/core/colors/cyan';
+import grey from '@material-ui/core/colors/grey';
 const electron = window.require("electron");
 const ipcRenderer = electron.ipcRenderer;
 // const sharedObject = electron.remote.getGlobal('sharedObj')
@@ -19,13 +21,18 @@ const styles = theme => ({
     justifyContent: 'center',
     alignItems: 'flex-end',
   },
+  button:{
+    backgroundColor: cyan[800],
+    color: grey[50]
+  },
   icon: {
     margin: theme.spacing.unit * 2,
   },
   iconHover: {
     margin: theme.spacing.unit * 2,
+    color: cyan[800],
     '&:hover': {
-      color: blue[900],
+      color: "rgb(0, 72, 79)",
     },
   },
 });
@@ -135,6 +142,7 @@ class Project extends React.Component {
                     <div className=" Button Margin-buttons ">
                       <Button
                         variant="contained"
+                        className={classes.button}
                         onClick={this.handleClickOpen}
                       >
                         VIEW SQL QUERY
@@ -150,6 +158,7 @@ class Project extends React.Component {
                       onClick={() => this.setGlobalWithData(query.query_text)}>
                       <Button
                         variant="contained"
+                        className={classes.button}
                         component={Link}
                         to="/finalizeQuery"
                       >

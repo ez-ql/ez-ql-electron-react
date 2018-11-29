@@ -20,11 +20,15 @@
 }
 
 .Light-blue {
-  background-color: rgb(105, 186, 186);
+  background-color: #68b9b9;
 }
 
 .Lightest-blue {
   background-color: rgb(181, 228, 228);
+}
+
+.Light-blue-text {
+  color: rgb(181, 228, 228);
 }
 
 .App-body {
@@ -86,6 +90,11 @@
 
 .Height-100 {
   height:40rem
+}
+
+.Height-100-vh {
+  height:100vh;
+  display: flex;
 }
 
 .Height-75 {
@@ -182,7 +191,19 @@
   background-color: rgb(181, 228, 228);
 }
 
+/* .Width-60 {
+  width: 60rem;
+  max-width: 50rem;
+  min-width: 50rem;
+} */
 
+.Width-75 {
+  width: 75rem
+}
+
+.Width-80 {
+  width: 90rem;
+}
 
 .Width-60 {
   width: 60rem;
@@ -217,6 +238,11 @@
   margin-bottom: 3%;
 }
 
+.Dark-cyan {
+  background-color: #00838F;
+
+}
+
 .Min-width {
   min-width: 25rem;
 }
@@ -236,6 +262,7 @@
   margin-right: 5%;
 }
 
+/* FIX THIS! */
 .Flex-End {
   justify-content: flex-start;
   align-self: center;
@@ -272,10 +299,11 @@ h1 {
   justify-content: center;
 }
 
+
 .Button {
   align-items: center;
   /* background-color: grey; */
-  /* color: white; */
+  color: white;
   text-align: center;
   text-decoration: none;
   cursor: default;
@@ -331,7 +359,11 @@ h1 {
 }
 
 .Navy {
-  background-color: rgb(19, 19, 50);
+  background-color: rgb(35, 35, 96);
+}
+
+.Navy-text {
+  color: rgb(19, 19, 50);
 }
 
 .Black {
@@ -379,6 +411,10 @@ h1 {
   align-self: center;
 }
 
+.Align-self-start {
+  align-self: flex-start;
+}
+
 .Border-bottom {
   border-bottom: solid;
 }
@@ -401,6 +437,7 @@ h1 {
   margin-top: 0.75rem;
   margin-left: 2%;
   margin-right: 2%;
+  background-color: #00838F;
   /* background-color: rgb(181, 228, 228); */
 }
 
@@ -444,16 +481,29 @@ h1 {
 }
 
 .Project-button {
-  width: 80%;
-  min-height: 5rem;
-  font-size: 20px;
-  border-radius: 30px;
+  min-width: 200px;
+  min-height: 150px;
+  font-size: 16px;
   align-self: center;
   margin-top: 1rem;
-  background-color: rgb(19, 19, 50);
-  color: rgb(105, 186, 186);
+  margin-left: 1%;
+  margin-right:1%;
+  background-color: #00838F;
+  /* padding: 3%; */
+  border-radius: 3%
 }
 
+.Project:hover {
+  font-size: 16px;
+  align-self: center;
+  margin-top: 1rem;
+  background-color: rgb(0, 72, 79);
+}
+
+
+.Font-size-20 {
+  font-size: 20px
+}
 
 .Margin-bottom {
   margin-bottom: 4rem;
@@ -482,3 +532,11 @@ h1 {
   margin-right: 30%;
   margin-top: 5%
 }
+
+
+
+.Dark-cyan-text {
+  color: #00838F;
+}
+
+
