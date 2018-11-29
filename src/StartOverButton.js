@@ -6,7 +6,6 @@ import withResetGlobal from "./ResetGlobalHOC";
 const StartOverButton = props => {
   return (
     <Button
-      variant="contained"
       className="Button"
       component={Link}
       to="/startQuery"

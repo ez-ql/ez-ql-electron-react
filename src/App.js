@@ -21,7 +21,6 @@ class App extends Component {
         </header>
         <div className="App-body">
           <Switch>
-            <Route path="/startQuery" component={StartQuery} />
             <Route path="/makeQuery" component={MakeQuery} />
             <Route path="/project" component={Project} />
             <Route path="/finalizeQuery" component={FinalizeQuery} />
