@@ -273,7 +273,7 @@ h1 {
 .Button {
   align-items: center;
   /* background-color: #61dafb; */
-  /* color: white; */
+  color: transparent;
   text-align: center;
   text-decoration: none;
   cursor: default;

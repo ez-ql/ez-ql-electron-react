@@ -81,8 +81,8 @@ class PreviewTabs extends React.Component {
       <Paper elevation={0} className={classes.root}>
         <Tabs
           value={this.state.selectedTab}
-          indicatorColor="primary"
-          textColor="primary"
+          indicatorColor="secondary"
+          textColor="secondary"
           onChange={this.handleChange}
         >
           <Tab label={this.props.preview ? "Preview table" : "Results"} />

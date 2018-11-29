@@ -18,20 +18,29 @@ class StartQuery extends Component {
   }
 
   addModel(modelName) {
-    console.log("modelName", modelName)
-    electron.remote.getGlobal("sharedObj").currQuery.selectedModelsAndFields = []
-    console.log('SELECTEDMF in CDM', electron.remote.getGlobal("sharedObj").currQuery.selectedModelsAndFields)
+    console.log("modelName", modelName);
+    electron.remote.getGlobal(
+      "sharedObj"
+    ).currQuery.selectedModelsAndFields = [];
+    console.log(
+      "SELECTEDMF in CDM",
+      electron.remote.getGlobal("sharedObj").currQuery.selectedModelsAndFields
+    );
     const selectedModel = electron.remote
       .getGlobal("sharedObj")
       .models.find(model => model.model_name === modelName);
 
-      electron.remote
-      .getGlobal("sharedObj").currQuery.selectedModel = selectedModel;
-      electron.remote
-      .getGlobal("sharedObj").currQuery.from = modelName;
+    electron.remote.getGlobal(
+      "sharedObj"
+    ).currQuery.selectedModel = selectedModel;
+    electron.remote.getGlobal("sharedObj").currQuery.from = modelName;
 
-      console.log("selectedModel", electron.remote
-      .getGlobal("sharedObj").currQuery.selectedModel = selectedModel)
+    console.log(
+      "selectedModel",
+      (electron.remote.getGlobal(
+        "sharedObj"
+      ).currQuery.selectedModel = selectedModel)
+    );
   }
 
   //func to format field and table names @start of query builder
@@ -67,8 +76,8 @@ class StartQuery extends Component {
       electron.remote.getGlobal("sharedObj")
     );
     return (
-<div className="Title Min-height-50 Align-self-center Margin-top-3">
-      <div className="Column Center Height-50 ">
+      <div className="Title Min-height-50 Align-self-center Margin-top-3">
+        <div className="Column Center Height-50 ">
           <div className="Column Center Height-50">
             <h1 className=" Flex-End Column">SELECT A TABLE</h1>
           </div>
@@ -84,9 +93,9 @@ class StartQuery extends Component {
                       className="Row-buttons Button"
                       component={Link}
                       to={{
-                        pathname:"/refineQuery",
-                        state:'false'
-                        }}
+                        pathname: "/refineQuery",
+                        state: "false"
+                      }}
                     >
                       {modModels[model]}
                     </Button>
