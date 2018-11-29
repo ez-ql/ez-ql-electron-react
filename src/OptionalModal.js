@@ -26,8 +26,8 @@ function getModalStyle() {
 const styles = theme => ({
   paper: {
     position: "absolute",
-    width: theme.spacing.unit * 100,
-    height: theme.spacing.unit * 60,
+    width: theme.spacing.unit * 80,
+    height: theme.spacing.unit * 48,
     backgroundColor: "white",
     padding: theme.spacing.unit * 4,
     borderRadius: 40,
@@ -94,7 +94,7 @@ class OptionalModal extends React.Component {
           <div style={getModalStyle()} className={classes.paper}>
             <Typography variant="subtitle1" id="simple-modal-description">
               <Grid container spacing={16} className={classes.grid}>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={30} md={24}>
                   <Typography variant="h6" className={classes.title}>
                     The following next steps are optional:
                   </Typography>

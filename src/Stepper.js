@@ -149,6 +149,7 @@ class HorizontalStepper extends Component {
   }
 
   closeInfoModal = () => {
+    console.log('here in closeInfoModal')
     this.setState({
       infoModal: false
     })
@@ -167,6 +168,8 @@ class HorizontalStepper extends Component {
   render() {
     const { activeStep, steps } = this.state;
     const { classes } = this.props;
+    console.log('infoModal', this.state.infoModal)
+    console.log('startModal', this.state.startModal)
     return (
       <div className="Flex-Container Width-100vw Height-50-fixed  ">
         <div>
@@ -272,9 +275,9 @@ class HorizontalStepper extends Component {
             </div>
           )}
         </div>
-        <div className="info" onClick={this.openInfoModal}>
+        <div className="info">
             {this.state.infoModal && <InfoModal activeStep={this.state.activeStep} closeInfoModal={this.closeInfoModal}/>}      
-          <FaQuestionCircle id="info-icon"/>
+          <FaQuestionCircle id="info-icon" onClick={this.openInfoModal}/>
         </div>
       </div>
     );

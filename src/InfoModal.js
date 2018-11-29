@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
-import {FaQuestionCircle} from 'react-icons/fa';
+import { FaQuestionCircle } from "react-icons/fa";
 
 function getModalStyle() {
   const top = 50;
@@ -21,7 +21,7 @@ const styles = theme => ({
   paper: {
     position: "absolute",
     width: theme.spacing.unit * 50,
-    height: theme.spacing.unit * 30,
+    height: theme.spacing.unit * 20,
     backgroundColor: "white",
     padding: theme.spacing.unit * 4,
     borderRadius: 40,
@@ -47,9 +47,12 @@ const styles = theme => ({
 });
 
 class InfoModal extends React.Component {
-  state = {
-    open: true
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: true
+    };
+  }
 
   handleClose = () => {
     this.props.closeInfoModal();
@@ -83,17 +86,18 @@ class InfoModal extends React.Component {
         >
           <div style={getModalStyle()} className={classes.paper}>
             <Typography variant="subtitle1" id="simple-modal-description">
-                <FaQuestionCircle id="large-info-icon"/>
+              <FaQuestionCircle id="large-info-icon" />
               <Typography variant="h6" className={classes.title}>
                 {this.getInfo()[this.props.activeStep].title}
               </Typography>
               <Typography>
-              {this.getInfo()[this.props.activeStep].message}
+                {this.getInfo()[this.props.activeStep].message}
               </Typography>
               <div className="Row-buttons">
                 <Button
                   variant="contained"
                   color="primary"
+                  type='button'
                   onClick={this.handleClose}
                   className={classes.button}
                 >
