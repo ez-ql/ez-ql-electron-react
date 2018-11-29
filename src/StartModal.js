@@ -4,7 +4,6 @@ import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
-import { Link } from "react-router-dom";
 import Check from "@material-ui/icons/Check";
 import Grid from "@material-ui/core/Grid";
 import List from "@material-ui/core/List";
@@ -27,7 +26,7 @@ const styles = theme => ({
   paper: {
     position: "absolute",
     width: theme.spacing.unit * 80,
-    height: theme.spacing.unit * 48,
+    height: theme.spacing.unit * 28,
     backgroundColor: "white",
     padding: theme.spacing.unit * 4,
     borderRadius: 40,
@@ -52,13 +51,13 @@ const styles = theme => ({
   }
 });
 
-class OptionalModal extends React.Component {
+class StartModal extends React.Component {
   state = {
     open: true
   };
 
   handleClose = () => {
-    this.props.toggleOptionalModal();
+    this.props.toggleStartModal();
     this.setState({ open: false });
   };
 
@@ -66,21 +65,13 @@ class OptionalModal extends React.Component {
     const { classes } = this.props;
     const stepNarratives = [
       {
-        primary: "Select data from an additional table",
+        primary: "Selecting a table you want to see",
         secondary:
-          "(e.g. See data from the Customers table in addition to the Orders table)"
+          "(e.g. Start with the customers table if you are looking for customer information)"
       },
       {
-        primary: "Aggregate fields",
-        secondary: "(e.g. Count the number of orders for each customer)"
-      },
-      {
-        primary: "Filter by field value",
-        secondary: " (e.g See only orders with an order date after 1/1/2016)"
-      },
-      {
-        primary: "Sort by field value",
-        secondary: "(e.g. Order your customer list by last name)"
+        primary: "Selecting fields from that table",
+        secondary: "(e.g. Select first name, last name, and email to see data for your email campaign)"
       }
     ];
     return (
@@ -96,7 +87,7 @@ class OptionalModal extends React.Component {
               <Grid container spacing={16} className={classes.grid}>
                 <Grid item xs={30} md={24}>
                   <Typography variant="h6" className={classes.title}>
-                    The following next steps are optional:
+                    Start your query by:
                   </Typography>
                   <div>
                     <List>
@@ -117,13 +108,6 @@ class OptionalModal extends React.Component {
                   </div>
                 </Grid>
               </Grid>
-              <Typography>
-                If you have the data you need, click <strong>finish</strong> to
-                view your finalized query.
-                <br />
-                If you would like to complete any of the above steps, please
-                click <strong>continue.</strong>
-              </Typography>
               <div className="Row-buttons">
                 <Button
                   variant="contained"
@@ -132,15 +116,6 @@ class OptionalModal extends React.Component {
                   className={classes.button}
                 >
                   Continue
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  component={Link}
-                  to="/finalizeQuery"
-                  className={classes.button}
-                >
-                  Finish
                 </Button>
               </div>
             </Typography>
@@ -151,9 +126,9 @@ class OptionalModal extends React.Component {
   }
 }
 
-OptionalModal.propTypes = {
+StartModal.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
 // We need an intermediary variable for handling the recursive nesting.
-export default withStyles(styles)(OptionalModal);
+export default withStyles(styles)(StartModal);

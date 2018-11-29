@@ -1,13 +1,24 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import { withStyles } from "@material-ui/core/styles";
 
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
 
+const styles = theme => ({
+  button: {
+    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
+    marginTop: theme.spacing.unit
+  }
+});
+
 class StartQuery extends Component {
   state = {
-    models: []
+    models: [],
+    shake: false
   };
 
   componentDidMount() {
@@ -65,6 +76,7 @@ class StartQuery extends Component {
 
   render() {
     const models = this.state.models;
+    const { classes } = this.props;
     let modModels;
     models.length
       ? (modModels = this.formatModelAndFieldNames(
@@ -76,13 +88,17 @@ class StartQuery extends Component {
       electron.remote.getGlobal("sharedObj")
     );
     return (
-      <div className="Title Min-height-50 Align-self-center Margin-top-3">
-        <div className="Column Center Height-50 ">
-          <div className="Column Center Height-50">
-            <h1 className=" Flex-End Column">SELECT A TABLE</h1>
-          </div>
+      <div className="Column Title Min-height-50 Align-self-center Margin-top-3">
+        <div className="Column Center Height-50">
+          <h1 className="Flex-End Column">SELECT A TABLE</h1>
         </div>
-        <div className="Row-buttons Flex-Wrap">
+        <div
+          className={
+            this.props.shake
+              ? "Start-button Row-buttons Flex-Wrap Center-buttons"
+              : "Row-buttons Flex-Wrap Center-buttons"
+          }
+        >
           {models.length > 0
             ? Object.keys(modModels).map(model => {
                 console.log("MODEL IN START QUERY", modModels[model]);
@@ -90,7 +106,7 @@ class StartQuery extends Component {
                   <div>
                     <Button
                       onClick={() => this.addModel(model)}
-                      className="Row-buttons Button"
+                      className={classes.button}
                       component={Link}
                       to={{
                         pathname: "/refineQuery",
@@ -109,4 +125,4 @@ class StartQuery extends Component {
   }
 }
 
-export default StartQuery;
+export default withStyles(styles)(StartQuery);

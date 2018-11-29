@@ -1,15 +1,29 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
+const electron = window.require("electron");
 
 const SelectTable = props => {
   const { handleModelChange, model, formatTableNames } = props;
+
   const relatedModels = model.related_models.map(relatedModel => {
     const found = props.schema.find(model => {
       return model.model_id === relatedModel.relatedmodel_id;
     });
     return found;
   });
+
+  const formatModelName = name => {
+    if (name.includes("_")) {
+      return `${name.split("_")[0]} ${name.split("_")[1]}`.toUpperCase();
+    } else {
+      return name.toUpperCase();
+    }
+  };
+
+  const modelName = formatModelName(
+    electron.remote.getGlobal("sharedObj").currQuery.from
+  );
 
   // return (
   //   <div className='Title Min-height-75'>
@@ -41,7 +55,9 @@ const SelectTable = props => {
   return Object.keys(modRelatedModels).length ? (
     <div className="Column Title Min-height-50 Align-self-center Margin-top-3">
       <div className="Column Center Height-50">
-        <h1 className="Flex-End Column ">SELECT RELATED TABLE</h1>
+        <h1 className="Flex-End Column">
+          {`ADD A TABLE RELATED TO ${modelName}`}
+        </h1>
       </div>
       <div className="Row-buttons">
         {relatedModels[0]
