@@ -19,7 +19,7 @@ const SubmitButton = props => {
 
 const SubmitButtonWithToast = withToast(
   SubmitButton,
-  "Your aggregator has been registered!"
+  "Your calculation method has been registered!"
 );
 
 class Aggregate extends Component {
@@ -173,7 +173,7 @@ class Aggregate extends Component {
     return (
       <div className="Min-height-75 Title Column Center Width-50">
         <div className="Display Column Center">
-          <h3>SELECT AGGREGATOR</h3>
+          <h3>SELECT A CALCULATION METHOD</h3>
           <ScrollMenu
             items={this.state.availableAggregators}
             handleChange={this.handleSelectedAggregator}
