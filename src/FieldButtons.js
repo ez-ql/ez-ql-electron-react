@@ -5,6 +5,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
+  primary: theme.palette.primary,
   arrowPopper: {
     textAlign: "center",
     '&[x-placement*="bottom"] $arrowArrow': {
@@ -34,9 +35,6 @@ const styles = theme => ({
       height: 0,
       borderStyle: "solid"
     }
-  },
-  button: {
-    margin: theme.spacing.unit
   },
   tooltip: {
     fontSize: 14,
@@ -107,6 +105,8 @@ class FieldButtons extends React.Component {
                   }}
                 >
                   <Button
+                    color="primary"
+                    variant="contained"
                     className="Button"
                     type="submit"
                     name="fields"
@@ -120,7 +120,8 @@ class FieldButtons extends React.Component {
             );
           })}
         <Button
-          color="white"
+          color="primary"
+          variant="contained"
           className="Button"
           // type="submit"
           // name="fields"

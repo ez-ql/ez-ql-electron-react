@@ -21,7 +21,7 @@ async function createWindow() {
       ? "http://localhost:3000"
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   mainWindow.on("closed", () => (mainWindow = null));
 
@@ -240,12 +240,11 @@ ipcMain.on("async-project-query", async (event, arg) => {
 });
 
 ipcMain.on("async-new-query", async (event, arg) => {
-  console.log('arg1', arg)
+  console.log("arg1", arg);
   const query = arg ? queryGuard(arg) : queryGuard(buildSquelQuery());
   if (arg) {
-    console.log('ARG', arg)
+    console.log("ARG", arg);
     global.sharedObj.sqlQuery = arg;
-
   }
 
   const client = new Client({ connectionString });

@@ -71,9 +71,9 @@ class HorizontalStepper extends Component {
   };
 
   handleNext = event => {
-    const { activeStep, optionalModalViewed} = this.state;
-    console.log('activeStep', activeStep)
-    if (activeStep === 4){
+    const { activeStep, optionalModalViewed } = this.state;
+    console.log("activeStep", activeStep);
+    if (activeStep === 4) {
       this.handleSubmit();
     }
 
@@ -121,13 +121,18 @@ class HorizontalStepper extends Component {
 
   handleSubmit = () => {
     ipcRenderer.send("async-new-query");
-    this.setState({activeStep: 5})
+    this.setState({ activeStep: 5 });
   };
 
   toggleOptionalModal = () => {
     this.setState({
       optionalModal: false
     });
+  };
+
+  loadPreview = event => {
+    console.log("shared object", electron.remote.getGlobal("sharedObj"));
+    ipcRenderer.send("async-new-query");
   };
 
   componentDidMount() {
@@ -199,6 +204,7 @@ class HorizontalStepper extends Component {
                 </div>
               </div>
               <div className="Row-buttons Margin-top-1">
+                <div />
                 <div>
                   <Button
                     disabled={activeStep === 0}
@@ -235,6 +241,11 @@ class HorizontalStepper extends Component {
                     Finish
                   </Button>
                 </div>
+                {activeStep !== 5 && (
+                  <div onClick={this.loadPreview}>
+                    <PreviewModal />
+                  </div>
+                )}
               </div>
             </div>
           )}

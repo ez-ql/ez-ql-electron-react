@@ -27,6 +27,14 @@ const styles = theme => ({
     height: "100%",
     maxHeight: "100%"
   },
+  final: {
+    flexGrow: 1,
+    width: "100%",
+    backgroundColor: "#b5e4e4",
+    textAlign: "left",
+    height: "100%",
+    maxHeight: "100%"
+  },
   monospace: {
     fontFamily: "Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace"
   }
@@ -61,14 +69,13 @@ class PreviewTabs extends React.Component {
   }
 
   render() {
-    let { data, numFields, numRows, sqlQuery } = this.props.props;
+    let { data, numFields, numRows, sqlQuery, preview, classes } = this.props;
 
     if (!sqlQuery) {
       sqlQuery = electron.remote.getGlobal("sharedObj").sqlQuery;
       console.log("sqlQery", sqlQuery);
     }
-    console.log("*****props.props****", this.props.props);
-    const { classes } = this.props;
+    console.log("*****props.props****", this.props);
     const { selectedTab } = this.state;
     return (
       <Paper elevation={0} className={classes.root}>
@@ -86,7 +93,7 @@ class PreviewTabs extends React.Component {
         </Tabs>
         {selectedTab === 0 && (
           <TabContainer>
-            {preview && (
+            {this.props.preview && (
               <Typography variant="caption" style={{ marginBottom: 15 }}>
                 This is a preview - only up to the first 10 rows of your current
                 request are shown. <br />
@@ -94,21 +101,23 @@ class PreviewTabs extends React.Component {
               </Typography>
             )}
             <Typography component="div">
-              {sqlQuery ? (
-                "There was no query submitted."
-              ) : data ? (
+              {sqlQuery && data.length > 0 ? (
                 <Table data={data} preview={preview} className="table" />
-              ) : (
+              ) : sqlQuery ? (
                 "Loading..."
+              ) : (
+                "There was no query submitted"
               )}
             </Typography>
           </TabContainer>
         )}
         {selectedTab === 1 && (
           <TabContainer>
-            <Typography variant="caption" style={{ marginBottom: 15 }}>
-              Your current request will result in this many rows and columns:
-            </Typography>
+            {preview && (
+              <Typography variant="caption" style={{ marginBottom: 15 }}>
+                Your current request will result in this many rows and columns:
+              </Typography>
+            )}
             {data.length > 0 ? (
               <div>
                 <Typography>

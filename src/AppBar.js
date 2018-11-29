@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+import theme from "./colortheme.js";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -19,6 +20,7 @@ const electron = window.require("electron");
 const ipcRenderer = electron.ipcRenderer;
 
 const styles = {
+  theme: theme,
   root: {
     flexGrow: 1
   },
@@ -121,8 +123,8 @@ class ButtonAppBar extends React.Component {
             {sideList}
           </div>
         </Drawer>
-        <AppBar position="static" >
-          <Toolbar className='Navy' >
+        <AppBar position="static">
+          <Toolbar className="Navy">
             <IconButton
               className={classes.menuButton}
               color="inherit"
