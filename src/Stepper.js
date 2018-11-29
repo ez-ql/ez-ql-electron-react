@@ -56,7 +56,8 @@ class HorizontalStepper extends Component {
       optionalModalViewed: false,
       startModal: true,
       startModalViewed: false,
-      infoModal: false
+      infoModal: false,
+      shake: false
     };
   }
 
@@ -138,7 +139,8 @@ class HorizontalStepper extends Component {
   toggleStartModal = () => {
     this.setState({
       startModal: false,
-      startModalViewed: true
+      startModalViewed: true,
+      shake: true
     });
   };
   
@@ -171,18 +173,18 @@ class HorizontalStepper extends Component {
     console.log('infoModal', this.state.infoModal)
     console.log('startModal', this.state.startModal)
     return (
-      <div className="Flex-Container Width-100vw Height-50-fixed  ">
+      <div className="Flex-Container Width-100vw Height-50-fixed">
         <div>
           {activeStep === steps.length ? null : (
             <div>
               <div className="Column Height-30-fixed">
                 {activeStep === 0 &&
                   (this.state.startQuery ? (
-                    <div>
+                    <div className="Column Height-30-fixed">
                       {this.state.startModal && (
                         <StartModal toggleStartModal={this.toggleStartModal} />
                       )}
-                      <StartQuery />
+                      <StartQuery shake={this.state.shake}/>
                     </div>
                   ) : (
                     <MakeQuery />

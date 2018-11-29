@@ -85,7 +85,7 @@
 }
 
 .Height-100 {
-  height:40rem
+  height: 40rem;
 }
 
 .Height-75 {
@@ -112,7 +112,6 @@
   margin-top: 1%;
 }
 
-
 .Height-11-fixed {
   height: 13rem;
 }
@@ -125,7 +124,7 @@
 .Height-20 {
   display: flex;
   height: 20%;
-  width: 50%
+  width: 50%;
 }
 
 .Min-height-75 {
@@ -161,8 +160,8 @@
 }
 
 .Width-100 {
-  margin-left:5%;
-  margin-right:5%;
+  margin-left: 5%;
+  margin-right: 5%;
   width: 90%;
 }
 
@@ -181,8 +180,6 @@
   border-radius: 10%;
   background-color: rgb(181, 228, 228);
 }
-
-
 
 .Width-60 {
   width: 60rem;
@@ -440,7 +437,7 @@ h1 {
 
 .Border-solid {
   border: solid;
-  border-width: .55px
+  border-width: 0.55px;
 }
 
 .Project-button {
@@ -454,7 +451,6 @@ h1 {
   color: rgb(105, 186, 186);
 }
 
-
 .Margin-bottom {
   margin-bottom: 4rem;
 }
@@ -464,23 +460,21 @@ h1 {
 }
 
 .effect1 {
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 .lightest-grey {
   color: rgb(182, 182, 182);
-
 }
 
 .lighter-background {
-  background-color: rgb(255, 255, 255)
+  background-color: rgb(255, 255, 255);
 }
-
 
 .Align-center {
   margin-left: 30%;
   margin-right: 30%;
-  margin-top: 5%
+  margin-top: 5%;
 }
 
 .info {
@@ -496,4 +490,41 @@ h1 {
 #large-info-icon {
   height: 20px;
   width: 20px;
+}
+
+.Start-button {
+  animation: shake 2s;
+}
+
+@keyframes shake {
+  20% {
+    transform: translateX(4px);
+  }
+  40% {
+    transform: translateX(-4px);
+  }
+  60% {
+    transform: translateX(2px);
+  }
+  80% {
+    transform: translateX(-1px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.Start {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.Center-buttons {
+  position: fixed;
+  width: 500px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  margin-top: -100px;
+  margin-left: -250px;
 }
