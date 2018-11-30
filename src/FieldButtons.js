@@ -125,7 +125,7 @@ class FieldButtons extends React.Component {
           color="primary"
           variant="contained"
           className={classes.button}
-          type="submit"
+          // type="submit"
           name="fields"
           onClick={() => this.props.selectAll()}
         >

@@ -38,8 +38,7 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit
   },
   stepperColor: {
-    backgroundColor: "rgb(181, 228, 228)",
-    color: "secondary"
+    backgroundColor: "rgb(181, 228, 228)"
   }
 });
 
