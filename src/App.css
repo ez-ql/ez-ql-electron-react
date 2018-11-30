@@ -34,7 +34,7 @@
 .App-body {
   display: flex;
   justify-content: center;
-  background-color: rgb(181, 228, 228);
+  background-color: rgb(219, 250, 250);
   height: 100vh;
   z-index: -2;
 }
@@ -592,6 +592,7 @@ h1 {
 
 .Dark-cyan-text {
   color: #00838F;
+  background-color:  rgb(252, 225, 200)
 }
 
 

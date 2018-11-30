@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Modal from "@material-ui/core/Modal";
-import Joins from './Joins'
+import Joins from "./Joins";
 
 function getModalStyle() {
   const top = 50;
@@ -33,7 +33,7 @@ class JoinModal extends React.Component {
   };
 
   handleClose = () => {
-    this.props.toggleJoinModal()
+    this.props.toggleJoinModal();
     this.setState({ open: false });
   };
 
