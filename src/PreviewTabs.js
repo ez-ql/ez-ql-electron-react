@@ -6,14 +6,13 @@ import Table from "./Table";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import { formatNames } from "./MakeQuery";
-import teal from "@material-ui/core/colors/teal";
 
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
 
 function TabContainer(props) {
   return (
-    <Typography component="div" style={{ padding: 8 * 3 }}>
+    <Typography component="div" style={{ padding: 7 * 2 }}>
       {props.children}
     </Typography>
   );
@@ -70,8 +69,7 @@ class PreviewTabs extends React.Component {
     selectedModelsAndFields: [],
     qualifiedFields: [],
     where: "",
-    order: [],
-    data: []
+    order: []
   };
 
   handleChange = (event, selectedTab) => {
