@@ -73,7 +73,7 @@ class FinalizeQuery extends React.Component {
           </div>
 
           <div>
-            <PreviewTabs props={{ ...this.state }} preview={false} />
+            <PreviewTabs {...this.state} preview={false} />
           </div>
         </div>
       </div>

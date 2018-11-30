@@ -17,8 +17,8 @@ import StartQuery from "./StartQuery";
 import OptionalModal from "./OptionalModal";
 import FiberManualRecord from "@material-ui/icons";
 import StartModal from "./StartModal";
-import {FaQuestionCircle} from 'react-icons/fa'
-import InfoModal from './InfoModal'
+import { FaQuestionCircle } from "react-icons/fa";
+import InfoModal from "./InfoModal";
 
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
@@ -136,6 +136,11 @@ class HorizontalStepper extends Component {
     });
   };
 
+  loadPreview = event => {
+    console.log("shared object", electron.remote.getGlobal("sharedObj"));
+    ipcRenderer.send("async-new-query");
+  };
+
   toggleStartModal = () => {
     this.setState({
       startModal: false,
@@ -147,15 +152,15 @@ class HorizontalStepper extends Component {
   openInfoModal = () => {
     this.setState({
       infoModal: true
-    })
-  }
+    });
+  };
 
   closeInfoModal = () => {
-    console.log('here in closeInfoModal')
+    console.log("here in closeInfoModal");
     this.setState({
       infoModal: false
-    })
-  }
+    });
+  };
 
   componentDidMount() {
     const steps = this.getSteps();
@@ -170,8 +175,8 @@ class HorizontalStepper extends Component {
   render() {
     const { activeStep, steps } = this.state;
     const { classes } = this.props;
-    console.log('infoModal', this.state.infoModal)
-    console.log('startModal', this.state.startModal)
+    console.log("infoModal", this.state.infoModal);
+    console.log("startModal", this.state.startModal);
     return (
       <div className="Flex-Container Width-75  Height-50-fixed Margin-top-5 ">
         <div>
@@ -184,7 +189,7 @@ class HorizontalStepper extends Component {
                       {this.state.startModal && (
                         <StartModal toggleStartModal={this.toggleStartModal} />
                       )}
-                      <StartQuery shake={this.state.shake}/>
+                      <StartQuery shake={this.state.shake} />
                     </div>
                   ) : (
                     <MakeQuery />
@@ -273,13 +278,27 @@ class HorizontalStepper extends Component {
                     Finish
                   </Button>
                 </div>
+                {activeStep !== 5 && (
+                  <div onClick={this.loadPreview}>
+                    <PreviewModal />
+                  </div>
+                )}
               </div>
             </div>
           )}
         </div>
         <div className="info">
-            {this.state.infoModal && <InfoModal activeStep={this.state.activeStep} closeInfoModal={this.closeInfoModal}/>}
-          <FaQuestionCircle id="info-icon" className="info-icon" onClick={this.openInfoModal}/>
+          {this.state.infoModal && (
+            <InfoModal
+              activeStep={this.state.activeStep}
+              closeInfoModal={this.closeInfoModal}
+            />
+          )}
+          <FaQuestionCircle
+            id="info-icon"
+            className="info-icon"
+            onClick={this.openInfoModal}
+          />
         </div>
       </div>
     );

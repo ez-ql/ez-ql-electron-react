@@ -107,7 +107,9 @@ class FieldButtons extends React.Component {
                   }}
                 >
                   <Button
-                    className="Button"
+                    color="primary"
+                    variant="contained"
+                    className={classes.button}
                     type="submit"
                     name="fields"
                     value={field}
@@ -120,10 +122,11 @@ class FieldButtons extends React.Component {
             );
           })}
         <Button
-          color="white"
-          className="Button"
-          // type="submit"
-          // name="fields"
+          color="primary"
+          variant="contained"
+          className={classes.button}
+          type="submit"
+          name="fields"
           onClick={() => this.props.selectAll()}
         >
           SELECT ALL

@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
+import { withStyles } from "@material-ui/core/styles";
 const electron = window.require("electron");
 
 const SelectTable = props => {
@@ -60,11 +61,12 @@ const SelectTable = props => {
       </div>
       <div className="Row-buttons">
         {relatedModels[0]
-          ? Object.keys(modRelatedModels).map(model => {
+          ? Object.keys(modRelatedModels).map((model, idx) => {
               return (
-                <div >
+                <div key={idx}>
                   <Button
-                    color="action"
+                    color="primary"
+                    variant="contained"
                     className="Button"
                     type="submit"
                     name="selectedModel"
