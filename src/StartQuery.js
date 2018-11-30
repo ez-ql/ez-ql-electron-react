@@ -12,6 +12,11 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
     marginBottom: theme.spacing.unit,
     marginTop: theme.spacing.unit
+  },
+  root: {
+    "&:focus": {
+      outline: 0
+    }
   }
 });
 

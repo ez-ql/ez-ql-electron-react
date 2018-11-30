@@ -32,7 +32,10 @@ const styles = theme => ({
     borderRadius: 40,
     textAlign: "center",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    "&:focus": {
+      outline: 0
+    }
   },
   button: {
     marginRight: theme.spacing.unit,
@@ -71,7 +74,8 @@ class StartModal extends React.Component {
       },
       {
         primary: "Selecting fields from that table",
-        secondary: "(e.g. Select first name, last name, and email to see data for your email campaign)"
+        secondary:
+          "(e.g. Select first name, last name, and email to see data for your email campaign)"
       }
     ];
     return (
