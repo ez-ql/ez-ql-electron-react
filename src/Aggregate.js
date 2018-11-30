@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ScrollMenu from "./ScrollMenu";
 import Button from "@material-ui/core/Button";
+import theme from "./colortheme.js";
 import withToast from "./Toasts";
 const electron = window.require("electron");
 

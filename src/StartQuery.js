@@ -92,7 +92,13 @@ class StartQuery extends Component {
         <div className="Column Center Height-50">
           <h1 className="Flex-End Column">SELECT A TABLE</h1>
         </div>
-        <div className={this.props.shake ? "Start-button Row-buttons Flex-Wrap Center-buttons": "Row-buttons Flex-Wrap Center-buttons"}>
+        <div
+          className={
+            this.props.shake
+              ? "Start-button Row-buttons Flex-Wrap Center-buttons"
+              : "Row-buttons Flex-Wrap Center-buttons"
+          }
+        >
           {models.length > 0
             ? Object.keys(modModels).map(model => {
                 console.log("MODEL IN START QUERY", modModels[model]);

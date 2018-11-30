@@ -30,9 +30,10 @@ const styles = theme => ({
   },
   iconHover: {
     margin: theme.spacing.unit * 2,
-    color: cyan[800],
+    color: "rgb(35, 35, 96)",
+    fontSize: 100,
     '&:hover': {
-      color: "rgb(0, 72, 79)",
+      color: "rgb(35, 35, 96)",
     },
   },
 });
@@ -113,7 +114,7 @@ class Project extends React.Component {
     const { classes } = this.props;
     return (
       <div className="Display Column Center Width-60">
-        <div className="Display Center Column Width-30 Height-50-fixed Margin-top-5 Self-align-center" >
+        <div className="Display Center Column Width-30 Height-50-fixed Margin-top-15 Self-align-center" >
           <div className="Column Center Display Margin-top-5 Width-60">
             <h1 className=" Grey Center Align-self-center Padding-3 ">
               {this.state.selectedProject.project_name &&
@@ -142,6 +143,7 @@ class Project extends React.Component {
                     <div className=" Button Margin-buttons ">
                       <Button
                         variant="contained"
+
                         className={classes.button}
                         onClick={this.handleClickOpen}
                       >

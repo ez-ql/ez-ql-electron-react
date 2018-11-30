@@ -8,13 +8,13 @@ import { withStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import Sort from "./Sort";
 
-const styles = {
+const styles = theme => ({
   dialog: {
     width: "80vw",
     minHeight: "80vh",
     maxHeight: "80vh"
   }
-};
+});
 
 class FormDialog extends React.Component {
   constructor(props) {
@@ -48,7 +48,11 @@ class FormDialog extends React.Component {
     const { classes } = this.props;
     return (
       <div>
-        <Button className="Button Row-buttons" onClick={this.handleClickOpen}>
+        <Button
+          color="secondary"
+          className="Button Row-buttons"
+          onClick={this.handleClickOpen}
+        >
           Next
         </Button>
         {/* <button className='Button Row-buttons' onClick={this.handleClickOpen}>Next</button> */}
@@ -76,7 +80,9 @@ class FormDialog extends React.Component {
           ) : this.state.step === "filter" ? (
             <div>
               <Filter />
-              <Button value="filter" onClick={this.handleNext}>Sort</Button>
+              <Button value="filter" onClick={this.handleNext}>
+                Sort
+              </Button>
             </div>
           ) : (
             <div>
