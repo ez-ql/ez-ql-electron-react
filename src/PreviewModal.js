@@ -44,17 +44,17 @@ class PreviewModal extends React.Component {
   };
 
   componentDidMount() {
-    ipcRenderer.on("async-query-reply", () => {
-      // console.log('here')
-      const data = electron.remote.getGlobal("sharedObj").data;
-      this.setState({
-        data: data,
-        numFields: electron.remote.getGlobal("sharedObj").currQuery
-          .qualifiedFields.length,
-        numRows: data.length,
-        sqlQuery: electron.remote.getGlobal("sharedObj").sqlQuery
-      });
+    // ipcRenderer.on("async-query-reply", () => {
+    // console.log('here')
+    const data = electron.remote.getGlobal("sharedObj").data;
+    this.setState({
+      data: data,
+      numFields: electron.remote.getGlobal("sharedObj").currQuery
+        .qualifiedFields.length,
+      numRows: data.length,
+      sqlQuery: electron.remote.getGlobal("sharedObj").sqlQuery
     });
+    // });
   }
 
   // componentWillUnmount() {

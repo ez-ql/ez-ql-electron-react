@@ -5,10 +5,12 @@ import Tab from "@material-ui/core/Tab";
 import Table from "./Table";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
-import { formatNames } from "./MakeQuery";
+import { formatNames } from "./MakeQuery.js";
+import moment from "moment";
 
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
+const ipcRenderer = electron.ipcRenderer;
 
 function TabContainer(props) {
   return (
@@ -33,7 +35,8 @@ const styles = theme => ({
     backgroundColor: "#b5e4e4",
     textAlign: "left",
     height: "100%",
-    maxHeight: "100%"
+    maxHeight: "100%",
+    overflow: "auto"
   },
   monospace: {
     fontFamily: "Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace"
@@ -42,12 +45,14 @@ const styles = theme => ({
     height: 350,
     width: "100%",
     margin: 0,
-    padding: theme.spacing.unit * 3
+    padding: theme.spacing.unit * 3,
+    overflow: "auto"
   },
   paperFinal: {
     height: 400,
     width: theme.spacing.unit * 110,
-    padding: theme.spacing.unit * 3
+    padding: theme.spacing.unit * 3,
+    overflow: "auto"
   },
   paperTablePreview: {
     height: 250,
@@ -69,7 +74,9 @@ class PreviewTabs extends React.Component {
     selectedModelsAndFields: [],
     qualifiedFields: [],
     where: "",
-    order: []
+    order: [],
+    prettyColumnNames: [],
+    data: []
   };
 
   handleChange = (event, selectedTab) => {
@@ -82,24 +89,69 @@ class PreviewTabs extends React.Component {
     const qualifiedFields = sharedObject.currQuery.qualifiedFields;
     const where = sharedObject.currQuery.where;
     const order = sharedObject.currQuery.order;
-    console.log("currQuery", sharedObject.currQuery);
+
+    let prettyColumnNames;
+    // modify data to match necessary row format
+    let data = [...electron.remote.getGlobal("sharedObj").data];
+
+    if (this.props.preview) data = data.slice(0, 10);
+    if (data && data.length > 0) {
+      const originalColumnNames = Object.keys(data[0]);
+      prettyColumnNames = Object.values(formatNames(originalColumnNames));
+    }
+
+    const globalObj = electron.remote.getGlobal("sharedObj");
+    const currQuery = globalObj.currQuery;
+    const models = globalObj.models;
+
+    let selectedFields = [];
+    currQuery.selectedModelsAndFields.forEach(model => {
+      const modelDetail = models.filter(
+        globalModel => globalModel.model_name === model.model_name
+      );
+      modelDetail[0].fields.forEach(globalField => {
+        if (model.fields.includes(globalField.field_name)) {
+          if (!selectedFields.includes(globalField))
+            selectedFields.push(globalField);
+        }
+      });
+    });
+
+    const dateColumns = selectedFields
+      .filter(field => field.field_type === "date")
+      .map(field => field.field_name);
+
+    data.forEach(row => {
+      dateColumns.forEach(dateColumn => {
+        const newFormat = moment(row[dateColumn])
+          .format("l")
+          .toString();
+        row[dateColumn] = newFormat;
+      });
+    });
+
+    const rowValuesOnly = data.map(row => Object.values(row));
+    console.log("ROWVALUESONLY", rowValuesOnly);
+    //SET STATE
     this.setState({
       selectedModelsAndFields,
       qualifiedFields,
       where,
-      order
+      order,
+      data: rowValuesOnly,
+      prettyColumnNames
     });
   }
 
   render() {
-    let { data, numFields, numRows, sqlQuery, preview, classes } = this.props;
+    let { numFields, numRows, sqlQuery, preview, classes } = this.props;
 
     if (!sqlQuery) {
       sqlQuery = electron.remote.getGlobal("sharedObj").sqlQuery;
       console.log("sqlQery", sqlQuery);
     }
-    console.log("*****props.props****", this.props);
-    const { selectedTab } = this.state;
+    const { selectedTab, data, prettyColumnNames } = this.state;
+
     return (
       <Paper elevation={0} className={preview ? classes.root : classes.final}>
         <Tabs
@@ -134,7 +186,12 @@ class PreviewTabs extends React.Component {
                 }
               > */}
                 {sqlQuery && data.length > 0 ? (
-                  <Table data={data} preview={preview} className="table" />
+                  <Table
+                    data={data}
+                    preview={preview}
+                    prettyColumnNames={prettyColumnNames}
+                    className="table"
+                  />
                 ) : sqlQuery ? (
                   "Loading..."
                 ) : (
