@@ -23,7 +23,10 @@ const styles = theme => ({
     height: theme.spacing.unit * 50,
     backgroundColor: "white",
     padding: theme.spacing.unit * 4,
-    borderRadius: 40
+    borderRadius: 40,
+    "&:focus": {
+      outline: 0
+    }
   }
 });
 

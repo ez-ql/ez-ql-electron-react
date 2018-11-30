@@ -33,7 +33,10 @@ const styles = theme => ({
     borderRadius: 40,
     textAlign: "center",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    "&:focus": {
+      outline: 0
+    }
   },
   button: {
     marginRight: theme.spacing.unit,
