@@ -36,7 +36,4 @@ Building on a Mac will generate a standard `.dmg` file.
 ### For Linux:
 Building on Linux will generate a `.AppImage` file. 
 
-You can install and open either of these files by double-clicking them in your file explorer GUI or from a terminal by running<br> `./.ez-ql...` 
-
-To download a pre-built ez-ql binary for your platform of choice, visit: https://ez-ql.github.io/ez-ql-splash-page/
-
+You can install and open either of these files by double-clicking them in your file explorer GUI or from a terminal by running<br> `./.ez-ql...`
