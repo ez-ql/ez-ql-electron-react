@@ -27,7 +27,10 @@ const styles = theme => ({
     borderRadius: 40,
     textAlign: "center",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    "&:focus": {
+      outline: 0
+    }
   },
   button: {
     marginRight: theme.spacing.unit,
@@ -97,7 +100,7 @@ class InfoModal extends React.Component {
                 <Button
                   variant="contained"
                   color="primary"
-                  type='button'
+                  type="button"
                   onClick={this.handleClose}
                   className={classes.button}
                 >

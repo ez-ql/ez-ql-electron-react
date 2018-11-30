@@ -3,8 +3,14 @@ import Button from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 const electron = window.require("electron");
 
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit
+  }
+});
+
 const SelectTable = props => {
-  const { handleModelChange, model, formatTableNames } = props;
+  const { handleModelChange, model, formatTableNames, classes } = props;
 
   const relatedModels = model.related_models.map(relatedModel => {
     const found = props.schema.find(model => {
@@ -67,7 +73,7 @@ const SelectTable = props => {
                   <Button
                     color="primary"
                     variant="contained"
-                    className="Button"
+                    className={classes.button}
                     type="submit"
                     name="selectedModel"
                     value={model}
@@ -84,4 +90,4 @@ const SelectTable = props => {
   ) : null;
 };
 
-export default SelectTable;
+export default withStyles(styles)(SelectTable);

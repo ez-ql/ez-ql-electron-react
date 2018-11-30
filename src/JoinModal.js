@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Modal from "@material-ui/core/Modal";
-import Joins from './Joins'
+import Joins from "./Joins";
 
 function getModalStyle() {
   const top = 50;
@@ -23,7 +23,10 @@ const styles = theme => ({
     height: theme.spacing.unit * 50,
     backgroundColor: "white",
     padding: theme.spacing.unit * 4,
-    borderRadius: 40
+    borderRadius: 40,
+    "&:focus": {
+      outline: 0
+    }
   }
 });
 
@@ -33,7 +36,7 @@ class JoinModal extends React.Component {
   };
 
   handleClose = () => {
-    this.props.toggleJoinModal()
+    this.props.toggleJoinModal();
     this.setState({ open: false });
   };
 
