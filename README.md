@@ -1,44 +1,42 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+ez-ql is a point-and-click desktop GUI for querying PostgreSQL databases intended for non-technical business users.
+* Step-by-step query-builder allowing for the following SQL operations: join, aggregate, filter, sort, groupby
+* Built with Electron.js, boostrapped with Create-React-App
+* Packages and libraries: squel.js, node-postgres, MaterialUI
+
+## Requirements
+* node v8.11.1
+* npm v6.4.1
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+### `npm install`
+
+Runs installation of all dependencies listed in `package.json`. *Required* for the following two scripts.
+
+### `npm run electron-dev`
 
 Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Will open a Chromium Browser Window instance serving on [http://localhost:3000 (http://localhost:3000)].
 
-The page will reload if you make edits.<br>
+If you make edits to the code while the window is open, type Ctrl-Shift-R to refresh the window.<br>
 You will also see any lint errors in the console.
 
-### `npm test`
+## Building for All Platforms
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
+### `npm run electron-pack`
 
 Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Also generates distributable binaries to install the app to local OS in the `dist` folder.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+### For Mac:
+Building on a Mac will generate a standard `.dmg` file.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### For Linux:
+Building on Linux will generate a `.AppImage` file. 
 
-### `npm run eject`
+You can install and open either of these files by double-clicking them in your file explorer GUI or from a terminal by running<br> `./.ez-ql...` 
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+To download a pre-built ez-ql binary for your platform of choice, visit: https://ez-ql.github.io/ez-ql-splash-page/
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
