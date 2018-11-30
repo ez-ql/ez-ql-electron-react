@@ -50,7 +50,6 @@ const styles = theme => ({
   },
   paperFinal: {
     height: 400,
-    width: theme.spacing.unit * 110,
     padding: theme.spacing.unit * 3,
     overflow: "auto"
   },
@@ -203,7 +202,12 @@ class PreviewTabs extends React.Component {
             ) : (
               <Paper className={classes.paperFinal}>
                 {sqlQuery && data.length > 0 ? (
-                  <Table data={data} preview={preview} className="table" />
+                  <Table
+                    data={data}
+                    preview={preview}
+                    prettyColumnNames={prettyColumnNames}
+                    className="table"
+                  />
                 ) : sqlQuery ? (
                   "Loading..."
                 ) : (

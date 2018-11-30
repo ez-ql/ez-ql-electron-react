@@ -19,7 +19,7 @@ import withResetGlobal from "./ResetGlobalHOC";
 const electron = window.require("electron");
 const ipcRenderer = electron.ipcRenderer;
 
-const styles = {
+const styles = theme => ({
   theme: theme,
   root: {
     flexGrow: 1
@@ -35,7 +35,7 @@ const styles = {
     width: 350,
     height: "100vh"
   }
-};
+});
 
 const HomeButton = props => {
   return (

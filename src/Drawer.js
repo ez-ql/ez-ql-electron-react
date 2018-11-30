@@ -54,7 +54,10 @@ const styles = theme => ({
     height: "100vh",
     backgroundColor: teal[50]
   },
-  toolbar: theme.mixins.toolbar
+  toolbar: theme.mixins.toolbar,
+  itemtext: {
+    color: "#00838F"
+  }
 });
 
 class PermanentDrawerLeft extends React.Component {
@@ -111,7 +114,6 @@ class PermanentDrawerLeft extends React.Component {
                   <ListItem key={"Database"} color="inherit">
                     <ListItemText
                       primary={database.database_name.toUpperCase()}
-                      color="#00838F"
                     />
                   </ListItem>
                 </List>
