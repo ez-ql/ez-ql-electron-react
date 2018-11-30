@@ -300,12 +300,7 @@ h1 {
 
 .Button {
   align-items: center;
-  <<<<<<<HEAD
-  /* background-color: #61dafb; */
-  color: transparent;
-  =======/* background-color: grey; */
   color: white;
-  >>>>>>>master
   text-align: center;
   text-decoration: none;
   cursor: default;

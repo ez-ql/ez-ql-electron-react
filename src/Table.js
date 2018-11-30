@@ -7,10 +7,9 @@ import { withStyles } from "@material-ui/core/styles";
 const electron = window.require("electron");
 
 const styles = theme => ({
-  paper: {
-    height: 350,
+  table: {
+    height: 300,
     width: "auto%",
-    marginTop: theme.spacing.unit * 3,
     overflow: "auto"
   }
 });
@@ -74,16 +73,13 @@ const Table = props => {
   };
 
   return (
-    <Paper className={classes.paper}>
-      <MUIDataTable
-        className="table"
-        id="muiDataTable"
-        title={preview ? "Preview results" : "Results"}
-        data={rowValuesOnly}
-        columns={prettyColumnNames}
-        options={options}
-      />
-    </Paper>
+    <MUIDataTable
+      title={preview ? "Preview results" : "Results"}
+      data={rowValuesOnly}
+      columns={prettyColumnNames}
+      options={options}
+      className={classes.table}
+    />
   );
 };
 

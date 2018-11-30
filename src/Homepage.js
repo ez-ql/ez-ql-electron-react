@@ -91,7 +91,7 @@ class Visualize extends React.Component {
               YOUR SAVED PROJECTS
             </h2>
           </div>
-          <div className="Project-button">
+          {/* <div className="Project-button">
             <Link
               className="No-text-decoration Project-button "
               to="/project/1"
@@ -102,7 +102,7 @@ class Visualize extends React.Component {
               </h4>
             </Link>
           </div>
-          <div className="No-text-decoration Project-button ">
+          {/* <div className="No-text-decoration Project-button ">
             <Link
               className="No-text-decoration Project-button "
               to="/project/2"
@@ -112,7 +112,7 @@ class Visualize extends React.Component {
                   this.state.projectQueries[1].project_name.toUpperCase()}
               </h4>
             </Link>
-          </div>
+          </div> */}
           <div className=" Height-20 Width-80 Margin-top-1  ">
             {this.state.projectQueries[0] &&
               this.state.projectQueries.map(projectQuery => {
