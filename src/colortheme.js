@@ -8,9 +8,12 @@ const theme = createMuiTheme({
       main: "#ffe082"
     },
     secondary: {
-      main: "rgb(61,85,126)"
+      main: "rgb(35, 35, 96)"
     }
   }
 });
+
+// drawer + flkty:  rgb(174, 222, 247);
+// background: rgb(216, 249, 253)
 
 export default theme;

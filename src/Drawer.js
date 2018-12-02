@@ -29,7 +29,8 @@ const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
-    display: "flex"
+    display: "flex",
+    backgroundColor: "rgb(174,222,274)"
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1
@@ -42,7 +43,8 @@ const styles = theme => ({
     flexShrink: 0
   },
   drawerPaper: {
-    width: drawerWidth
+    width: drawerWidth,
+    backgroundColor: "rgb(174,222,274)"
   },
   content: {
     flexGrow: 1,
@@ -52,7 +54,7 @@ const styles = theme => ({
     marginTop: "4rem",
     width: 350,
     height: "100vh",
-    backgroundColor: teal[50]
+    backgroundColor: "rgb(174,222,274)"
   },
   toolbar: theme.mixins.toolbar,
   itemtext: {

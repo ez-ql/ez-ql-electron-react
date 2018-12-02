@@ -89,7 +89,7 @@ class PreviewModal extends React.Component {
         ) : ( */}
         <Button
           variant="contained"
-          color="primary"
+          color="secondary"
           className={classes.button}
           onClick={this.handleOpen}
         >
