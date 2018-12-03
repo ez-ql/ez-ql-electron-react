@@ -8,6 +8,8 @@
   "dependencies": {
     "@material-ui/core": "^3.5.1",
     "@material-ui/icons": "^3.0.1",
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
     "concurrently": "^4.0.1",
     "electron-is-dev": "^1.0.1",
     "electron-store": "^2.0.0",
@@ -16,7 +18,9 @@
     "material-ui": "^1.0.0-beta.47",
     "material-ui-icons": "^1.0.0-beta.36",
     "moment": "^2.22.2",
+    "morgan": "^1.9.1",
     "mui-datatables": "^2.0.0-beta-39",
+    "passport": "^0.4.0",
     "pg": "^7.6.1",
     "react": "^16.6.3",
     "react-bootstrap-table-next": "^1.4.1",
@@ -37,7 +41,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron-dev": "concurrently \"BROWSER=none npm run start\" \"wait-on http://localhost:3000 && electron .\"",
+    "serve-customer": "node ./backend/bikeStore.js",
+    "electron-dev": "concurrently \"BROWSER=none npm run start\" \"wait-on http://localhost:3000 && electron .\" \"npm run serve-customer\"",
     "preelectron-pack": "npm run build",
     "electron-pack": "build public/main.js=build/main.js"
   },

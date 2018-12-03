@@ -7,8 +7,9 @@ const path = require("path");
 const url = require("url");
 const squel = require("squel");
 const isDev = require("electron-is-dev");
+const axios = require("axios");
 
-const connectionString = "postgresql://localhost:5432/BikeStores";
+// const connectionString = "postgresql://localhost:5432/BikeStores";
 // const ezqlConnectionString = "postgresql://localhost:5432/ez-ql";
 
 let mainWindow;
@@ -227,16 +228,14 @@ const queryGuard = query => {
 };
 
 ipcMain.on("async-project-query", async (event, arg) => {
-  const client = new Client({ connectionString });
-  client.connect();
-  client
-    .query("SELECT project_id, project_name FROM projects ")
-    .then(res => {
-      console.log("first row of results", res.rows[0]);
-      event.sender.send("async-project-reply", res.rows);
-      client.end();
-    })
-    .catch(err => console.error(err.stack || err));
+  const query = "SELECT project_id, project_name FROM projects ";
+  try {
+    const { data } = await axios.post("/data", query);
+    console.log("first row of results", data.rows[0]);
+    event.sender.send("async-project-reply", data.rows);
+  } catch (error) {
+    console.error(error.stack);
+  }
 });
 
 ipcMain.on("async-new-query", async (event, arg) => {
@@ -246,18 +245,14 @@ ipcMain.on("async-new-query", async (event, arg) => {
     console.log("ARG", arg);
     global.sharedObj.sqlQuery = arg;
   }
-
-  const client = new Client({ connectionString });
-  client.connect();
-  client
-    .query(query)
-    .then(res => {
-      console.log("first row of results", res.rows[0]);
-      global.sharedObj.data = res.rows;
-      event.sender.send("async-query-reply");
-      client.end();
-    })
-    .catch(err => console.error(err.stack || err));
+  try {
+    const { data } = await axios.post("/data", query);
+    console.log("first row of results", data.rows[0]);
+    global.sharedObj.data = data.rows;
+    event.sender.send("async-query-reply");
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 const relatedTables = modelsArr => {
