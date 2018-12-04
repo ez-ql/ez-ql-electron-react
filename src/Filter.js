@@ -211,7 +211,7 @@ class Filter extends React.Component {
           {this.state.operator ? (
             <div className="Row">
               <form onSubmit={this.handleSubmitQuery}>
-                <div className="Margin-top-5 ">
+                <div className="Margin-top-5">
                   <input
                     className="Input"
                     onChange={this.handleUserEntry}

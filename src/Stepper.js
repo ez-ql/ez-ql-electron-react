@@ -27,7 +27,7 @@ const ipcRenderer = electron.ipcRenderer;
 const styles = theme => ({
   root: {
     width: "100%",
-    backgroundColor: "rgb(216, 249, 253)"
+    backgroundColor: "rgb(219, 250, 250)"
   },
   button: {
     marginRight: theme.spacing.unit,
@@ -38,7 +38,12 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit
   },
   stepperColor: {
-    backgroundColor: "rgb(216, 249, 253)"
+    backgroundColor: "rgb(219, 250, 250)"
+  },
+  iconContainer: {
+    icon: {
+      backgroundColor: "rgb(61,85,126)"
+    }
   }
 });
 

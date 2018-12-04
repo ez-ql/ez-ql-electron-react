@@ -43,7 +43,6 @@ class PreviewModal extends React.Component {
     data: [],
     numFields: 0,
     numRows: 0,
-    sqlQuery: ""
   };
 
   componentDidMount() {
