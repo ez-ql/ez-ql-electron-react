@@ -114,6 +114,8 @@ class MakeQuery extends Component {
   }
 
   handleFieldChange(newField) {
+    console.log('HERE', newField)
+    console.log('SELECTEDM',this.state.selectedModel)
     let { fields } = this.state;
     let qualifiedFields = [
       ...electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields
@@ -122,8 +124,10 @@ class MakeQuery extends Component {
       fields.push(newField);
       let selectedModelsAndFields = this.state.selectedModelsAndFields.map(
         table => {
+          console.log('TABLE')
           if (this.state.selectedModel.model_name === table.model_name) {
             table.fields.push(newField);
+            console.log('TABLE', table)
             return table;
           }
           return table;

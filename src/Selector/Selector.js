@@ -10,7 +10,7 @@ const itemStyle = {
   background: "lightgrey",
   borderRadius: "10px",
   margin: "10px",
-  backgroundColor: "rgb(105, 186, 186)",
+  backgroundColor: "#b5e4e4",
   border: "rgb(92, 92, 92)",
   boxShadow: "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)"
 };
@@ -221,7 +221,7 @@ const styles = theme => ({
           {items.map(item => (
             <div style={itemStyle} className="item Grey Display Column">
               <div
-                className={`${item.model_name} inner White Larger-font`}
+                className={`${item.model_name} inner Grey Larger-font`}
                 id={item.model_name}
               >{`${this.formatTableAndFieldNames(item.model_name)} Table`}</div>
               <div>
@@ -231,7 +231,7 @@ const styles = theme => ({
                       {this.formatTableAndFieldNames(category)}
                     </div>
                     <div
-                        className="inner Light-blue Max-height"
+                        className="inner Max-height"
                         onClick={() =>
                           this.props.removeField(category, item.model_name)
                         }

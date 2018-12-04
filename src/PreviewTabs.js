@@ -32,7 +32,7 @@ const styles = theme => ({
   final: {
     flexGrow: 1,
     width: "100%",
-    backgroundColor: "#b5e4e4",
+    backgroundColor: "rgb(219, 250, 250)",
     textAlign: "left",
     height: "100%",
     maxHeight: "100%",

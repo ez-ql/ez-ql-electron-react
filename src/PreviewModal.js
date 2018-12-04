@@ -43,7 +43,6 @@ class PreviewModal extends React.Component {
     data: [],
     numFields: 0,
     numRows: 0,
-    sqlQuery: ""
   };
 
   componentDidMount() {
@@ -89,7 +88,7 @@ class PreviewModal extends React.Component {
         ) : ( */}
         <Button
           variant="contained"
-          color="primary"
+          color="secondary"
           className={classes.button}
           onClick={this.handleOpen}
         >

@@ -35,7 +35,10 @@ const styles = theme => ({
     zIndex: theme.zIndex.drawer + 1
   },
   grow: {
-    flexGrow: 1
+    // flexGrow: 1
+    marginLeft: "0%",
+    marginRight: "90%",
+    fontSize: "35px"
   },
   drawer: {
     width: drawerWidth,
@@ -52,7 +55,7 @@ const styles = theme => ({
     marginTop: "4rem",
     width: 350,
     height: "100vh",
-    backgroundColor: teal[50]
+    backgroundColor: "#b5e4e4"
   },
   toolbar: theme.mixins.toolbar,
   itemtext: {

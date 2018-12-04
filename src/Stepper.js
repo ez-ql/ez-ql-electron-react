@@ -27,7 +27,7 @@ const ipcRenderer = electron.ipcRenderer;
 const styles = theme => ({
   root: {
     width: "100%",
-    backgroundColor: "rgb(181, 228, 228)"
+    backgroundColor: "rgb(219, 250, 250)"
   },
   button: {
     marginRight: theme.spacing.unit,
@@ -38,7 +38,12 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit
   },
   stepperColor: {
-    backgroundColor: "rgb(181, 228, 228)"
+    backgroundColor: "rgb(219, 250, 250)",
+  },
+  iconContainer:{
+    icon:{
+      backgroundColor: "rgb(61,85,126)"
+    }
   }
 });
 
@@ -245,8 +250,8 @@ class HorizontalStepper extends Component {
                 <div className="">
                   <Button
                     disabled={activeStep === 0}
-                    // variant="contained"
-                    color="primary"
+                    variant="contained"
+                    color="secondary"
                     onClick={this.handleBack}
                     className={classes.button}
                   >
@@ -259,8 +264,8 @@ class HorizontalStepper extends Component {
                       activeStep === 5 ||
                       !electron.remote.getGlobal("sharedObj").currQuery.from
                     }
-                    // variant="contained"
-                    color="primary"
+                    variant="contained"
+                    color="secondary"
                     onClick={this.handleNext}
                     className={classes.button}
                   >
@@ -270,8 +275,8 @@ class HorizontalStepper extends Component {
                 <div>
                   <Button
                     disabled={this.state.startQuery || activeStep === 5}
-                    // variant="contained"
-                    color="primary"
+                    variant="contained"
+                    color="secondary"
                     onClick={this.handleSubmit}
                     className={classes.button}
                   >
