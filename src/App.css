@@ -1,7 +1,7 @@
 .App {
   text-align: center;
   font-family: “Roboto”, sans-serif;
-  color: black
+  color: black;
 }
 
 .App-logo {
@@ -21,7 +21,7 @@
 }
 
 .Light-blue {
-  background-color: rgb(174, 222, 247);
+  background-color: #68b9b9;
 }
 
 .Lightest-blue {
@@ -216,10 +216,6 @@
   max-width: 35rem;
   min-width: 18rem;
   border-radius: 10%;
-<<<<<<< HEAD
-  background-color: rgb(216, 249, 253);
-=======
->>>>>>> 1ecb9e1a80e7b49972e89310d3f82fda211fdb2f
 }
 
 .Width-30 {
@@ -344,7 +340,7 @@ h1 {
 }
 
 .Black {
-  color: black
+  color: black;
 }
 
 .Light-green {
@@ -352,7 +348,7 @@ h1 {
 }
 
 .Secondary {
-  background-color: "rgb(61,85,126)"
+  background-color: "rgb(61,85,126)";
 }
 
 .Grey {
@@ -480,7 +476,7 @@ h1 {
   width: 35rem;
   height: 2rem;
   font-size: 14px;
-  border-radius:2%
+  border-radius: 2%;
 }
 
 .Checkbox {
@@ -507,7 +503,7 @@ h1 {
 }
 /*  */
 .Margin-left-10 {
-  margin-left: 20%
+  margin-left: 20%;
 }
 
 .Project-text {
@@ -542,7 +538,7 @@ h1 {
 }
 
 .lighter-background {
-  background-color: #b5e4e4
+  background-color: #b5e4e4;
 }
 
 .Align-center {

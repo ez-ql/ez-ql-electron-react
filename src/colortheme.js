@@ -13,7 +13,4 @@ const theme = createMuiTheme({
   }
 });
 
-// drawer + flkty:  rgb(174, 222, 247);
-// background: rgb(216, 249, 253)
-
 export default theme;
