@@ -35,7 +35,10 @@ const styles = theme => ({
     zIndex: theme.zIndex.drawer + 1
   },
   grow: {
-    flexGrow: 1
+    // flexGrow: 1
+    marginLeft: "0%",
+    marginRight: "90%",
+    fontSize: "35px"
   },
   drawer: {
     width: drawerWidth,

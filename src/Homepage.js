@@ -46,15 +46,15 @@ class Visualize extends React.Component {
     const projects = electron.remote.getGlobal("sharedObj").projects;
     const allQueries = electron.remote.getGlobal("sharedObj").queries;
 
-    const projectQueries = projects.map(project => {
+    let projectQueries = projects.map(project => {
       const queries = allQueries.filter(query => {
         if (query.project_id === project.project_id) {
           return query;
         }
       });
       return { ...project, queries };
-    });
-
+    });;
+    // projectQueries = projectQueries.slice(0, 6);
     this.setState({ user, databases, projectQueries });
   }
 
@@ -113,7 +113,7 @@ class Visualize extends React.Component {
               </h4>
             </Link>
           </div> */}
-          <div className=" Height-20 Width-80 Margin-top-1  ">
+          <div className="Flex-Wrap Height-20 Width-60 Margin-left-10 Margin-top-1  ">
             {this.state.projectQueries[0] &&
               this.state.projectQueries.map(projectQuery => {
                 return (

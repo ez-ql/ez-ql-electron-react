@@ -57,7 +57,7 @@ const styles = theme => ({
 
 class OptionalModal extends React.Component {
   state = {
-    open: true
+    open: false
   };
 
   handleClose = () => {
