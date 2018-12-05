@@ -9,10 +9,9 @@ const squel = require("squel");
 const isDev = require("electron-is-dev");
 const axios = require("axios");
 
-// const connectionString = "postgresql://localhost:5432/BikeStores";
-// const ezqlConnectionString = "postgresql://localhost:5432/ez-ql";
-
 let mainWindow;
+let bikeStoresHost;
+let ezqlHost;
 // let global = { sharedObj: { models: [], currQuery: {selectedModelsAndFields: [], from: '', fields: []} } };
 
 async function createWindow() {
@@ -22,6 +21,10 @@ async function createWindow() {
       ? "http://localhost:3000"
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
+
+  bikeStoresHost = isDev ? "http://localhost:1337/data" : null//input heroku here
+  ezqlHost = isDev ? "http://localhost:1338/customer" : null//input heroku here
+
   // mainWindow.webContents.openDevTools();
 
   mainWindow.on("closed", () => (mainWindow = null));
@@ -39,7 +42,7 @@ async function createWindow() {
       "SELECT models.model_id, models.model_name, foreignKeys.relatedModel_id, foreignKeys.model_foreign_field , foreignKeys.relatedModel_primary_field FROM models LEFT JOIN foreignKeys on models.model_id = foreignKeys.model_id";
     try {
       const { data } = await axios.post(
-        "http://localhost:1338/customer/1/models",
+        `${ezqlHost}/1/models`,
         { query: query }
       );
       relatedTables(data.rows);
@@ -53,7 +56,7 @@ async function createWindow() {
       "SELECT models.model_id, models.model_name, fields.field_name, fields.field_id, fields.field_type, fields.field_example FROM models LEFT JOIN fields on models.model_id = fields.model_id WHERE models.database_id = 1";
     try {
       const { data } = await axios.post(
-        "http://localhost:1338/customer/1/models",
+        `${ezqlHost}/1/models`,
         { query: query }
       );
       relatedFields(data.rows);
@@ -67,7 +70,7 @@ async function createWindow() {
       "SELECT user_id, users.organization_id, user_email, user_firstname, user_lastname, is_admin, organization_name FROM users LEFT JOIN organizations ON users.organization_id = organizations.organization_id WHERE user_id = 1";
     try {
       const { data } = await axios.post(
-        "http://localhost:1338/customer/1/users",
+        `${ezqlHost}/1/models`,
         { query: query }
       );
       global.sharedObj.user = data.rows[0];
@@ -80,7 +83,7 @@ async function createWindow() {
     const query = "SELECT * FROM databases";
     try {
       const { data } = await axios.post(
-        "http://localhost:1338/customer/1/databases",
+        `${ezqlHost}/1/databases`,
         { query: query }
       );
       global.sharedObj.databases = data.rows;
@@ -93,7 +96,7 @@ async function createWindow() {
     const query = "SELECT * from projects";
     try {
       const { data } = await axios.post(
-        "http://localhost:1338/customer/1/projects",
+        `${ezqlHost}/1/projects`,
         { query: query }
       );
       global.sharedObj.projects = data.rows;
@@ -107,7 +110,7 @@ async function createWindow() {
       "SELECT * FROM userqueries LEFT JOIN queries ON userqueries.query_id = queries.query_id";
     try {
       const { data } = await axios.post(
-        "http://localhost:1338/customer/1/userQueries",
+        `${ezqlHost}/1/userQueries`,
         { query: query }
       );
       global.sharedObj.queries = data.rows;
@@ -268,7 +271,7 @@ const queryGuard = query => {
 ipcMain.on("async-project-query", async (event, arg) => {
   const query = "SELECT project_id, project_name FROM projects ";
   try {
-    const { data } = await axios.post("http://localhost:1337/data", query);
+    const { data } = await axios.post(bikeStoresHost, query);
     event.sender.send("async-project-reply", data.rows);
   } catch (error) {
     console.error(error.stack);
@@ -281,7 +284,7 @@ ipcMain.on("async-new-query", async (event, arg) => {
     global.sharedObj.sqlQuery = arg;
   }
   try {
-    const { data } = await axios.post("http://localhost:1337/data", {
+    const { data } = await axios.post(bikeStoresHost, {
       query: query
     });
     global.sharedObj.data = data.rows;
