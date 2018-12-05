@@ -230,8 +230,7 @@ const queryGuard = query => {
 ipcMain.on("async-project-query", async (event, arg) => {
   const query = "SELECT project_id, project_name FROM projects ";
   try {
-    const { data } = await axios.post("/data", query);
-    console.log("first row of results", data.rows[0]);
+    const { data } = await axios.post("http://localhost:1337/data", query);
     event.sender.send("async-project-reply", data.rows);
   } catch (error) {
     console.error(error.stack);
@@ -239,15 +238,12 @@ ipcMain.on("async-project-query", async (event, arg) => {
 });
 
 ipcMain.on("async-new-query", async (event, arg) => {
-  console.log("arg1", arg);
   const query = arg ? queryGuard(arg) : queryGuard(buildSquelQuery());
   if (arg) {
-    console.log("ARG", arg);
     global.sharedObj.sqlQuery = arg;
   }
   try {
-    const { data } = await axios.post("/data", query);
-    console.log("first row of results", data.rows[0]);
+    const { data } = await axios.post("http://localhost:1337/data", {"query": query});
     global.sharedObj.data = data.rows;
     event.sender.send("async-query-reply");
   } catch (error) {
