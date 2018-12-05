@@ -42,7 +42,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "serve-customer": "node ./backend/bikeStore.js",
-    "electron-dev": "concurrently \"BROWSER=none npm run start\" \"wait-on http://localhost:3000 && electron .\" \"npm run serve-customer\"",
+    "serve-ez-ql": "node ./backend/ez-ql.js",
+    "electron-dev": "concurrently \"BROWSER=none npm run start\" \"wait-on http://localhost:3000 && electron .\" \"npm run serve-customer\" \"npm run serve-ez-ql\"",
     "preelectron-pack": "npm run build",
     "electron-pack": "build public/main.js=build/main.js"
   },

@@ -10,15 +10,15 @@ const localConnectionString = "postgresql://localhost:5432/ez-ql";
 
 const databaseUrl = process.env.DATABASE_URL || localConnectionString;
 
-const addDbIdToQuery = (query, dbId) => {
-    !query.contains("WHERE")
-      ? (query = `${query.slice(0, -1)} WHERE databaseId = ${
-          dbId
-        };`)
-      : (query = `${query.slice(0, -1)} AND databaseId = ${
-          dbId
-        };`);
-}
+// const addDbIdToQuery = (query, dbId) => {
+//     !query.contains("WHERE")
+//       ? (query = `${query.slice(0, -1)} WHERE databaseId = ${
+//           dbId
+//         };`)
+//       : (query = `${query.slice(0, -1)} AND databaseId = ${
+//           dbId
+//         };`);
+// }
 
 const createApp = () => {
   app.use(morgan("dev"));
@@ -28,6 +28,7 @@ const createApp = () => {
   app.use(bodyParser.json());
 
   app.post("/customer/:databaseId/models", async (req, res, next) => {
+    console.log('REQ.BODY', req.body)
     let { query } = req.body;
     // query = addDbIdToQuery(query, req.params.databaseId)
     try {
@@ -41,7 +42,7 @@ const createApp = () => {
     }
   });
 
-  app.post("/customer/:databaseId/models", async (req, res, next) => {
+  app.post("/customer/:databaseId/users", async (req, res, next) => {
     let { query } = req.body;
     // query = addDbIdToQuery(query, req.params.databaseId)
     try {
@@ -55,8 +56,37 @@ const createApp = () => {
     }
   });
 
-  app.post("/data", async (req, res, next) => {
-    const { query } = req.body;
+  app.post("/customer/:databaseId/databases", async (req, res, next) => {
+    let { query } = req.body;
+    // query = addDbIdToQuery(query, req.params.databaseId)
+    try {
+      const client = new Client(databaseUrl);
+      await client.connect();
+      const results = await client.query(query);
+      res.status(201).send(results);
+      client.end();
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.post("/customer/:databaseId/projects", async (req, res, next) => {
+    let { query } = req.body;
+    // query = addDbIdToQuery(query, req.params.databaseId)
+    try {
+      const client = new Client(databaseUrl);
+      await client.connect();
+      const results = await client.query(query);
+      res.status(201).send(results);
+      client.end();
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  app.post("/customer/:databaseId/userQueries", async (req, res, next) => {
+    let { query } = req.body;
+    // query = addDbIdToQuery(query, req.params.databaseId)
     try {
       const client = new Client(databaseUrl);
       await client.connect();

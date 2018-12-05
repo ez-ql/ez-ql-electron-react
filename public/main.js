@@ -33,58 +33,96 @@ async function createWindow() {
     port: 5432
   });
   client.connect();
-  await Promise.all([
-    client
-      .query(
-        "SELECT models.model_id, models.model_name, foreignKeys.relatedModel_id, foreignKeys.model_foreign_field , foreignKeys.relatedModel_primary_field FROM models LEFT JOIN foreignKeys on models.model_id = foreignKeys.model_id"
-      )
-      .then(res => {
-        relatedTables(res.rows);
-      })
-      .catch(err => console.error(err.stack)),
 
-    client
-      .query(
-        "SELECT models.model_id, models.model_name, fields.field_name, fields.field_id, fields.field_type, fields.field_example FROM models LEFT JOIN fields on models.model_id = fields.model_id WHERE models.database_id = 1"
-      )
-      .then(res => {
-        relatedFields(res.rows);
-      })
-      .catch(err => console.error(err.stack)),
+  const getModelsData = async () => {
+    const query =
+      "SELECT models.model_id, models.model_name, foreignKeys.relatedModel_id, foreignKeys.model_foreign_field , foreignKeys.relatedModel_primary_field FROM models LEFT JOIN foreignKeys on models.model_id = foreignKeys.model_id";
+    try {
+      const { data } = await axios.post(
+        "http://localhost:1338/customer/1/models",
+        { query: query }
+      );
+      relatedTables(data.rows);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    client
-      .query(
-        "SELECT user_id, users.organization_id, user_email, user_firstname, user_lastname, is_admin, organization_name FROM users LEFT JOIN organizations ON users.organization_id = organizations.organization_id WHERE user_id = 1"
-      )
-      .then(res => {
-        global.sharedObj.user = res.rows[0];
-      })
-      .catch(err => console.error(err.stack)),
+  const getFieldsData = async () => {
+    const query =
+      "SELECT models.model_id, models.model_name, fields.field_name, fields.field_id, fields.field_type, fields.field_example FROM models LEFT JOIN fields on models.model_id = fields.model_id WHERE models.database_id = 1";
+    try {
+      const { data } = await axios.post(
+        "http://localhost:1338/customer/1/models",
+        { query: query }
+      );
+      relatedFields(data.rows);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    client
-      .query("SELECT * FROM databases")
-      .then(res => {
-        global.sharedObj.databases = res.rows;
-      })
-      .catch(err => console.error(err.stack)),
+  const getUsersData = async () => {
+    const query =
+      "SELECT user_id, users.organization_id, user_email, user_firstname, user_lastname, is_admin, organization_name FROM users LEFT JOIN organizations ON users.organization_id = organizations.organization_id WHERE user_id = 1";
+    try {
+      const { data } = await axios.post(
+        "http://localhost:1338/customer/1/users",
+        { query: query }
+      );
+      global.sharedObj.user = data.rows[0];
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    client
-      .query("SELECT * from projects")
-      .then(res => {
-        global.sharedObj.projects = res.rows;
-      })
-      .catch(err => console.error(err.stack)),
+  const getDatabasesData = async () => {
+    const query = "SELECT * FROM databases";
+    try {
+      const { data } = await axios.post(
+        "http://localhost:1338/customer/1/databases",
+        { query: query }
+      );
+      global.sharedObj.databases = data.rows;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    client
-      .query(
-        "SELECT * FROM userqueries LEFT JOIN queries ON userqueries.query_id = queries.query_id"
-      )
-      .then(res => {
-        global.sharedObj.queries = res.rows;
-        client.end();
-      })
-      .catch(err => console.error(err.stack))
-  ]);
+  const getProjectsData = async () => {
+    const query = "SELECT * from projects";
+    try {
+      const { data } = await axios.post(
+        "http://localhost:1338/customer/1/projects",
+        { query: query }
+      );
+      global.sharedObj.projects = data.rows;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getUserQueriesData = async () => {
+    const query =
+      "SELECT * FROM userqueries LEFT JOIN queries ON userqueries.query_id = queries.query_id";
+    try {
+      const { data } = await axios.post(
+        "http://localhost:1338/customer/1/userQueries",
+        { query: query }
+      );
+      global.sharedObj.queries = data.rows;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  getModelsData();
+  getFieldsData();
+  getUsersData();
+  getDatabasesData();
+  getProjectsData();
+  getUserQueriesData();
+
   console.log("globalObj initial load", global.sharedObj);
 }
 
@@ -243,7 +281,9 @@ ipcMain.on("async-new-query", async (event, arg) => {
     global.sharedObj.sqlQuery = arg;
   }
   try {
-    const { data } = await axios.post("http://localhost:1337/data", {"query": query});
+    const { data } = await axios.post("http://localhost:1337/data", {
+      query: query
+    });
     global.sharedObj.data = data.rows;
     event.sender.send("async-query-reply");
   } catch (error) {
