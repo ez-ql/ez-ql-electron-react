@@ -20,7 +20,6 @@ class FinalizeQuery extends React.Component {
 
   componentDidMount() {
     ipcRenderer.on("async-query-reply", () => {
-      console.log('HEEEERE')
       const data = electron.remote.getGlobal("sharedObj").data;
       this.setState({
         data: data,
@@ -34,28 +33,22 @@ class FinalizeQuery extends React.Component {
     });
   }
 
-  // componentWillUnmount() {
-  //   ipcRenderer.removeAllListeners()
-  // }
-
   render() {
-    console.log("DATA", this.state.data);
-
     return (
       <div className="Column Title Min-height-50 Align-self-center Margin-top-3">
-      <div className="Column Displauy Center Height-50">
-          <div className="Align-self-center Width-30" >
+        <div className="Column Displauy Center Height-50">
+          <div className="Align-self-center Width-30">
             <h1>
-            <div className="Row Flex-space-around ">
-            <div className="Larger-font">
-              {/* <Button
+              <div className="Row Flex-space-around ">
+                <div className="Larger-font">
+                  {/* <Button
                 className="Button"
                 value="save">
                 Save
               </Button> */}
-            </div>
-            <div className="Larger-font">
-              {/* <Button
+                </div>
+                <div className="Larger-font">
+                  {/* <Button
                 component={Link}
                 to="/visualize"
                 className="Button"
@@ -63,13 +56,13 @@ class FinalizeQuery extends React.Component {
               >
                 Visualize
               </Button> */}
-              {/* <Visualization data={this.state.data} */}
-            </div>
-            {/* <div className="Larger-font">
+                  {/* <Visualization data={this.state.data} */}
+                </div>
+                {/* <div className="Larger-font">
               <StartOverButton />
             </div> */}
-          </div>
-              </h1>
+              </div>
+            </h1>
           </div>
 
           <div>

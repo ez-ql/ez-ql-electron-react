@@ -85,7 +85,6 @@ class HorizontalStepper extends Component {
 
   handleNext = event => {
     const { activeStep, optionalModalViewed } = this.state;
-    console.log("activeStep", activeStep);
     if (activeStep === 4) {
       this.handleSubmit();
     }
@@ -142,7 +141,6 @@ class HorizontalStepper extends Component {
   };
 
   loadPreview = event => {
-    console.log("shared object", electron.remote.getGlobal("sharedObj"));
     ipcRenderer.send("async-new-query");
   };
 
@@ -161,7 +159,6 @@ class HorizontalStepper extends Component {
   };
 
   closeInfoModal = () => {
-    console.log("here in closeInfoModal");
     this.setState({
       infoModal: false
     });
@@ -180,8 +177,7 @@ class HorizontalStepper extends Component {
   render() {
     const { activeStep, steps } = this.state;
     const { classes } = this.props;
-    console.log("infoModal", this.state.infoModal);
-    console.log("startModal", this.state.startModal);
+
     return (
       <div className="Flex-Container Width-75  Height-50-fixed Margin-top-5 ">
         <div>

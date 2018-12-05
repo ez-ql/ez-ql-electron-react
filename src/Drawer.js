@@ -92,7 +92,6 @@ class PermanentDrawerLeft extends React.Component {
   }
 
   render() {
-    console.log("state!!!!!!!", this.state);
     const { classes } = this.props;
     const HomeButton = props => {
       return (

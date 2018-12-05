@@ -57,22 +57,18 @@ class MakeQuery extends Component {
     this.joinStep = this.joinStep.bind(this);
     this.removeField = this.removeField.bind(this);
     this.selectAll = this.selectAll.bind(this);
-    this.loadPreview = this.loadPreview.bind(this);
   }
 
   componentDidMount() {
-    const nextView = this.props.nextView
-      ? this.props.nextView
-      : false;
+    const nextView = this.props.nextView ? this.props.nextView : false;
     const selectedModel = electron.remote.getGlobal("sharedObj").currQuery
       .selectedModel;
-    console.log('selectedModel ing',selectedModel)
-    let selectedModelsAndFields = electron.remote.getGlobal("sharedObj").currQuery.selectedModelsAndFields
-    console.log('SELECTEDMF in CDM', selectedModelsAndFields)
-    if(!selectedModelsAndFields[0]){
+    let selectedModelsAndFields = electron.remote.getGlobal("sharedObj")
+      .currQuery.selectedModelsAndFields;
+    if (!selectedModelsAndFields[0]) {
       const copy = { ...selectedModel };
       copy.fields = [];
-      selectedModelsAndFields = [ copy ]
+      selectedModelsAndFields = [copy];
     }
     const schema = electron.remote.getGlobal("sharedObj").models;
     this.setState({
@@ -114,8 +110,6 @@ class MakeQuery extends Component {
   }
 
   handleFieldChange(newField) {
-    console.log('HERE', newField)
-    console.log('SELECTEDM',this.state.selectedModel)
     let { fields } = this.state;
     let qualifiedFields = [
       ...electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields
@@ -124,10 +118,9 @@ class MakeQuery extends Component {
       fields.push(newField);
       let selectedModelsAndFields = this.state.selectedModelsAndFields.map(
         table => {
-          console.log('TABLE')
           if (this.state.selectedModel.model_name === table.model_name) {
             table.fields.push(newField);
-            console.log('TABLE', table)
+
             return table;
           }
           return table;
@@ -249,12 +242,6 @@ class MakeQuery extends Component {
     electron.remote.getGlobal("sharedObj").currQuery.fields = this.state.fields;
   }
 
-  loadPreview = event => {
-    console.log(
-      " ************    SHARED OBJECT **************",
-      electron.remote.getGlobal("sharedObj")
-    );
-
     // const globalQualifiedFields = [
     //   ...electron.remote.getGlobal("sharedObj").currQuery.qualifiedFields
     // ];
@@ -280,13 +267,11 @@ class MakeQuery extends Component {
   };
 
   render() {
-    console.log('make query props', this.props, this.state)
-    //one issue: right now, in order to pass selectedData and query as props to RefineQuery and Joins, you need to click Submit - we should change that
     return (
       // <div className="Flex-Container Min-width-30 Height-75">
       //   <div className="Column Center Height-50">
-        <div>
-          <div className="Column">
+      <div>
+        <div className="Column">
           {this.state.joinModal && (
             <JoinModal toggleJoinModal={this.toggleJoinModal} />
           )}

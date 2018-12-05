@@ -10,8 +10,6 @@ const LocalStrategy = require("passport-local");
 const PORT = process.env.PORT || 8080;
 const app = express();
 
-console.log("PROCESS.ENV", process.env);
-
 if (process.env.NODE_ENV !== "production") require("../env-variables.json");
 
 passport.use(
@@ -85,28 +83,26 @@ const createApp = () => {
   });
 };
 
-app.get('/',
-  function(req, res) {
-    res.render('home', { user: req.user });
-  });
+app.get("/", function(req, res) {
+  res.render("home", { user: req.user });
+});
 
-app.get('/login',
-  function(req, res){
-    res.render('login');
-  });
-  
-app.post('/login', 
-  passport.authenticate('local', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/');
-  });
-  
-app.get('/logout',
-  function(req, res){
-    req.logout();
-    res.redirect('/');
-  });
+app.get("/login", function(req, res) {
+  res.render("login");
+});
 
+app.post(
+  "/login",
+  passport.authenticate("local", { failureRedirect: "/login" }),
+  function(req, res) {
+    res.redirect("/");
+  }
+);
+
+app.get("/logout", function(req, res) {
+  req.logout();
+  res.redirect("/");
+});
 
 const startListening = () => {
   const server = app.listen(PORT, () => {

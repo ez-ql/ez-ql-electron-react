@@ -12,7 +12,6 @@ const connectionString = "postgresql://localhost:5432/BikeStores";
 // const ezqlConnectionString = "postgresql://localhost:5432/ez-ql";
 
 let mainWindow;
-// let global = { sharedObj: { models: [], currQuery: {selectedModelsAndFields: [], from: '', fields: []} } };
 
 async function createWindow() {
   mainWindow = new BrowserWindow({ width: 1600, height: 1200 });
@@ -25,7 +24,6 @@ async function createWindow() {
 
   mainWindow.on("closed", () => (mainWindow = null));
 
-  console.log("***db schema arg main***");
   const client = new Client({
     host: "localhost",
     database: "ez-ql",
@@ -84,7 +82,6 @@ async function createWindow() {
       })
       .catch(err => console.error(err.stack))
   ]);
-  console.log("globalObj initial load", global.sharedObj);
 }
 
 // const pool = new Pool({ connectionString })
@@ -232,7 +229,6 @@ ipcMain.on("async-project-query", async (event, arg) => {
   client
     .query("SELECT project_id, project_name FROM projects ")
     .then(res => {
-      console.log("first row of results", res.rows[0]);
       event.sender.send("async-project-reply", res.rows);
       client.end();
     })
@@ -240,10 +236,8 @@ ipcMain.on("async-project-query", async (event, arg) => {
 });
 
 ipcMain.on("async-new-query", async (event, arg) => {
-  console.log("arg1", arg);
   const query = arg ? queryGuard(arg) : queryGuard(buildSquelQuery());
   if (arg) {
-    console.log("ARG", arg);
     global.sharedObj.sqlQuery = arg;
   }
 
@@ -252,7 +246,6 @@ ipcMain.on("async-new-query", async (event, arg) => {
   client
     .query(query)
     .then(res => {
-      console.log("first row of results", res.rows[0]);
       global.sharedObj.data = res.rows;
       event.sender.send("async-query-reply");
       client.end();
@@ -338,7 +331,6 @@ const relatedFields = fieldsArr => {
 };
 
 // ipcMain.on("async-selected-db-schema", async (event, arg) => {
-//   console.log("***db schema arg main***", arg);
 //   const client = new Client({
 //     host: "localhost",
 //     database: "ez-ql",
@@ -359,7 +351,6 @@ const relatedFields = fieldsArr => {
 //     )
 //     .then(res => {
 //       relatedFields(res.rows);
-//       console.log("global shared", global.sharedObj)
 //       event.sender.send("async-db-schema-reply", global.sharedObj.models);
 //       client.end();
 //     });

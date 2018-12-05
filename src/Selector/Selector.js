@@ -92,7 +92,6 @@ class Selector extends Component {
     }
     const modelName = this.flkty.selectedSlide.cells[0].element.firstChild
       .classList[0];
-    console.log("MODEL NAME", modelName);
 
     this.props.selectedSlide(modelName);
   };
@@ -177,8 +176,6 @@ class Selector extends Component {
 
   appendChange() {
     if (this.flkty) {
-      console.log("SELECTED INERX", this.state.selectedIndex);
-      console.log("SELECTED FLKTY", this.flkty);
       this.flkty.destroy();
       this.initFlickity();
     }
@@ -187,8 +184,6 @@ class Selector extends Component {
   //func to format name of selected table in carousel
   //takes str, not array, like in rest of query-builder
   formatTableAndFieldNames = str => {
-    console.log("str", str);
-    console.log();
     let mod;
     if (!str) {
       return str;
@@ -205,7 +200,6 @@ class Selector extends Component {
 
   render() {
     const { items, classes } = this.props;
-    console.log("SELECTOR PROPS", this.props);
     return (
       <div>
         {/* <div ref={ch => this.wrapper = ch} >

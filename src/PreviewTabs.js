@@ -130,7 +130,6 @@ class PreviewTabs extends React.Component {
     });
 
     const rowValuesOnly = data.map(row => Object.values(row));
-    console.log("ROWVALUESONLY", rowValuesOnly);
     //SET STATE
     this.setState({
       selectedModelsAndFields,
@@ -147,7 +146,6 @@ class PreviewTabs extends React.Component {
 
     if (!sqlQuery) {
       sqlQuery = electron.remote.getGlobal("sharedObj").sqlQuery;
-      console.log("sqlQery", sqlQuery);
     }
     const { selectedTab, data, prettyColumnNames } = this.state;
 

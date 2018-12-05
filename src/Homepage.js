@@ -53,14 +53,13 @@ class Visualize extends React.Component {
         }
       });
       return { ...project, queries };
-    });;
+    });
     // projectQueries = projectQueries.slice(0, 6);
     this.setState({ user, databases, projectQueries });
   }
 
   render() {
     const { classes } = this.props;
-    console.log("STATE", this.state.projectQueries);
     return (
       <div className="Height-100-vh Title Column Center Width-80">
         <div className="Column Display  Flex-start">
@@ -118,10 +117,7 @@ class Visualize extends React.Component {
               this.state.projectQueries.map(projectQuery => {
                 return (
                   <div className="Project-button Project effect1 ">
-                    <Link
-                      className="No-text-decoration Navy"
-                      to="/project/1"
-                    >
+                    <Link className="No-text-decoration Navy" to="/project/1">
                       <h3 className="Padding-3">
                         {projectQuery.project_name.toUpperCase()}
                       </h3>
