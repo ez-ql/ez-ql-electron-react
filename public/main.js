@@ -7,11 +7,11 @@ const path = require("path");
 const url = require("url");
 const squel = require("squel");
 const isDev = require("electron-is-dev");
-
-const connectionString = "postgresql://localhost:5432/BikeStores";
-// const ezqlConnectionString = "postgresql://localhost:5432/ez-ql";
+const axios = require("axios");
 
 let mainWindow;
+let bikeStoresHost;
+let ezqlHost;
 // let global = { sharedObj: { models: [], currQuery: {selectedModelsAndFields: [], from: '', fields: []} } };
 
 async function createWindow() {
@@ -21,6 +21,10 @@ async function createWindow() {
       ? "http://localhost:3000"
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
+
+  bikeStoresHost = isDev ? "http://localhost:1337/data" : null//input heroku here
+  ezqlHost = isDev ? "http://localhost:1338/customer" : null//input heroku here
+
   // mainWindow.webContents.openDevTools();
 
   mainWindow.on("closed", () => (mainWindow = null));
@@ -32,58 +36,96 @@ async function createWindow() {
     port: 5432
   });
   client.connect();
-  await Promise.all([
-    client
-      .query(
-        "SELECT models.model_id, models.model_name, foreignKeys.relatedModel_id, foreignKeys.model_foreign_field , foreignKeys.relatedModel_primary_field FROM models LEFT JOIN foreignKeys on models.model_id = foreignKeys.model_id"
-      )
-      .then(res => {
-        relatedTables(res.rows);
-      })
-      .catch(err => console.error(err.stack)),
 
-    client
-      .query(
-        "SELECT models.model_id, models.model_name, fields.field_name, fields.field_id, fields.field_type, fields.field_example FROM models LEFT JOIN fields on models.model_id = fields.model_id WHERE models.database_id = 1"
-      )
-      .then(res => {
-        relatedFields(res.rows);
-      })
-      .catch(err => console.error(err.stack)),
+  const getModelsData = async () => {
+    const query =
+      "SELECT models.model_id, models.model_name, foreignKeys.relatedModel_id, foreignKeys.model_foreign_field , foreignKeys.relatedModel_primary_field FROM models LEFT JOIN foreignKeys on models.model_id = foreignKeys.model_id";
+    try {
+      const { data } = await axios.post(
+        `${ezqlHost}/1/models`,
+        { query: query }
+      );
+      relatedTables(data.rows);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    client
-      .query(
-        "SELECT user_id, users.organization_id, user_email, user_firstname, user_lastname, is_admin, organization_name FROM users LEFT JOIN organizations ON users.organization_id = organizations.organization_id WHERE user_id = 1"
-      )
-      .then(res => {
-        global.sharedObj.user = res.rows[0];
-      })
-      .catch(err => console.error(err.stack)),
+  const getFieldsData = async () => {
+    const query =
+      "SELECT models.model_id, models.model_name, fields.field_name, fields.field_id, fields.field_type, fields.field_example FROM models LEFT JOIN fields on models.model_id = fields.model_id WHERE models.database_id = 1";
+    try {
+      const { data } = await axios.post(
+        `${ezqlHost}/1/models`,
+        { query: query }
+      );
+      relatedFields(data.rows);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    client
-      .query("SELECT * FROM databases")
-      .then(res => {
-        global.sharedObj.databases = res.rows;
-      })
-      .catch(err => console.error(err.stack)),
+  const getUsersData = async () => {
+    const query =
+      "SELECT user_id, users.organization_id, user_email, user_firstname, user_lastname, is_admin, organization_name FROM users LEFT JOIN organizations ON users.organization_id = organizations.organization_id WHERE user_id = 1";
+    try {
+      const { data } = await axios.post(
+        `${ezqlHost}/1/models`,
+        { query: query }
+      );
+      global.sharedObj.user = data.rows[0];
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    client
-      .query("SELECT * from projects")
-      .then(res => {
-        global.sharedObj.projects = res.rows;
-      })
-      .catch(err => console.error(err.stack)),
+  const getDatabasesData = async () => {
+    const query = "SELECT * FROM databases";
+    try {
+      const { data } = await axios.post(
+        `${ezqlHost}/1/databases`,
+        { query: query }
+      );
+      global.sharedObj.databases = data.rows;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    client
-      .query(
-        "SELECT * FROM userqueries LEFT JOIN queries ON userqueries.query_id = queries.query_id"
-      )
-      .then(res => {
-        global.sharedObj.queries = res.rows;
-        client.end();
-      })
-      .catch(err => console.error(err.stack))
-  ]);
+  const getProjectsData = async () => {
+    const query = "SELECT * from projects";
+    try {
+      const { data } = await axios.post(
+        `${ezqlHost}/1/projects`,
+        { query: query }
+      );
+      global.sharedObj.projects = data.rows;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getUserQueriesData = async () => {
+    const query =
+      "SELECT * FROM userqueries LEFT JOIN queries ON userqueries.query_id = queries.query_id";
+    try {
+      const { data } = await axios.post(
+        `${ezqlHost}/1/userQueries`,
+        { query: query }
+      );
+      global.sharedObj.queries = data.rows;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  getModelsData();
+  getFieldsData();
+  getUsersData();
+  getDatabasesData();
+  getProjectsData();
+  getUserQueriesData();
+
   console.log("globalObj initial load", global.sharedObj);
 }
 
@@ -227,37 +269,29 @@ const queryGuard = query => {
 };
 
 ipcMain.on("async-project-query", async (event, arg) => {
-  const client = new Client({ connectionString });
-  client.connect();
-  client
-    .query("SELECT project_id, project_name FROM projects ")
-    .then(res => {
-      console.log("first row of results", res.rows[0]);
-      event.sender.send("async-project-reply", res.rows);
-      client.end();
-    })
-    .catch(err => console.error(err.stack || err));
+  const query = "SELECT project_id, project_name FROM projects ";
+  try {
+    const { data } = await axios.post(bikeStoresHost, query);
+    event.sender.send("async-project-reply", data.rows);
+  } catch (error) {
+    console.error(error.stack);
+  }
 });
 
 ipcMain.on("async-new-query", async (event, arg) => {
-  console.log("arg1", arg);
   const query = arg ? queryGuard(arg) : queryGuard(buildSquelQuery());
   if (arg) {
-    console.log("ARG", arg);
     global.sharedObj.sqlQuery = arg;
   }
-
-  const client = new Client({ connectionString });
-  client.connect();
-  client
-    .query(query)
-    .then(res => {
-      console.log("first row of results", res.rows[0]);
-      global.sharedObj.data = res.rows;
-      event.sender.send("async-query-reply");
-      client.end();
-    })
-    .catch(err => console.error(err.stack || err));
+  try {
+    const { data } = await axios.post(bikeStoresHost, {
+      query: query
+    });
+    global.sharedObj.data = data.rows;
+    event.sender.send("async-query-reply");
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 const relatedTables = modelsArr => {

@@ -82,6 +82,22 @@ class PreviewTabs extends React.Component {
     this.setState({ selectedTab });
   };
 
+  componentDidUpdate(prevState, currState) {
+    if (prevState.data !== this.props.data) {    
+      const originalColumnNames = Object.keys(this.props.data[0]);
+      let prettyColumnNames = Object.values(formatNames(originalColumnNames));
+
+
+    const rowValuesOnly = this.props.data.map(row => Object.values(row));
+    //SET STATE
+    this.setState({
+      data: rowValuesOnly,
+      prettyColumnNames
+    });
+
+    }
+  }
+
   componentDidMount() {
     const selectedModelsAndFields =
       sharedObject.currQuery.selectedModelsAndFields;
@@ -92,6 +108,7 @@ class PreviewTabs extends React.Component {
     let prettyColumnNames;
     // modify data to match necessary row format
     let data = [...electron.remote.getGlobal("sharedObj").data];
+    console.log('DATA IN PREVIEW TABS', data)
 
     if (this.props.preview) data = data.slice(0, 10);
     if (data && data.length > 0) {
