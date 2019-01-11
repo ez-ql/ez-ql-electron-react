@@ -10,7 +10,6 @@ import moment from "moment";
 
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
-const ipcRenderer = electron.ipcRenderer;
 
 function TabContainer(props) {
   return (
@@ -81,6 +80,20 @@ class PreviewTabs extends React.Component {
   handleChange = (event, selectedTab) => {
     this.setState({ selectedTab });
   };
+
+  componentDidUpdate(prevState, currState) {
+    if (prevState.data !== this.props.data) {
+      const originalColumnNames = Object.keys(this.props.data[0]);
+      let prettyColumnNames = Object.values(formatNames(originalColumnNames));
+
+      const rowValuesOnly = this.props.data.map(row => Object.values(row));
+      //SET STATE
+      this.setState({
+        data: rowValuesOnly,
+        prettyColumnNames
+      });
+    }
+  }
 
   componentDidMount() {
     const selectedModelsAndFields =
