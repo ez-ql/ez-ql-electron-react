@@ -33,13 +33,7 @@ class FinalizeQuery extends React.Component {
     });
   }
 
-  // componentWillUnmount() {
-  //   ipcRenderer.removeAllListeners()
-  // }
-
   render() {
-    console.log("DATA", this.state.data);
-
     return (
       <div className="Column Title Min-height-50 Align-self-center Margin-top-3">
         <div className="Column Displauy Center Height-50">

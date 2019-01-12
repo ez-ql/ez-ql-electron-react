@@ -28,20 +28,14 @@ class StartQuery extends Component {
 
   componentDidMount() {
     const models = electron.remote.getGlobal("sharedObj").models;
-    console.log("**********HERE*******");
-    console.log("MODELS", models);
     this.setState({ models });
   }
 
   addModel(modelName) {
-    console.log("modelName", modelName);
     electron.remote.getGlobal(
       "sharedObj"
     ).currQuery.selectedModelsAndFields = [];
-    console.log(
-      "SELECTEDMF in CDM",
-      electron.remote.getGlobal("sharedObj").currQuery.selectedModelsAndFields
-    );
+
     const selectedModel = electron.remote
       .getGlobal("sharedObj")
       .models.find(model => model.model_name === modelName);
@@ -50,13 +44,6 @@ class StartQuery extends Component {
       "sharedObj"
     ).currQuery.selectedModel = selectedModel;
     electron.remote.getGlobal("sharedObj").currQuery.from = modelName;
-
-    console.log(
-      "selectedModel",
-      (electron.remote.getGlobal(
-        "sharedObj"
-      ).currQuery.selectedModel = selectedModel)
-    );
   }
 
   //func to format field and table names @start of query builder
@@ -88,10 +75,7 @@ class StartQuery extends Component {
           models.map(elem => elem.model_name)
         ))
       : console.log("no models yet");
-    console.log(
-      " ************    SHARED OBJECT **************",
-      electron.remote.getGlobal("sharedObj")
-    );
+
     return (
       <div className="Column Title Min-height-50 Align-self-center Margin-top-3">
         <div className="Column Center Height-50">
@@ -106,7 +90,6 @@ class StartQuery extends Component {
         >
           {models.length > 0
             ? Object.keys(modModels).map(model => {
-                console.log("MODEL IN START QUERY", modModels[model]);
                 return (
                   <div className="">
                     <Button

@@ -22,14 +22,13 @@ async function createWindow() {
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
 
-  bikeStoresHost = isDev ? "http://localhost:1337/data" : null//input heroku here
-  ezqlHost = isDev ? "http://localhost:1338/customer" : null//input heroku here
+  bikeStoresHost = isDev ? "http://localhost:1337/data" : null; //input heroku here
+  ezqlHost = isDev ? "http://localhost:1338/customer" : null; //input heroku here
 
   // mainWindow.webContents.openDevTools();
 
   mainWindow.on("closed", () => (mainWindow = null));
 
-  console.log("***db schema arg main***");
   const client = new Client({
     host: "localhost",
     database: "ez-ql",
@@ -41,10 +40,9 @@ async function createWindow() {
     const query =
       "SELECT models.model_id, models.model_name, foreignKeys.relatedModel_id, foreignKeys.model_foreign_field , foreignKeys.relatedModel_primary_field FROM models LEFT JOIN foreignKeys on models.model_id = foreignKeys.model_id";
     try {
-      const { data } = await axios.post(
-        `${ezqlHost}/1/models`,
-        { query: query }
-      );
+      const { data } = await axios.post(`${ezqlHost}/1/models`, {
+        query: query
+      });
       relatedTables(data.rows);
     } catch (error) {
       console.error(error);
@@ -55,10 +53,9 @@ async function createWindow() {
     const query =
       "SELECT models.model_id, models.model_name, fields.field_name, fields.field_id, fields.field_type, fields.field_example FROM models LEFT JOIN fields on models.model_id = fields.model_id WHERE models.database_id = 1";
     try {
-      const { data } = await axios.post(
-        `${ezqlHost}/1/models`,
-        { query: query }
-      );
+      const { data } = await axios.post(`${ezqlHost}/1/models`, {
+        query: query
+      });
       relatedFields(data.rows);
     } catch (error) {
       console.error(error);
@@ -69,10 +66,9 @@ async function createWindow() {
     const query =
       "SELECT user_id, users.organization_id, user_email, user_firstname, user_lastname, is_admin, organization_name FROM users LEFT JOIN organizations ON users.organization_id = organizations.organization_id WHERE user_id = 1";
     try {
-      const { data } = await axios.post(
-        `${ezqlHost}/1/models`,
-        { query: query }
-      );
+      const { data } = await axios.post(`${ezqlHost}/1/models`, {
+        query: query
+      });
       global.sharedObj.user = data.rows[0];
     } catch (error) {
       console.error(error);
@@ -82,10 +78,9 @@ async function createWindow() {
   const getDatabasesData = async () => {
     const query = "SELECT * FROM databases";
     try {
-      const { data } = await axios.post(
-        `${ezqlHost}/1/databases`,
-        { query: query }
-      );
+      const { data } = await axios.post(`${ezqlHost}/1/databases`, {
+        query: query
+      });
       global.sharedObj.databases = data.rows;
     } catch (error) {
       console.error(error);
@@ -95,10 +90,9 @@ async function createWindow() {
   const getProjectsData = async () => {
     const query = "SELECT * from projects";
     try {
-      const { data } = await axios.post(
-        `${ezqlHost}/1/projects`,
-        { query: query }
-      );
+      const { data } = await axios.post(`${ezqlHost}/1/projects`, {
+        query: query
+      });
       global.sharedObj.projects = data.rows;
     } catch (error) {
       console.error(error);
@@ -109,10 +103,9 @@ async function createWindow() {
     const query =
       "SELECT * FROM userqueries LEFT JOIN queries ON userqueries.query_id = queries.query_id";
     try {
-      const { data } = await axios.post(
-        `${ezqlHost}/1/userQueries`,
-        { query: query }
-      );
+      const { data } = await axios.post(`${ezqlHost}/1/userQueries`, {
+        query: query
+      });
       global.sharedObj.queries = data.rows;
     } catch (error) {
       console.error(error);
@@ -372,7 +365,6 @@ const relatedFields = fieldsArr => {
 };
 
 // ipcMain.on("async-selected-db-schema", async (event, arg) => {
-//   console.log("***db schema arg main***", arg);
 //   const client = new Client({
 //     host: "localhost",
 //     database: "ez-ql",
@@ -393,7 +385,6 @@ const relatedFields = fieldsArr => {
 //     )
 //     .then(res => {
 //       relatedFields(res.rows);
-//       console.log("global shared", global.sharedObj)
 //       event.sender.send("async-db-schema-reply", global.sharedObj.models);
 //       client.end();
 //     });

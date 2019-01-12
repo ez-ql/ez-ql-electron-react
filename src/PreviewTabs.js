@@ -10,7 +10,6 @@ import moment from "moment";
 
 const electron = window.require("electron");
 const sharedObject = electron.remote.getGlobal("sharedObj");
-const ipcRenderer = electron.ipcRenderer;
 
 function TabContainer(props) {
   return (
@@ -83,18 +82,16 @@ class PreviewTabs extends React.Component {
   };
 
   componentDidUpdate(prevState, currState) {
-    if (prevState.data !== this.props.data) {    
+    if (prevState.data !== this.props.data) {
       const originalColumnNames = Object.keys(this.props.data[0]);
       let prettyColumnNames = Object.values(formatNames(originalColumnNames));
 
-
-    const rowValuesOnly = this.props.data.map(row => Object.values(row));
-    //SET STATE
-    this.setState({
-      data: rowValuesOnly,
-      prettyColumnNames
-    });
-
+      const rowValuesOnly = this.props.data.map(row => Object.values(row));
+      //SET STATE
+      this.setState({
+        data: rowValuesOnly,
+        prettyColumnNames
+      });
     }
   }
 
@@ -108,7 +105,6 @@ class PreviewTabs extends React.Component {
     let prettyColumnNames;
     // modify data to match necessary row format
     let data = [...electron.remote.getGlobal("sharedObj").data];
-    console.log('DATA IN PREVIEW TABS', data)
 
     if (this.props.preview) data = data.slice(0, 10);
     if (data && data.length > 0) {
@@ -147,7 +143,6 @@ class PreviewTabs extends React.Component {
     });
 
     const rowValuesOnly = data.map(row => Object.values(row));
-    console.log("ROWVALUESONLY", rowValuesOnly);
     //SET STATE
     this.setState({
       selectedModelsAndFields,
@@ -164,7 +159,6 @@ class PreviewTabs extends React.Component {
 
     if (!sqlQuery) {
       sqlQuery = electron.remote.getGlobal("sharedObj").sqlQuery;
-      console.log("sqlQery", sqlQuery);
     }
     const { selectedTab, data, prettyColumnNames } = this.state;
 

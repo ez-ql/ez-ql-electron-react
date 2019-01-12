@@ -60,9 +60,8 @@ const SelectFields = props => {
   const fields = props.fields || [];
   const fieldNames = fields.map(elem => elem.field_name);
   const modFields = props.formatFieldNames(fieldNames);
-  const selectedModel = props.model.model_name
-  const modelName = selectedModel ?  formatModelName( selectedModel ) : null
-  console.log('PROPSINSF', props)
+  const selectedModel = props.model.model_name;
+  const modelName = selectedModel ? formatModelName(selectedModel) : null;
   return (
     <div className="Title Min-height-50 Align-self-center Margin-top-3">
       <div className="Column Center Height-50">

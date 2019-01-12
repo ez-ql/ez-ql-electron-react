@@ -55,10 +55,6 @@ class Joins extends Component {
     electron.remote.getGlobal(
       "sharedObj"
     ).currQuery.joinType = this.state.joinType;
-    console.log(
-      "current selection",
-      this.state.joinType ? this.state.joinType : "join"
-    );
     this.props.handleClose();
   }
 

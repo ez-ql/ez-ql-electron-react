@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import Flickity from "flickity";
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
-import { withStyles } from '@material-ui/core/styles';
-
+import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
+import { withStyles } from "@material-ui/core/styles";
 
 const itemStyle = {
   width: "300px",
@@ -17,16 +16,16 @@ const itemStyle = {
 
 const styles = theme => ({
   root: {
-    color: theme.palette.text.primary,
+    color: theme.palette.text.primary
   },
   icon: {
     margin: theme.spacing.unit,
     fontSize: 18,
     color: "rgb(92, 92, 92)"
-  },
+  }
 });
 
- class Selector extends Component {
+class Selector extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -93,7 +92,6 @@ const styles = theme => ({
     }
     const modelName = this.flkty.selectedSlide.cells[0].element.firstChild
       .classList[0];
-    console.log("MODEL NAME", modelName);
 
     this.props.selectedSlide(modelName);
   };
@@ -178,8 +176,6 @@ const styles = theme => ({
 
   appendChange() {
     if (this.flkty) {
-      console.log("SELECTED INERX", this.state.selectedIndex);
-      console.log("SELECTED FLKTY", this.flkty);
       this.flkty.destroy();
       this.initFlickity();
     }
@@ -188,11 +184,9 @@ const styles = theme => ({
   //func to format name of selected table in carousel
   //takes str, not array, like in rest of query-builder
   formatTableAndFieldNames = str => {
-    console.log('str', str)
-    console.log( )
     let mod;
-    if (!str){
-       return str;
+    if (!str) {
+      return str;
     } else if (str.includes("_")) {
       let [first, second] = str.split("_");
       mod = `${first.charAt(0).toUpperCase()}${first.slice(1)} ${second
@@ -206,7 +200,6 @@ const styles = theme => ({
 
   render() {
     const { items, classes } = this.props;
-    console.log("SELECTOR PROPS", this.props);
     return (
       <div>
         {/* <div ref={ch => this.wrapper = ch} >
@@ -231,12 +224,12 @@ const styles = theme => ({
                       {this.formatTableAndFieldNames(category)}
                     </div>
                     <div
-                        className="inner Max-height"
-                        onClick={() =>
-                          this.props.removeField(category, item.model_name)
-                        }
-                      >
-                        <DeleteOutlinedIcon className={classes.icon} />
+                      className="inner Max-height"
+                      onClick={() =>
+                        this.props.removeField(category, item.model_name)
+                      }
+                    >
+                      <DeleteOutlinedIcon className={classes.icon} />
                     </div>
                   </div>
                 ))}
@@ -249,5 +242,4 @@ const styles = theme => ({
   }
 }
 
-
-export default withStyles(styles)(Selector)
+export default withStyles(styles)(Selector);

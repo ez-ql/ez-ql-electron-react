@@ -42,12 +42,11 @@ class PreviewModal extends React.Component {
     open: false,
     data: [],
     numFields: 0,
-    numRows: 0,
+    numRows: 0
   };
 
   componentDidMount() {
     // ipcRenderer.on("async-query-reply", () => {
-    // console.log('here')
     const data = electron.remote.getGlobal("sharedObj").data;
     this.setState({
       data: data,
