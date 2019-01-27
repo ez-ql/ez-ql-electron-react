@@ -18,7 +18,7 @@ Runs installation of all dependencies listed in `package.json`. *Required* for t
 ### `npm run electron-dev`
 
 Runs the app in the development mode.<br>
-Will open a Chromium Browser Window instance serving on [http://localhost:3000 (http://localhost:3000)].
+Will open a Chromium Browser Window instance serving on [http://localhost:3000](http://localhost:3000).
 
 If you make edits to the code while the window is open, type Ctrl-Shift-R to refresh the window.<br>
 You will also see any lint errors in the console.
